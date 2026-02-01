@@ -1,0 +1,34 @@
+﻿94: A=LEADING FINANCIAL INDICATORS, B=None, C=None, D=None, E=None
+96: A=None, B=Variable Cost % of Sales, C=None, D=0.5360339699669808, E=N/A
+97: A=None, B=Variable Costs as % of Sales =       Variable Costs      , C=None, D=2434309.828999999, E=-162396.85
+98: A=None, B=Net Sales, C=None, D=4541335, E=0
+100: A=None, B=Contribution Margin (%), C=None, D=0.46396603003301917, E=N/A
+101: A=None, B=Contribution Margin =       (Net Sales - Variable Costs)      , C=None, D=2107025.171000001, E=162396.85
+102: A=None, B=Net Sales, C=None, D=4541335, E=0
+104: A=None, B=Break-even as % of Net Sales, C=None, D=1470180.674545194, E=N/A
+105: A=None, B=Break-even Sales = Fixed Costs (Incl Interest & Other), C=None, D=682113.8909999998, E=162396.85
+106: A=None, B=Contribution Margin, C=None, D=0.46396603003301917, E=N/A
+108: A=None, B=% Break-even Sales, C=None, D=0.3237331477517501, E=N/A
+109: A=None, B=% Break-even Sales = Break-even Sales, C=None, D=1470180.674545194, E=N/A
+110: A=None, B=Net Sales, C=None, D=4541335, E=0
+112: A=None, B=Sustainable Growth - Current D/E, C=None, D=1.1347463164629832, E=N/A
+113: A=None, B=Net Profit Margin (B-T) % * (1 + Current (Debt/equity)), C=None, D=0.21480569009732045, E=N/A
+114: A=None, B=(Assets/Sales - [Net Profit Margn (B-T)% * (1+ Cur (Debt/Equity))], C=None, D=0.18929842466188582, E=N/A
+116: A=None, B=Sustainable Growth - No New Debt, C=None, D=0.33838696326113243, E=N/A
+117: A=None, B=Net Profit Margin (B-T) %, C=None, D=0.05508914889564412, E=N/A
+118: A=None, B=(Assets - Cur Liabilities)/Sales) - Net Profit Mgn (B-T)%, C=None, D=0.16279926497384578, E=N/A
+120: A=None, B=Z-Score (Bankruptcy Indicator), C=None, D=3.465575067488059, E=0.336794803911895
+121: A=None, B=Z-Score (bankruptcy Indicator) =, C=None, D=None, E=None
+122: A=None, B=Work Capital to Total Assets * 1.2, C=None, D=0.08872464586646737, E=0.20787614358007897
+123: A=None, B= + Retained Earnings to Total Assets * 1.4, C=None, D=0.22244277724875688, E=0.08842676604064209
+124: A=None, B= +Earnings Before Taxes & Interest to Total Assets * 3.3, C=None, D=0.5688851142990312, E=0
+125: A=None, B= +Tangible Equity to Total Liabilities * 0.6, C=None, D=0.11338734630989952, E=0.04049189429117393
+126: A=None, B= + Net Sales to Total Assets * 0.999, C=None, D=2.472135183763904, E=0
+128: A=None, B=Retained Earnings to Total Assets, C=None, D=0.15888769803482636, E=0.06316197574331578
+129: A=None, B=Ret Earnings to Tot Assets = Retained Earnings, C=None, D=291586.28, E=108864
+130: A=None, B=Total Assets, C=None, D=1835172.16, E=1723568.63
+132: A=None, B=Working Capital to Total Assets, C=None, D=0.07393720488872281, E=0.17323011965006582
+133: A=None, B=Working Cap to Total Assets = Working Capital, C=None, D=135687.5, E=298574
+134: A=None, B=Total Assets, C=None, D=1835172.16, E=1723568.63
+136: A=None, B=EBITDA, C=None, D=250178.28, E=0
+137: A=None, B=EBITDA = (Earnings Before Interest & Tax +Depr and Amort), C=None, D=None, E=None

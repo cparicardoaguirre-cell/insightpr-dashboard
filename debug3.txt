@@ -1,0 +1,16 @@
+﻿Row 94: Set category to leadingIndicators
+Row 96: EXTRACTED -> Variable Cost % of Sales = 0.5360339699669808
+Row 100: EXTRACTED -> Contribution Margin (%) = 0.46396603003301917
+Row 104: EXTRACTED -> Break-even as % of Net Sales = 1470180.674545194
+Row 106: EXTRACTED -> Contribution Margin = 0.46396603003301917
+Row 108: EXTRACTED -> % Break-even Sales = 0.3237331477517501
+Row 112: EXTRACTED -> Sustainable Growth - Current D/E = 1.1347463164629832
+Row 116: EXTRACTED -> Sustainable Growth - No New Debt = 0.33838696326113243
+Row 120: EXTRACTED -> Z-Score (Bankruptcy Indicator) = 3.465575067488059
+Row 123: EXTRACTED -> + Retained Earnings to Total Assets * 1.4 = 0.22244277724875688
+Row 128: EXTRACTED -> Retained Earnings to Total Assets = 0.15888769803482636
+Row 132: EXTRACTED -> Working Capital to Total Assets = 0.07393720488872281
+Row 136: EXTRACTED -> EBITDA = 250178.28
+
+Total extracted: 12
+Final leadingIndicators count: 12

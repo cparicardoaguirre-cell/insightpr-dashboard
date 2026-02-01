@@ -1,0 +1,26 @@
+﻿--- Found LEADING header at row 94 ---
+Row 96: MATCH [variable cost % of sales] -> Variable Cost % of Sales = 0.5360339699669808
+Row 98: NO KW MATCH -> Net Sales = 4541335
+Row 100: MATCH [contribution margin] -> Contribution Margin (%) = 0.46396603003301917
+Row 102: NO KW MATCH -> Net Sales = 4541335
+Row 104: MATCH [break-even as % of net sales] -> Break-even as % of Net Sales = 1470180.674545194
+Row 106: MATCH [contribution margin] -> Contribution Margin = 0.46396603003301917
+Row 108: MATCH [% break-even sales] -> % Break-even Sales = 0.3237331477517501
+Row 110: NO KW MATCH -> Net Sales = 4541335
+Row 112: MATCH [sustainable growth - current] -> Sustainable Growth - Current D/E = 1.1347463164629832
+Row 113: NO KW MATCH -> Net Profit Margin (B-T) % * (1 + Current (Debt/equ = 0.21480569009732045
+Row 114: NO KW MATCH -> (Assets/Sales - [Net Profit Margn (B-T)% * (1+ Cur = 0.18929842466188582
+Row 116: MATCH [sustainable growth - no new debt] -> Sustainable Growth - No New Debt = 0.33838696326113243
+Row 117: NO KW MATCH -> Net Profit Margin (B-T) % = 0.05508914889564412
+Row 118: NO KW MATCH -> (Assets - Cur Liabilities)/Sales) - Net Profit Mgn = 0.16279926497384578
+Row 120: MATCH [z-score] -> Z-Score (Bankruptcy Indicator) = 3.465575067488059
+Row 122: NO KW MATCH -> Work Capital to Total Assets * 1.2 = 0.08872464586646737
+Row 123: MATCH [retained earnings to total assets] ->  + Retained Earnings to Total Assets * 1.4 = 0.22244277724875688
+Row 124: NO KW MATCH ->  +Earnings Before Taxes & Interest to Total Assets = 0.5688851142990312
+Row 125: NO KW MATCH ->  +Tangible Equity to Total Liabilities * 0.6 = 0.11338734630989952
+Row 126: NO KW MATCH ->  + Net Sales to Total Assets * 0.999 = 2.472135183763904
+Row 128: MATCH [retained earnings to total assets] -> Retained Earnings to Total Assets = 0.15888769803482636
+Row 130: NO KW MATCH -> Total Assets = 1835172.16
+Row 132: MATCH [working capital to total assets] -> Working Capital to Total Assets = 0.07393720488872281
+Row 134: NO KW MATCH -> Total Assets = 1835172.16
+Row 136: MATCH [ebitda] -> EBITDA = 250178.28

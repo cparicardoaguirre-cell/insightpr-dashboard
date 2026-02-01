@@ -1,0 +1,10 @@
+﻿  - Variable Cost % of Sales
+  - Contribution Margin (%)
+  - Break-even as % of Net Sales
+  - % Break-even Sales
+  - Sustainable Growth - Current D/E
+  - Sustainable Growth - No New Debt
+  - Z-Score (Bankruptcy Indicator)
+  - Retained Earnings to Total Assets
+  - Working Capital to Total Assets
+  - EBITDA
