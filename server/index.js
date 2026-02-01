@@ -548,8 +548,17 @@ Asset Management: ${JSON.stringify(ratiosData.assetManagementRatios)}
 ` : 'No ratio data available';
 
         const prompt = language === 'es'
-            ? `Genera un Resumen Ejecutivo profesional EN ESPAÑOL para los siguientes datos financieros. Incluye: 1) Hallazgos Clave, 2) Análisis de Liquidez, 3) Estructura de Capital, 4) Eficiencia Operativa, 5) Conclusiones y Recomendaciones. Datos: ${context}`
-            : `Generate a professional Executive Summary in ENGLISH for the following financial data. Include: 1) Key Findings, 2) Liquidity Analysis, 3) Capital Structure, 4) Operational Efficiency, 5) Conclusions and Recommendations. Data: ${context}`;
+            ? `[IDIOMA: ESPAÑOL] INSTRUCCIÓN CRÍTICA: TODA tu respuesta DEBE estar COMPLETAMENTE en ESPAÑOL. NO uses inglés bajo ninguna circunstancia.
+
+Genera un Resumen Ejecutivo profesional para los siguientes datos financieros. Incluye: 1) Hallazgos Clave, 2) Análisis de Liquidez, 3) Estructura de Capital, 4) Eficiencia Operativa, 5) Conclusiones y Recomendaciones.
+
+Datos: ${context}`
+            : `[LANGUAGE: ENGLISH] CRITICAL INSTRUCTION: Your ENTIRE response MUST be COMPLETELY in ENGLISH. DO NOT use Spanish under any circumstances.
+
+Generate a professional Executive Summary for the following financial data. Include: 1) Key Findings, 2) Liquidity Analysis, 3) Capital Structure, 4) Operational Efficiency, 5) Conclusions and Recommendations.
+
+Data: ${context}`;
+
 
         // Ensure NotebookLM is connected
         if (!activeNotebookId) {

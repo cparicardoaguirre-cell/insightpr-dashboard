@@ -1,4 +1,5 @@
 import { useLanguage } from '../context/LanguageContext'
+import { useAuth } from '../context/AuthContext'
 
 interface HeaderProps {
     activeTab: string
@@ -7,6 +8,8 @@ interface HeaderProps {
 
 export default function Header({ activeTab, setActiveTab }: HeaderProps) {
     const { language, setLanguage, t } = useLanguage()
+    const { logout, user } = useAuth()
+
 
     const navItems = [
         { id: 'overview', labelKey: 'nav.dashboard' },
@@ -95,6 +98,16 @@ export default function Header({ activeTab, setActiveTab }: HeaderProps) {
                 <div className="status-badge status-green">
                     {t('status.active')}
                 </div>
+
+                {user && (
+                    <button
+                        onClick={logout}
+                        className="btn btn-secondary logout-btn"
+                        title={language === 'es' ? 'Cerrar sesión' : 'Sign out'}
+                    >
+                        👤 {user} ⏻
+                    </button>
+                )}
             </div>
         </header>
     )
