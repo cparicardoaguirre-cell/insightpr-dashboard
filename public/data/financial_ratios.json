@@ -2,7 +2,7 @@
   "company": "National Lift Truck Service of PR, Inc.",
   "asOf": "December 31, 2024",
   "source": "NLTS-PR FS 12 31 2024 Rev156-3.xlsm",
-  "extractedAt": "2026-02-02T03:12:28.139877",
+  "extractedAt": "2026-02-02T03:32:30.334821",
   "solvencyRatios": [
     {
       "name": "Current Ratio",
@@ -95,7 +95,7 @@
       "current": 11.496,
       "prior": "N/A",
       "status": "good",
-      "industryBenchmark": 5.0,
+      "industryBenchmark": 5,
       "industryLabel": "Equipment Rental Standard"
     },
     {
@@ -103,7 +103,7 @@
       "current": 31.8372,
       "prior": "N/A",
       "status": "good",
-      "industryBenchmark": 5.0,
+      "industryBenchmark": 5,
       "industryLabel": "Equipment Rental Standard"
     },
     {
@@ -111,7 +111,7 @@
       "current": 9.7806,
       "prior": "N/A",
       "status": "warning",
-      "industryBenchmark": 8.0,
+      "industryBenchmark": 8,
       "industryLabel": "Industry Average"
     },
     {
@@ -127,7 +127,7 @@
       "current": 7.7107,
       "prior": "N/A",
       "status": "warning",
-      "industryBenchmark": 7.0,
+      "industryBenchmark": 7,
       "industryLabel": "Industry Average"
     },
     {
