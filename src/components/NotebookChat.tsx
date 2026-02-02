@@ -3,18 +3,52 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useLanguage } from '../context/LanguageContext';
 
+// Detect if we're running in production (Netlify) or development (localhost)
+const isProduction = window.location.hostname !== 'localhost';
+const API_BASE_URL = isProduction
+    ? '' // In production, use relative path (will be handled by Netlify redirect or show demo mode)
+    : 'http://localhost:3001';
+
 export default function NotebookChat() {
     const { t, language } = useLanguage();
     const [messages, setMessages] = useState([
-        { role: 'system', content: 'Connected to NLT-PR Operational Notebook. Ask me about inventory, contracts, or financials.' }
+        {
+            role: 'system', content: isProduction
+                ? (language === 'es'
+                    ? '🤖 Modo Demo - Para análisis en tiempo real, contacte a CPA Ricardo Aguirre para acceso completo al sistema.'
+                    : '🤖 Demo Mode - For live analysis, contact CPA Ricardo Aguirre for full system access.')
+                : 'Connected to NLT-PR Operational Notebook. Ask me about inventory, contracts, or financials.'
+        }
     ])
     const [input, setInput] = useState('')
+    const [, setIsLoading] = useState(false)
 
     const handleSend = async () => {
         if (!input.trim()) return
+
+        // In production demo mode, show a helpful message
+        if (isProduction) {
+            const userMsg = { role: 'user', content: input };
+            setMessages(prev => [...prev, userMsg]);
+            setInput('');
+
+            setTimeout(() => {
+                const demoResponse = language === 'es'
+                    ? `Esta es una versión de demostración. Para obtener análisis en tiempo real de sus estados financieros, datos de inventario y respuestas personalizadas, por favor contacte a CPA Ricardo Aguirre para configurar su acceso completo al sistema InsightPR.\n\n📞 (787) 555-1234\n📧 info@cparicardoaguirre.com`
+                    : `This is a demo version. To get real-time analysis of your financial statements, inventory data, and personalized responses, please contact CPA Ricardo Aguirre to set up your full InsightPR system access.\n\n📞 (787) 555-1234\n📧 info@cparicardoaguirre.com`;
+
+                setMessages(prev => [...prev, {
+                    role: 'system',
+                    content: demoResponse
+                }]);
+            }, 500);
+            return;
+        }
+
         const newMsg = { role: 'user', content: input }
         setMessages(prev => [...prev, newMsg])
         setInput('')
+        setIsLoading(true)
 
         try {
             // Add language instruction to ensure response is in the selected language
@@ -22,7 +56,7 @@ export default function NotebookChat() {
                 ? '[Responde en español] '
                 : '[Respond in English] ';
 
-            const response = await fetch('http://localhost:3001/api/chat', {
+            const response = await fetch(`${API_BASE_URL}/api/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,7 +67,7 @@ export default function NotebookChat() {
             const data = await response.json();
 
             // Extract the raw content first
-            let rawContent = data.content || data.answer || data.response || "No response content";
+            const rawContent = data.content || data.answer || data.response || "No response content";
 
             // If the content itself is a JSON string (nested JSON), try to parse it
             let answerText = rawContent;
@@ -45,12 +79,9 @@ export default function NotebookChat() {
                     } else if (parsed.content) {
                         answerText = parsed.content;
                     } else {
-                        // It was JSON but didn't have a clear answer field, keep it parsed or string? 
-                        // If it's complex, maybe just show the text, OR if it has 'answer' use it.
-                        // Let's assume if it has 'status' and 'answer' (like the user saw), we want 'answer'.
                         answerText = parsed.answer || parsed.message || rawContent;
                     }
-                } catch (e) {
+                } catch {
                     // Not valid JSON, ignore
                 }
             }
@@ -61,12 +92,18 @@ export default function NotebookChat() {
             }]);
         } catch (error) {
             console.error('Error fetching chat response:', error);
+            const errorMsg = language === 'es'
+                ? '⚠️ No se pudo conectar al servidor. Verifique que el servidor backend esté ejecutándose (`npm run server` en la carpeta del servidor).'
+                : "⚠️ Could not connect to server. Please ensure the backend server is running (`npm run server` in the server folder).";
             setMessages(prev => [...prev, {
                 role: 'system',
-                content: "Error connecting to backend server. Ensure 'npm run server' is running."
+                content: errorMsg
             }]);
+        } finally {
+            setIsLoading(false)
         }
     }
+
 
     return (
         <div className="card" style={{ height: '70vh', display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}>

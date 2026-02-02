@@ -197,6 +197,17 @@ export default function FinancialAnalysis() {
     const [executiveSummary, setExecutiveSummary] = useState<string | null>(null);
     const [summaryLoading, setSummaryLoading] = useState(false);
 
+    // Load Executive Summary from localStorage on mount
+    useEffect(() => {
+        const cachedSummary = localStorage.getItem('executiveSummary');
+        const cachedSummaryLang = localStorage.getItem('executiveSummaryLang');
+
+        if (cachedSummary && cachedSummaryLang === language) {
+            console.log('Loading cached Executive Summary');
+            setExecutiveSummary(cachedSummary);
+        }
+    }, []);
+
     // Fetch ratios from NLTS-PR FS file on mount
     useEffect(() => {
         fetch('http://localhost:3001/api/financial-ratios')
@@ -241,7 +252,10 @@ export default function FinancialAnalysis() {
             const summaryData = await summaryResponse.json();
             if (summaryData.success && summaryData.content) {
                 setExecutiveSummary(summaryData.content);
-                console.log('Executive Summary generated via:', summaryData.source);
+                // Persist to localStorage
+                localStorage.setItem('executiveSummary', summaryData.content);
+                localStorage.setItem('executiveSummaryLang', language);
+                console.log('Executive Summary generated and cached via:', summaryData.source);
             }
 
         } catch (error) {
@@ -423,7 +437,10 @@ Return a JSON object with this EXACT structure:
                     const summaryData = await summaryResponse.json();
                     if (summaryData.success && summaryData.content) {
                         setExecutiveSummary(summaryData.content);
-                        console.log(`Executive Summary regenerated in ${language}`);
+                        // Persist to localStorage
+                        localStorage.setItem('executiveSummary', summaryData.content);
+                        localStorage.setItem('executiveSummaryLang', language);
+                        console.log(`Executive Summary regenerated and cached in ${language}`);
                     }
 
                     // Clear cached financial data to force refresh with new language
