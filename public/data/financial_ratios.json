@@ -1,0 +1,248 @@
+{
+  "company": "National Lift Truck Service of PR, Inc.",
+  "asOf": "December 31, 2024",
+  "source": "NLTS-PR FS 12 31 2024 Rev156-3.xlsm",
+  "extractedAt": "2026-02-01T20:11:22.530636",
+  "solvencyRatios": [
+    {
+      "name": "Current Ratio",
+      "current": 1.1605,
+      "prior": 1.4122,
+      "status": "danger",
+      "industryBenchmark": 2.31,
+      "industryLabel": "Equipment Rental Median 2023"
+    },
+    {
+      "name": "Quick Ratio",
+      "current": 0.7325,
+      "prior": 0.9884,
+      "status": "warning",
+      "industryBenchmark": 1.2,
+      "industryLabel": "Industry Target"
+    }
+  ],
+  "safetyRatios": [
+    {
+      "name": "Debt to Equity",
+      "current": 5.2916,
+      "prior": 14.8178,
+      "status": "danger",
+      "industryBenchmark": 1.83,
+      "industryLabel": "ReadyRatios 2023"
+    }
+  ],
+  "profitabilityRatios": [
+    {
+      "name": "Gross Profit Margin",
+      "current": 0.1418,
+      "prior": "N/A",
+      "status": "danger",
+      "industryBenchmark": 0.4,
+      "industryLabel": "United Rentals 2024"
+    },
+    {
+      "name": "Operating Margin",
+      "current": 0.0668,
+      "prior": "N/A",
+      "status": "danger",
+      "industryBenchmark": 0.25,
+      "industryLabel": "United Rentals 2024"
+    },
+    {
+      "name": "Net Profit Margin Before Tax",
+      "current": 0.0551,
+      "prior": "N/A",
+      "status": "warning",
+      "industryBenchmark": 0.08,
+      "industryLabel": "Equipment Rental 2024"
+    },
+    {
+      "name": "Net Profit Margin After Tax",
+      "current": 0.0402,
+      "prior": "N/A",
+      "status": "warning",
+      "industryBenchmark": 0.042,
+      "industryLabel": "Industry Median"
+    }
+  ],
+  "assetManagementRatios": [
+    {
+      "name": "Sales to Assets",
+      "current": 2.4746,
+      "prior": "N/A",
+      "status": "good",
+      "industryBenchmark": 1.5,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "Return on Assets (%)",
+      "current": 0.1363,
+      "prior": "N/A",
+      "status": "good",
+      "industryBenchmark": 0.065,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "Return on Equity (%)",
+      "current": 0.8577,
+      "prior": "N/A",
+      "status": "good",
+      "industryBenchmark": 0.12,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "Inventory Turnover (x)",
+      "current": 11.496,
+      "prior": "N/A",
+      "status": "good",
+      "industryBenchmark": 5.0,
+      "industryLabel": "Equipment Rental Standard"
+    },
+    {
+      "name": "Inventory Turnover (days)",
+      "current": 31.8372,
+      "prior": "N/A",
+      "status": "good",
+      "industryBenchmark": 5.0,
+      "industryLabel": "Equipment Rental Standard"
+    },
+    {
+      "name": "Accounts Receivable Turnover (x)",
+      "current": 9.7806,
+      "prior": "N/A",
+      "status": "warning",
+      "industryBenchmark": 8.0,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "Collection Period (days)",
+      "current": 37.4212,
+      "prior": "N/A",
+      "status": "warning",
+      "industryBenchmark": 45,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "Accounts Payable Turnover (x)",
+      "current": 7.7107,
+      "prior": "N/A",
+      "status": "warning",
+      "industryBenchmark": 7.0,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "Accounts Payable (days)",
+      "current": 47.4664,
+      "prior": "N/A",
+      "status": "good",
+      "industryBenchmark": 52,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "Personnel Productivity",
+      "current": 0.7221,
+      "prior": "N/A",
+      "status": "danger",
+      "industryBenchmark": 0.55,
+      "industryLabel": "Industry Target"
+    },
+    {
+      "name": "Gross Margin Return on Inventory",
+      "current": 1.8987,
+      "prior": "N/A",
+      "status": "warning",
+      "industryBenchmark": 2.5,
+      "industryLabel": "Retail/Distribution"
+    },
+    {
+      "name": "Interest Coverage",
+      "current": 3.7799,
+      "prior": "N/A",
+      "status": "warning",
+      "industryBenchmark": 4.5,
+      "industryLabel": "Equipment Rental 2024"
+    }
+  ],
+  "leadingIndicators": [
+    {
+      "name": "Variable Cost % of Sales",
+      "current": 0.536,
+      "prior": "N/A",
+      "status": "warning",
+      "industryBenchmark": 0.5,
+      "industryLabel": "Industry Target"
+    },
+    {
+      "name": "Contribution Margin (%)",
+      "current": 0.464,
+      "prior": "N/A",
+      "status": "warning",
+      "industryBenchmark": 0.45,
+      "industryLabel": "Industry Standard"
+    },
+    {
+      "name": "Break-even as % of Net Sales",
+      "current": 1470180.6745,
+      "prior": "N/A",
+      "status": "danger",
+      "industryBenchmark": 0.75,
+      "industryLabel": "Industry Target"
+    },
+    {
+      "name": "% Break-even Sales",
+      "current": 0.3237,
+      "prior": "N/A",
+      "status": "neutral",
+      "industryBenchmark": null,
+      "industryLabel": "Company-Specific"
+    },
+    {
+      "name": "Sustainable Growth - Current D/E",
+      "current": 1.1347,
+      "prior": "N/A",
+      "status": "good",
+      "industryBenchmark": 0.1,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "Sustainable Growth - No New Debt",
+      "current": 0.3384,
+      "prior": "N/A",
+      "status": "good",
+      "industryBenchmark": 0.06,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "Z-Score (Bankruptcy Indicator)",
+      "current": 3.4656,
+      "prior": 0.3368,
+      "status": "good",
+      "industryBenchmark": 2.5,
+      "industryLabel": "Altman Safe Zone >2.99"
+    },
+    {
+      "name": "Retained Earnings to Total Assets",
+      "current": 0.1589,
+      "prior": 0.0632,
+      "status": "warning",
+      "industryBenchmark": 0.15,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "Working Capital to Total Assets",
+      "current": 0.0739,
+      "prior": 0.1732,
+      "status": "warning",
+      "industryBenchmark": 0.1,
+      "industryLabel": "Industry Average"
+    },
+    {
+      "name": "EBITDA",
+      "current": 250178.28,
+      "prior": "N/A",
+      "status": "neutral",
+      "industryBenchmark": null,
+      "industryLabel": "Company-Specific"
+    }
+  ]
+}

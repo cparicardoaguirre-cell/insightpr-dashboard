@@ -197,6 +197,10 @@ export default function FinancialAnalysis() {
     const [executiveSummary, setExecutiveSummary] = useState<string | null>(null);
     const [summaryLoading, setSummaryLoading] = useState(false);
 
+    // Detect if running in production (Netlify) vs development (localhost)
+    const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
+    const API_BASE_URL = isProduction ? '' : 'http://localhost:3001';
+
     // Load Executive Summary from localStorage on mount
     useEffect(() => {
         const cachedSummary = localStorage.getItem('executiveSummary');
@@ -208,19 +212,41 @@ export default function FinancialAnalysis() {
         }
     }, []);
 
-    // Fetch ratios from NLTS-PR FS file on mount
+    // Fetch ratios from NLTS-PR FS file on mount (or static file in production)
     useEffect(() => {
-        fetch('http://localhost:3001/api/financial-ratios')
-            .then(res => res.json())
-            .then(data => {
-                if (data.success && data.data) {
-                    setFsRatios(data.data);
-                }
-            })
-            .catch(err => console.error('Failed to fetch FS ratios:', err));
-    }, []);
+        if (isProduction) {
+            // Production: Load pre-generated static data
+            fetch('/data/financial_ratios.json')
+                .then(res => res.json())
+                .then(data => {
+                    setFsRatios(data);
+                    setLastSync(data.extractedAt ? new Date(data.extractedAt).toLocaleString() : 'Pre-loaded');
+                    console.log('Loaded static financial data for production');
+                })
+                .catch(err => console.error('Failed to fetch static ratios:', err));
+        } else {
+            // Development: Fetch from live backend
+            fetch(`${API_BASE_URL}/api/financial-ratios`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.data) {
+                        setFsRatios(data.data);
+                    }
+                })
+                .catch(err => console.error('Failed to fetch FS ratios:', err));
+        }
+    }, [isProduction]);
 
     const fetchFinancialData = useCallback(async () => {
+        // Production mode: Data is already pre-loaded, just show a message
+        if (isProduction) {
+            alert(language === 'es'
+                ? '📊 Los datos financieros ya están cargados.\n\nPara obtener datos actualizados en tiempo real, contacte a CPA Ricardo Aguirre.'
+                : '📊 Financial data is already loaded.\n\nFor real-time updated data, contact CPA Ricardo Aguirre.');
+            return;
+        }
+
+        // Development mode: Full sync functionality
         setLoading(true);
         setProgress(0);
         setSummaryLoading(true);
@@ -235,7 +261,7 @@ export default function FinancialAnalysis() {
         try {
             // Step 1: Sync ratios from Excel (dynamic extraction)
             console.log('Syncing ratios from Excel...');
-            const syncResponse = await fetch('http://localhost:3001/api/financial-ratios/sync');
+            const syncResponse = await fetch(`${API_BASE_URL}/api/financial-ratios/sync`);
             const syncData = await syncResponse.json();
             if (syncData.success && syncData.data) {
                 setFsRatios(syncData.data);
@@ -244,7 +270,7 @@ export default function FinancialAnalysis() {
 
             // Step 2: Generate AI Executive Summary
             console.log('Generating AI Executive Summary...');
-            const summaryResponse = await fetch('http://localhost:3001/api/executive-summary/generate', {
+            const summaryResponse = await fetch(`${API_BASE_URL}/api/executive-summary/generate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ language })
@@ -261,6 +287,7 @@ export default function FinancialAnalysis() {
         } catch (error) {
             console.error('Sync error:', error);
         } finally {
+
             setSummaryLoading(false);
         }
 
