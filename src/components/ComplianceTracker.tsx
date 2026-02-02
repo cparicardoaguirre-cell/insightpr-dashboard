@@ -72,10 +72,19 @@ export default function ComplianceTracker() {
         try {
             // Determine API URL based on environment
             const isProduction = typeof window !== 'undefined' && window.location.hostname !== 'localhost';
-            const API_BASE_URL = isProduction ? '' : 'http://localhost:3001';
 
-            const response = await fetch(`${API_BASE_URL}/api/compliance-docs`);
-            const data = await response.json();
+            let data;
+            if (isProduction) {
+                // Production: Load pre-scanned static list
+                const response = await fetch('/data/compliance_docs.json');
+                data = await response.json();
+                // Simulate small delay for UX
+                await new Promise(r => setTimeout(r, 600));
+            } else {
+                // Development: Scan live
+                const response = await fetch('http://localhost:3001/api/compliance-docs');
+                data = await response.json();
+            }
 
             if (!data.success) {
                 throw new Error(data.error || 'Failed to scan documents');
