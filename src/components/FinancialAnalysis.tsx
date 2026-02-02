@@ -533,11 +533,79 @@ Return a JSON object with this EXACT structure:
             </div>
 
             {loading && (
-                <div className="card" style={{ textAlign: 'center', padding: '2rem' }}>
-                    <div style={{ marginBottom: '1rem', fontSize: '1.1rem', fontWeight: 600 }}>{t('financial.syncing')}</div>
-                    <div style={{ width: '100%', height: '8px', backgroundColor: 'var(--bg-secondary)', borderRadius: '4px', overflow: 'hidden', marginBottom: '0.5rem' }}>
-                        <div style={{ width: `${progress}%`, height: '100%', backgroundColor: 'var(--accent-primary)', transition: 'width 0.3s ease-in-out' }}></div>
+                <div className="card" style={{ textAlign: 'center', padding: '1.5rem', position: 'relative', overflow: 'hidden' }}>
+                    <div style={{ marginBottom: '0.75rem', fontSize: '1rem', fontWeight: 600, color: 'var(--accent-primary)' }}>
+                        {t('financial.syncing')} - {progress}%
                     </div>
+                    {/* Bull Run Progress Track */}
+                    <div style={{
+                        position: 'relative',
+                        width: '100%',
+                        height: '50px',
+                        backgroundColor: 'var(--bg-secondary)',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        marginBottom: '0.5rem'
+                    }}>
+                        {/* Progress Trail */}
+                        <div style={{
+                            position: 'absolute',
+                            left: 0,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: `${progress}%`,
+                            height: '4px',
+                            background: 'linear-gradient(90deg, #10b981, #059669)',
+                            boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)',
+                            transition: 'width 0.3s ease-in-out',
+                            borderRadius: '2px'
+                        }} />
+                        {/* The Running Wall Street Bull */}
+                        <div style={{
+                            position: 'absolute',
+                            left: `calc(${progress}% - 25px)`,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: '50px',
+                            height: '40px',
+                            transition: 'left 0.3s ease-in-out',
+                            animation: 'bullRun 0.2s ease-in-out infinite',
+                            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.4))'
+                        }}>
+                            <img
+                                src="/images/wall-street-bull.png"
+                                alt="Wall Street Bull"
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'contain'
+                                }}
+                            />
+                        </div>
+                        {/* Finish Flag */}
+                        <div style={{
+                            position: 'absolute',
+                            right: '8px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            fontSize: '1.2rem',
+                            opacity: 0.5
+                        }}>
+                            🏁
+                        </div>
+                    </div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>
+                        {language === 'es' ? '📈 Bull Market en progreso...' : '📈 Bull Market in progress...'}
+                    </div>
+                    <style>{`
+                        @keyframes bullRun {
+                            0% { transform: translateY(-50%) translateX(0) rotate(-3deg); }
+                            25% { transform: translateY(-55%) translateX(2px) rotate(0deg); }
+                            50% { transform: translateY(-50%) translateX(0) rotate(3deg); }
+                            75% { transform: translateY(-45%) translateX(-2px) rotate(0deg); }
+                            100% { transform: translateY(-50%) translateX(0) rotate(-3deg); }
+                        }
+                    `}</style>
                 </div>
             )}
 
