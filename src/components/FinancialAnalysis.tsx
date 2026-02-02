@@ -460,18 +460,29 @@ Return a JSON object with this EXACT structure:
         }
     }, [timeframe, language, t, API_BASE_URL]);
 
-    // Initial Load from Cache
+    // Initial Load from Cache or Fetch
     useEffect(() => {
         const cacheKey = `financialData_${timeframe}_${language}`;
         const cachedData = localStorage.getItem(cacheKey);
         const cachedTime = localStorage.getItem(`${cacheKey}_time`);
-        if (cachedData) {
+
+        // Check if cached summary matches current language
+        const cachedSummaryLang = localStorage.getItem('executiveSummaryLang');
+        const isSummaryStale = cachedSummaryLang !== language;
+
+        if (cachedData && !isSummaryStale) {
+            // Only use cache if BOTH data and summary language match
             setFinancialData(JSON.parse(cachedData));
             if (cachedTime) setLastSync(cachedTime);
+
+            // Restore summary from cache to ensure UI consistency
+            const cachedSum = localStorage.getItem('executiveSummary');
+            if (cachedSum) setExecutiveSummary(cachedSum);
         } else {
+            // Fetch fresh if data missing OR summary language mismatch
             fetchFinancialData();
         }
-    }, [timeframe, fetchFinancialData]);
+    }, [timeframe, fetchFinancialData, language]);
 
 
 
