@@ -433,8 +433,9 @@ Return a JSON object with this EXACT structure:
             const now = new Date().toLocaleString();
             setFinancialData(parsedData);
             setLastSync(now);
-            localStorage.setItem(`financialData_${timeframe}`, JSON.stringify(parsedData));
-            localStorage.setItem(`financialData_${timeframe}_time`, now);
+            const cacheKey = `financialData_${timeframe}_${language}`;
+            localStorage.setItem(cacheKey, JSON.stringify(parsedData));
+            localStorage.setItem(`${cacheKey}_time`, now);
 
         } catch (error) {
             console.error(error);
@@ -445,7 +446,7 @@ Return a JSON object with this EXACT structure:
 
     // Initial Load from Cache
     useEffect(() => {
-        const cacheKey = `financialData_${timeframe}`;
+        const cacheKey = `financialData_${timeframe}_${language}`;
         const cachedData = localStorage.getItem(cacheKey);
         const cachedTime = localStorage.getItem(`${cacheKey}_time`);
         if (cachedData) {
@@ -456,64 +457,7 @@ Return a JSON object with this EXACT structure:
         }
     }, [timeframe, fetchFinancialData]);
 
-    // Track previous language to detect changes
-    const previousLanguageRef = React.useRef(language);
-    const isInitialMount = React.useRef(true);
 
-    // Language Change Effect - Regenerate content when language changes
-    useEffect(() => {
-        // Skip initial mount
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
-            return;
-        }
-
-        // Only regenerate if language actually changed
-        if (previousLanguageRef.current !== language) {
-            console.log(`Language changed from ${previousLanguageRef.current} to ${language}. Regenerating content...`);
-            previousLanguageRef.current = language;
-
-            // Regenerate Executive Summary in new language
-            const regenerateContent = async () => {
-                setSummaryLoading(true);
-                try {
-                    console.log(`Regenerating Executive Summary in ${language}...`);
-                    const summaryResponse = await fetch('http://localhost:3001/api/executive-summary/generate', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            language,
-                            regenerate: true,
-                            reason: 'language_change'
-                        })
-                    });
-                    const summaryData = await summaryResponse.json();
-                    if (summaryData.success && summaryData.content) {
-                        setExecutiveSummary(summaryData.content);
-                        // Persist to localStorage
-                        localStorage.setItem('executiveSummary', summaryData.content);
-                        localStorage.setItem('executiveSummaryLang', language);
-                        console.log(`Executive Summary regenerated and cached in ${language}`);
-                    }
-
-                    // Clear cached financial data to force refresh with new language
-                    const cacheKey = `financialData_${timeframe}`;
-                    localStorage.removeItem(cacheKey);
-                    localStorage.removeItem(`${cacheKey}_time`);
-
-                    // Refetch financial data with new language context
-                    await fetchFinancialData();
-
-                } catch (error) {
-                    console.error('Failed to regenerate content for new language:', error);
-                } finally {
-                    setSummaryLoading(false);
-                }
-            };
-
-            regenerateContent();
-        }
-    }, [language, timeframe, fetchFinancialData]);
 
     return (
         <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
