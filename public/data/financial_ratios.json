@@ -2,7 +2,7 @@
   "company": "National Lift Truck Service of PR, Inc.",
   "asOf": "December 31, 2024",
   "source": "NLTS-PR FS 12 31 2024 Rev156-3.xlsm",
-  "extractedAt": "2026-02-01T20:11:22.530636",
+  "extractedAt": "2026-02-02T03:12:28.139877",
   "solvencyRatios": [
     {
       "name": "Current Ratio",
@@ -118,7 +118,7 @@
       "name": "Collection Period (days)",
       "current": 37.4212,
       "prior": "N/A",
-      "status": "good",
+      "status": "warning",
       "industryBenchmark": 45,
       "industryLabel": "Industry Average"
     },

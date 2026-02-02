@@ -247,13 +247,27 @@ export default function FinancialAnalysis() {
         setSummaryLoading(true);
 
         try {
-            // Step 1: Sync ratios from Excel (dynamic extraction)
-            console.log('Syncing ratios from Excel...');
-            const syncResponse = await fetch(`${API_BASE_URL}/api/financial-ratios/sync`);
-            const syncData = await syncResponse.json();
+            // Step 1: Sync ratios
+            console.log('Syncing ratios...');
+            let syncData;
+
+            if (isProduction) {
+                // Production: Load pre-generated static data
+                const response = await fetch('/data/financial_ratios.json');
+                const data = await response.json();
+                syncData = { success: true, data }; // Wrap to match API structure
+
+                // Simulate network delay for UX
+                await new Promise(resolve => setTimeout(resolve, 800));
+            } else {
+                // Development: Sync from backend
+                const syncResponse = await fetch(`${API_BASE_URL}/api/financial-ratios/sync`);
+                syncData = await syncResponse.json();
+            }
+
             if (syncData.success && syncData.data) {
                 setFsRatios(syncData.data);
-                console.log('Ratios synced from:', syncData.data.source);
+                console.log('Ratios loaded from:', syncData.data.source);
             }
 
             // Step 2: Generate AI Executive Summary
