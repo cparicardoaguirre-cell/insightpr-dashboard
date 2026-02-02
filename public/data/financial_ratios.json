@@ -118,7 +118,7 @@
       "name": "Collection Period (days)",
       "current": 37.4212,
       "prior": "N/A",
-      "status": "warning",
+      "status": "good",
       "industryBenchmark": 45,
       "industryLabel": "Industry Average"
     },

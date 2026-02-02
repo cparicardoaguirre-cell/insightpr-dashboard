@@ -306,13 +306,72 @@ const generateRatioAnalysis = (ratio: Ratio, language: string) => {
     };
 };
 
-// Industry comparison bar component
-const IndustryComparisonBar: React.FC<{ current: number; industry: number | undefined; label: string | undefined }> = ({ current, industry, label }) => {
+// Helper: Determine if lower is better for a given ratio name
+const isLowerBetter = (ratioName: string): boolean => {
+    const lowerBetterPatterns = [
+        'collection period',
+        'days payable',
+        'days receivable',
+        'inventory turnover (days)',
+        'inventory days',
+        'debt to equity',
+        'debt ratio',
+        'debt-to',
+        'personnel productivity', // cost ratio - lower is better
+        'variable cost',
+        'break-even',
+        'accounts payable (days)', // longer payment is actually better (but we handle this separately)
+    ];
+    const name = ratioName.toLowerCase();
+    return lowerBetterPatterns.some(pattern => name.includes(pattern));
+};
+
+// Helper: Format values based on ratio type
+const formatRatioValue = (value: number, ratioName: string): string => {
+    const name = ratioName.toLowerCase();
+
+    // Dollar amounts (EBITDA, Break-even, Working Capital, etc.)
+    if (name.includes('ebitda') || name.includes('break-even as %') ||
+        name.includes('working capital') && !name.includes('%') && !name.includes('ratio')) {
+        if (Math.abs(value) >= 1000) {
+            return `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+        return `$${value.toFixed(2)}`;
+    }
+
+    // Percentages (margin, ROE, ROA, etc.)
+    if (name.includes('%') || name.includes('margin') || name.includes('return on') ||
+        name.includes('growth') || name.includes('contribution')) {
+        return `${(value * 100).toFixed(2)}%`;
+    }
+
+    // Days (collection, payable, inventory days)
+    if (name.includes('days') || name.includes('period')) {
+        return `${value.toFixed(1)} days`;
+    }
+
+    // Turnover ratios
+    if (name.includes('turnover (x)')) {
+        return `${value.toFixed(2)}x`;
+    }
+
+    // Default: 2-4 decimal places
+    return value.toFixed(value < 10 ? 4 : 2);
+};
+
+// Industry comparison bar component with smart color logic
+const IndustryComparisonBar: React.FC<{ current: number; industry: number | undefined; label: string | undefined; ratioName?: string }> = ({ current, industry, label, ratioName = '' }) => {
     if (!industry) return <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>—</span>;
 
     const percentage = Math.min((current / industry) * 100, 150);
-    const isAbove = current >= industry;
-    const barColor = isAbove ? '#10b981' : '#ef4444';
+
+    // Determine if performance is good based on whether lower or higher is better
+    const lowerIsBetter = isLowerBetter(ratioName);
+    const isGood = lowerIsBetter
+        ? current <= industry  // For metrics where lower is better
+        : current >= industry; // For metrics where higher is better
+
+    const barColor = isGood ? '#10b981' : '#ef4444';
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '2px', minWidth: '100px' }}>
@@ -342,7 +401,7 @@ const IndustryComparisonBar: React.FC<{ current: number; industry: number | unde
                 }} />
             </div>
             <div style={{ fontSize: '0.6rem', color: 'var(--text-secondary)' }}>
-                {label || 'Industry'}
+                {label || 'Industry Average'}
             </div>
         </div>
     );
@@ -403,7 +462,7 @@ export const FinancialRatiosSection: React.FC<FinancialRatiosSectionProps> = ({ 
                                         {typeof r.prior === 'number' ? (r.unit === '%' ? `${(r.prior * 100).toFixed(1)}%` : r.prior.toFixed(4)) : r.prior}
                                     </td>
                                     <td style={{ textAlign: 'right', padding: '0.5rem 0.25rem' }}>
-                                        <IndustryComparisonBar current={r.current} industry={r.industryBenchmark} label={r.industryLabel} />
+                                        <IndustryComparisonBar current={r.current} industry={r.industryBenchmark} label={r.industryLabel} ratioName={r.name} />
                                     </td>
                                 </tr>
                             ))}
@@ -444,7 +503,7 @@ export const FinancialRatiosSection: React.FC<FinancialRatiosSectionProps> = ({ 
                                         {typeof r.prior === 'number' ? (r.unit === '%' ? `${(r.prior * 100).toFixed(1)}%` : r.prior.toFixed(4)) : r.prior}
                                     </td>
                                     <td style={{ textAlign: 'right', padding: '0.5rem 0.25rem' }}>
-                                        <IndustryComparisonBar current={r.current} industry={r.industryBenchmark} label={r.industryLabel} />
+                                        <IndustryComparisonBar current={r.current} industry={r.industryBenchmark} label={r.industryLabel} ratioName={r.name} />
                                     </td>
                                 </tr>
                             ))}
@@ -485,7 +544,7 @@ export const FinancialRatiosSection: React.FC<FinancialRatiosSectionProps> = ({ 
                                         {typeof r.prior === 'number' ? (r.unit === '$' ? `$${r.prior.toLocaleString()}` : r.unit === '%' ? `${(r.prior * 100).toFixed(1)}%` : r.prior.toFixed(4)) : r.prior}
                                     </td>
                                     <td style={{ textAlign: 'right', padding: '0.5rem 0.25rem' }}>
-                                        <IndustryComparisonBar current={r.current} industry={r.industryBenchmark} label={r.industryLabel} />
+                                        <IndustryComparisonBar current={r.current} industry={r.industryBenchmark} label={r.industryLabel} ratioName={r.name} />
                                     </td>
                                 </tr>
                             ))}
@@ -526,7 +585,7 @@ export const FinancialRatiosSection: React.FC<FinancialRatiosSectionProps> = ({ 
                                         {typeof r.prior === 'number' ? (r.unit === 'days' ? `${r.prior.toFixed(1)} days` : r.prior.toFixed(4)) : r.prior}
                                     </td>
                                     <td style={{ textAlign: 'right', padding: '0.5rem 0.25rem' }}>
-                                        <IndustryComparisonBar current={r.current} industry={r.industryBenchmark} label={r.industryLabel} />
+                                        <IndustryComparisonBar current={r.current} industry={r.industryBenchmark} label={r.industryLabel} ratioName={r.name} />
                                     </td>
                                 </tr>
                             ))}
@@ -562,13 +621,13 @@ export const FinancialRatiosSection: React.FC<FinancialRatiosSectionProps> = ({ 
                                             {r.name} <span style={{ fontSize: '0.7rem', color: 'var(--accent-primary)' }}>🔍</span>
                                         </td>
                                         <td style={{ textAlign: 'right', padding: '0.5rem 0.25rem', fontWeight: 600, color: 'var(--accent-primary)' }}>
-                                            {r.unit === '$' ? `$${r.current.toLocaleString()}` : r.unit === '%' ? `${(r.current * 100).toFixed(1)}%` : r.current.toFixed(4)}
+                                            {formatRatioValue(r.current, r.name)}
                                         </td>
                                         <td style={{ textAlign: 'right', padding: '0.5rem 0.25rem', color: 'var(--text-secondary)' }}>
-                                            {typeof r.prior === 'number' ? (r.unit === '$' ? `$${r.prior.toLocaleString()}` : r.unit === '%' ? `${(r.prior * 100).toFixed(1)}%` : r.prior.toFixed(4)) : r.prior}
+                                            {typeof r.prior === 'number' ? formatRatioValue(r.prior, r.name) : r.prior}
                                         </td>
                                         <td style={{ textAlign: 'right', padding: '0.5rem 0.25rem' }}>
-                                            <IndustryComparisonBar current={r.current} industry={r.industryBenchmark} label={r.industryLabel} />
+                                            <IndustryComparisonBar current={r.current} industry={r.industryBenchmark} label={r.industryLabel} ratioName={r.name} />
                                         </td>
                                     </tr>
                                 ))}
