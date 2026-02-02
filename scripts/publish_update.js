@@ -70,21 +70,34 @@ async function runUpdate() {
             console.error('❌ Failed to sync ratios:', ratiosData.error);
         }
 
-        // 2. Generate Executive Summary
-        console.log('\n🤖 Generating AI Executive Summary (this uses NotebookLM)...');
-        const summaryRes = await fetch(`${API_URL}/api/executive-summary/generate`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ language: 'es' })
-        });
-        const summaryData = await summaryRes.json();
+        // 2. Generate Executive Summary (Dual Language)
+        const languages = ['es', 'en'];
+        console.log('\n🤖 Generating AI Executive Summaries (this uses NotebookLM)...');
 
-        if (summaryData.success) {
-            console.log(`✅ Summary generated (${summaryData.source}).`);
-            fs.writeFileSync(path.join(PUBLIC_DIR, 'executive_summary.json'), JSON.stringify(summaryData, null, 2));
-            console.log('💾 Saved to public/data/executive_summary.json');
-        } else {
-            console.error('❌ Failed to generate summary:', summaryData.error);
+        for (const lang of languages) {
+            console.log(`   📝 Generating for language: ${lang.toUpperCase()}...`);
+            const summaryRes = await fetch(`${API_URL}/api/executive-summary/generate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ language: lang })
+            });
+            const summaryData = await summaryRes.json();
+
+            if (summaryData.success) {
+                const filename = `executive_summary_${lang}.json`;
+                console.log(`   ✅ Summary generated (${summaryData.source}).`);
+                fs.writeFileSync(path.join(PUBLIC_DIR, filename), JSON.stringify(summaryData, null, 2));
+                console.log(`   💾 Saved to public/data/${filename}`);
+
+                // Fallback/Default copy for 'es' (historical compatibility)
+                if (lang === 'es') {
+                    fs.writeFileSync(path.join(PUBLIC_DIR, 'executive_summary.json'), JSON.stringify(summaryData, null, 2));
+                }
+            } else {
+                console.error(`   ❌ Failed to generate summary for ${lang}:`, summaryData.error);
+            }
+            // Small pause between requests
+            await sleep(1000);
         }
 
         // 3. Scan Compliance Documents

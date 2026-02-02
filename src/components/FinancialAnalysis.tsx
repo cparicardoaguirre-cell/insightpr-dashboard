@@ -277,12 +277,22 @@ export default function FinancialAnalysis() {
             if (isProduction) {
                 // Production: Load pre-generated static summary
                 try {
-                    const sumResponse = await fetch('/data/executive_summary.json');
+                    // Try language-specific file first
+                    const langFile = `/data/executive_summary_${language}.json`;
+                    const sumResponse = await fetch(langFile);
+                    if (!sumResponse.ok) throw new Error('Language file not found');
+
                     const sumJson = await sumResponse.json();
                     summaryData = sumJson;
                 } catch (e) {
-                    console.warn('No static summary found');
-                    summaryData = { success: false };
+                    // Fallback to default if specific lang fails
+                    try {
+                        const defaultResponse = await fetch('/data/executive_summary.json');
+                        summaryData = await defaultResponse.json();
+                    } catch (err) {
+                        console.warn('No static summary found');
+                        summaryData = { success: false };
+                    }
                 }
             } else {
                 // Development: Generate via live API
