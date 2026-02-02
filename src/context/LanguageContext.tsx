@@ -286,6 +286,39 @@ const translations: Record<Language, Record<string, string>> = {
         'act60.disclaimer': 'Important',
         'act60.disclaimerText': 'This analysis is for informational purposes. Consult with qualified tax and legal professionals before making restructuring decisions.',
 
+        // Act 60 - Flowchart
+        'act60.flow.title': 'Application Process',
+        'act60.flow.step1': 'Submit Application',
+        'act60.flow.step1Desc': 'Via Single Business Portal',
+        'act60.flow.step2': 'DDEC Evaluation',
+        'act60.flow.step2Desc': 'Due diligence & ROI check',
+        'act60.flow.step3': 'Decree Issued',
+        'act60.flow.step3Desc': '15-year binding contract',
+        'act60.flow.step4': 'Compliance',
+        'act60.flow.step4Desc': 'Annual reports & filing',
+
+        // Act 60 - Org Chart
+        'act60.org.title': 'Optimized Corporate Structure',
+        'act60.org.owner': 'Business Owner',
+        'act60.org.taxRate': 'Tax Rate',
+        'act60.org.holding': 'Holding Corp',
+        'act60.org.usSource': 'US Source Income',
+        'act60.org.prEntity': 'PR Act 60 Entity',
+        'act60.org.prSource': 'PR Source Income',
+        'act60.org.service': 'Export Services',
+        'act60.org.flow': 'Dividends',
+
+        // Act 60 - Wizard
+        'act60.wizard.title': 'Eligibility Checker',
+        'act60.wizard.q1': 'Is your business established in Puerto Rico?',
+        'act60.wizard.q2': 'Do you export services or manufacture products?',
+        'act60.wizard.q3': 'Will you create at least 1 new job?',
+        'act60.wizard.result.eligible': 'Likely Eligible! You meet the core requirements.',
+        'act60.wizard.result.review': 'Review Needed. You may need to adjust operations.',
+        'act60.wizard.btn.start': 'Check Eligibility',
+        'act60.wizard.btn.yes': 'Yes',
+        'act60.wizard.btn.no': 'No',
+
         // Misc
         'misc.more': 'more',
     },
@@ -564,6 +597,39 @@ const translations: Record<Language, Record<string, string>> = {
         'act60.ongoing': 'Continuo',
         'act60.disclaimer': 'Importante',
         'act60.disclaimerText': 'Este análisis es solo para propósitos informativos. Consulte con profesionales contributivos y legales cualificados antes de tomar decisiones de reestructuración.',
+
+        // Act 60 - Flowchart
+        'act60.flow.title': 'Proceso de Solicitud',
+        'act60.flow.step1': 'Someter Solicitud',
+        'act60.flow.step1Desc': 'Vía Portal de Negocios',
+        'act60.flow.step2': 'Evaluación DDEC',
+        'act60.flow.step2Desc': 'Diligencia debida y ROI',
+        'act60.flow.step3': 'Emisión de Decreto',
+        'act60.flow.step3Desc': 'Contrato de 15 años',
+        'act60.flow.step4': 'Cumplimiento',
+        'act60.flow.step4Desc': 'Informes anuales',
+
+        // Act 60 - Org Chart
+        'act60.org.title': 'Estructura Corporativa Optimizada',
+        'act60.org.owner': 'Dueño de Negocio',
+        'act60.org.taxRate': 'Tasa Contributiva',
+        'act60.org.holding': 'Holding Corp',
+        'act60.org.usSource': 'Ingreso Fuente US',
+        'act60.org.prEntity': 'Entidad PR Ley 60',
+        'act60.org.prSource': 'Ingreso Fuente PR',
+        'act60.org.service': 'Servicios Exportación',
+        'act60.org.flow': 'Dividendos',
+
+        // Act 60 - Wizard
+        'act60.wizard.title': 'Verificador de Elegibilidad',
+        'act60.wizard.q1': '¿Está su negocio establecido en Puerto Rico?',
+        'act60.wizard.q2': '¿Exporta servicios o manufactura productos?',
+        'act60.wizard.q3': '¿Creará al menos 1 empleo nuevo?',
+        'act60.wizard.result.eligible': '¡Probablemente Elegible! Cumple los requisitos básicos.',
+        'act60.wizard.result.review': 'Revisión Necesaria. Puede requerir ajustes operativos.',
+        'act60.wizard.btn.start': 'Verificar Elegibilidad',
+        'act60.wizard.btn.yes': 'Sí',
+        'act60.wizard.btn.no': 'No',
 
         // Misc
         'misc.more': 'más',

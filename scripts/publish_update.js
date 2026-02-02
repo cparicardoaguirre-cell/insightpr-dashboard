@@ -100,6 +100,144 @@ async function runUpdate() {
             await sleep(1000);
         }
 
+        // 3. Generate Detailed Analysis (Dual Language)
+        console.log('\n🤖 Generating Detailed Analysis (Markdown)...');
+        for (const lang of languages) {
+            console.log(`   📝 Generating Analysis for language: ${lang.toUpperCase()}...`);
+
+            let prompt = "";
+            let ratiosJson = "";
+            try {
+                // We need to pass the ratios as context because /api/chat is stateless w.r.t our latest file sync
+                // However, /api/chat sends the query to the Notebook. The Notebook SHOULD have the sources.
+                // But to be safe and match the frontend, we'll embed the data in the prompt or rely on the notebook having the source file.
+                // Since we just synced ratios, the file is on disk. But NotebookLM needs to "read" it? 
+                // Actually, the server/notebook integration relies on the notebook *already* having the source. 
+                // Frontend logic (lines 328+ of FinancialAnalysis.tsx) sends "Based on the audited financial statements file...". 
+                // We will use the exact same prompt strategy as the frontend.
+
+                const langInstruction = lang === 'es'
+                    ? 'IMPORTANTE: Responde COMPLETAMENTE en español. Todas las explicaciones, análisis e interpretaciones deben estar en español.\n\n'
+                    : 'IMPORTANT: Respond COMPLETELY in English. All explanations, analysis, and interpretations must be in English.\n\n';
+
+                prompt = langInstruction + `COMPREHENSIVE FINANCIAL RATIO ANALYSIS REQUEST(NLTS - PR FS 12 31 2024):
+
+Based on the audited financial statements file "NLTS-PR FS 12 31 2024 Rev156-3", provide a complete financial ratio analysis.
+
+EXTRACT AND CALCULATE THE FOLLOWING RATIOS:
+
+1. LIQUIDITY RATIOS:
+- Current Ratio(Current Assets / Current Liabilities)
+- Quick Ratio((Current Assets - Inventory) / Current Liabilities)
+- Cash Ratio(Cash & Equivalents / Current Liabilities)
+- Working Capital(Current Assets - Current Liabilities)
+
+2. PROFITABILITY RATIOS:
+- Gross Profit Margin(Gross Profit / Revenue × 100)
+- Operating Profit Margin(Operating Income / Revenue × 100)
+- Net Profit Margin(Net Income / Revenue × 100)
+- Return on Assets(ROA)(Net Income / Total Assets × 100)
+- Return on Equity(ROE)(Net Income / Shareholders' Equity × 100)
+- EBITDA Margin(EBITDA / Revenue × 100)
+
+3. LEVERAGE / SOLVENCY RATIOS:
+- Debt-to-Equity Ratio(Total Liabilities / Shareholders' Equity)
+- Debt-to-Assets Ratio(Total Liabilities / Total Assets)
+- Interest Coverage Ratio(EBIT / Interest Expense)
+- Equity Multiplier(Total Assets / Shareholders' Equity)
+
+4. EFFICIENCY RATIOS:
+- Asset Turnover(Revenue / Average Total Assets)
+- Inventory Turnover(COGS / Average Inventory)
+- Days Sales Outstanding(Accounts Receivable / Revenue × 365)
+- Days Payable Outstanding(Accounts Payable / COGS × 365)
+- Accounts Receivable Turnover(Revenue / Average Accounts Receivable)
+
+5. CASH FLOW RATIOS:
+- Operating Cash Flow Ratio(Operating Cash Flow / Current Liabilities)
+- Free Cash Flow(Operating Cash Flow - Capital Expenditures)
+- Cash Flow to Debt Ratio(Operating Cash Flow / Total Debt)
+
+For EACH RATIO provide:
+- Calculated value for NLTS-PR
+- Industry benchmark
+- Variance percentage
+- Status (above/below/at)
+- Brief explanation
+
+Return a JSON object with this EXACT structure:
+{
+    "companySnapshot": {
+        "totalRevenue": number,
+        "netIncome": number,
+        "totalAssets": number,
+        "totalEquity": number,
+        "fiscalYear": "2024"
+    },
+    "ratioCategories": [
+        {
+            "category": "Liquidity Ratios",
+            "description": "...",
+            "ratios": [
+                {
+                    "name": "Current Ratio",
+                    "formula": "...",
+                    "value": number,
+                    "industryBenchmark": number,
+                    "variance": number,
+                    "status": "above|below|at",
+                    "interpretation": "..."
+                }
+            ]
+        }
+    ],
+    "overallAnalysis": "..."
+}`;
+            } catch (e) { console.error(e); }
+
+            const chatRes = await fetch(`${API_URL}/api/chat`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: prompt })
+            });
+
+            const chatData = await chatRes.json();
+
+            // Parse response similar to frontend
+            let rawContent = chatData.content || "";
+            let parsedData = {};
+
+            try {
+                const wrapperJson = JSON.parse(rawContent);
+                if (wrapperJson.status === "success" && wrapperJson.answer) {
+                    rawContent = wrapperJson.answer;
+                }
+            } catch (e) { }
+
+            const jsonMatch = rawContent.match(/\{[\s\S]*"ratioCategories"[\s\S]*\}/) || rawContent.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                try {
+                    parsedData = JSON.parse(jsonMatch[0]);
+                } catch (e) {
+                    parsedData = { rawAnswer: rawContent, error: "Parse failed" };
+                }
+            } else {
+                parsedData = { rawAnswer: rawContent };
+            }
+
+            if (parsedData) {
+                const filename = `detailed_analysis_${lang}.json`;
+                console.log(`   ✅ Analysis generated.`);
+                fs.writeFileSync(path.join(PUBLIC_DIR, filename), JSON.stringify(parsedData, null, 2));
+                console.log(`   💾 Saved to public/data/${filename}`);
+            } else {
+                console.error(`   ❌ Failed to generate analysis for ${lang}`);
+            }
+
+            // Small pause
+            await sleep(2000);
+        }
+
         // 3. Scan Compliance Documents
         console.log('\n📂 Scanning Compliance Documents...');
         const docsRes = await fetch(`${API_URL}/api/compliance-docs`);
@@ -118,10 +256,12 @@ async function runUpdate() {
     } finally {
         console.log('\n🛑 Stopping server...');
         // On Windows, killing the node process might not kill spawned children (python), but usually it's okay for short scripts
-        // Using taskkill to be sure
-        exec('taskkill /F /IM node.exe /T', (err) => {
-            // This might kill the script itself, but that's fine as we are done
-        });
+        // on Windows, killing the node process might not kill spawned children (python), so we use taskkill /PID /T /F
+        if (serverProcess && serverProcess.pid) {
+            exec(`taskkill /PID ${serverProcess.pid} /T /F`, (err) => {
+                if (err) console.log("Server stopped clean.");
+            });
+        }
         // We will continue to Git step if script survives or relies on batch
     }
 }

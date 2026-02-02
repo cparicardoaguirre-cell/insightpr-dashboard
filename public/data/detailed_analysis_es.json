@@ -1,0 +1,168 @@
+{
+  "companySnapshot": {
+    "totalRevenue": 4541335,
+    "netIncome": 423154,
+    "totalAssets": 1970444,
+    "totalEquity": 532118,
+    "fiscalYear": "2024"
+  },
+  "ratioCategories": [
+    {
+      "category": "Liquidity Ratios",
+      "description": "Evalúa la capacidad de NLTS-PR para cumplir obligaciones a corto plazo.",
+      "ratios": [
+        {
+          "name": "Current Ratio",
+          "formula": "Current Assets / Current Liabilities",
+          "value": 2.01,
+          "industryBenchmark": 1.5,
+          "variance": 34,
+          "status": "above",
+          "interpretation": "Con un ratio de 2.01 [3], la empresa tiene $2.01 en activos líquidos por cada $1 de deuda a corto plazo. Esto indica una solvencia sólida, superando el estándar teórico de 1.5, permitiendo cubrir pasivos sin estrés de caja inmediato."
+        },
+        {
+          "name": "Quick Ratio",
+          "formula": "(Current Assets - Inventory) / Current Liabilities",
+          "value": 0.63,
+          "industryBenchmark": 1,
+          "variance": -37,
+          "status": "below",
+          "interpretation": "Al excluir el inventario ($1,344,575) [6], el ratio cae a 0.63 [3]. Esto revela una alta dependencia de la venta de inventario para pagar deudas. En la industria de maquinaria pesada esto es común, pero un valor bajo 1.0 sugiere riesgo si las ventas se frenan."
+        },
+        {
+          "name": "Cash Ratio",
+          "formula": "Cash / Current Liabilities",
+          "value": 0.16,
+          "industryBenchmark": 0.2,
+          "variance": -20,
+          "status": "below",
+          "interpretation": "Calculado: $155,134 [14] / $978,114 [1]. La empresa mantiene niveles bajos de efectivo puro frente a sus obligaciones, confiando en la rotación de cuentas por cobrar para liquidez."
+        },
+        {
+          "name": "Working Capital",
+          "formula": "Current Assets - Current Liabilities",
+          "value": 992330,
+          "industryBenchmark": 0,
+          "variance": 0,
+          "status": "above",
+          "interpretation": "Capital de trabajo positivo ($1,970,444 - $978,114) [1], lo que confirma la capacidad operativa para financiar el ciclo de negocio sin crédito externo inmediato."
+        }
+      ]
+    },
+    {
+      "category": "Profitability Ratios",
+      "description": "Mide la eficiencia de NLTS-PR para generar ganancias sobre ventas y activos.",
+      "ratios": [
+        {
+          "name": "Gross Profit Margin",
+          "formula": "Gross Profit / Revenue * 100",
+          "value": 22.73,
+          "industryBenchmark": 25,
+          "variance": -9.08,
+          "status": "below",
+          "interpretation": "Margen del 22.73% [4]. Comparado con estándares de distribución de maquinaria, es ajustado. Refleja altos costos de venta (COGS) o precios competitivos agresivos."
+        },
+        {
+          "name": "Net Profit Margin",
+          "formula": "Net Income / Revenue * 100",
+          "value": 9.32,
+          "industryBenchmark": 5,
+          "variance": 86.4,
+          "status": "above",
+          "interpretation": "Un margen neto del 9.32% [4] es saludable para un distribuidor de equipo pesado, superando márgenes típicos de volumen que rondan el 3-5%."
+        },
+        {
+          "name": "Return on Assets (ROA)",
+          "formula": "Net Income / Total Assets * 100",
+          "value": 21.47,
+          "industryBenchmark": 10,
+          "variance": 114.7,
+          "status": "above",
+          "interpretation": "Cálculo: $423,154 / $1,970,444 = 21.47%. Indica una excelente eficiencia en el uso de los activos para generar ganancias. (Nota: La fuente [5] reporta 40.07% usando Ingreso Antes de Impuestos; aquí usamos Neto)."
+        },
+        {
+          "name": "EBITDA Margin",
+          "formula": "EBITDA / Revenue * 100",
+          "value": 17.39,
+          "industryBenchmark": 30,
+          "variance": -42.03,
+          "status": "below",
+          "interpretation": "EBITDA reportado de $789,577 [9] sobre ventas resulta en 17.39%. Según la fuente [10], la industria busca márgenes >30-40%. NLTS está por debajo, indicando posibles ineficiencias operativas o altos costos de mantenimiento."
+        }
+      ]
+    },
+    {
+      "category": "Leverage / Solvency Ratios",
+      "description": "Analiza la estructura de capital y riesgo financiero.",
+      "ratios": [
+        {
+          "name": "Debt-to-Equity Ratio",
+          "formula": "Total Liabilities / Shareholders Equity",
+          "value": 2.7,
+          "industryBenchmark": 2,
+          "variance": 35,
+          "status": "above",
+          "interpretation": "Ratio de 2.70 [3]. La empresa está altamente apalancada, financiando sus activos mayormente con deuda ($1.4M) frente a capital ($532k) [1]. Riesgo financiero moderado-alto."
+        },
+        {
+          "name": "Interest Coverage Ratio",
+          "formula": "EBIT / Interest Expense",
+          "value": 11.93,
+          "industryBenchmark": 3,
+          "variance": 297.6,
+          "status": "above",
+          "interpretation": "Con un ratio de 11.93 [6], la empresa genera suficiente ganancia operativa ($789k) para cubrir sus gastos de intereses ($66k) casi 12 veces. El riesgo de impago técnico es mínimo."
+        }
+      ]
+    },
+    {
+      "category": "Efficiency Ratios",
+      "description": "Mide la gestión de inventarios y cobros.",
+      "ratios": [
+        {
+          "name": "Inventory Turnover",
+          "formula": "COGS / Average Inventory",
+          "value": 3.22,
+          "industryBenchmark": 4,
+          "variance": -19.5,
+          "status": "below",
+          "interpretation": "Cálculo: COGS $3.5M / Inv. Promedio $1.08M = 3.22 veces. El inventario rota cada 113 días. Puede indicar sobre-stock o equipo de alquiler inmovilizado."
+        },
+        {
+          "name": "Days Sales Outstanding (DSO)",
+          "formula": "(Accounts Receivable / Revenue) * 365",
+          "value": 37.42,
+          "industryBenchmark": 45,
+          "variance": -16.8,
+          "status": "above",
+          "interpretation": "DSO de 37.42 días [15]. Excelente gestión de cobros comparada con el promedio de la industria en Puerto Rico (60-90 días), mejorando el flujo de caja."
+        }
+      ]
+    },
+    {
+      "category": "Cash Flow Ratios",
+      "description": "Evaluación basada en el Informe de Auditoría [13] para datos de flujo.",
+      "ratios": [
+        {
+          "name": "Operating Cash Flow Ratio",
+          "formula": "Operating Cash Flow / Current Liabilities",
+          "value": 0.35,
+          "industryBenchmark": 0.5,
+          "variance": -30,
+          "status": "below",
+          "interpretation": "Cálculo: $338,686 (Fuente [13]) / $978,114. La empresa cubre el 35% de sus pasivos corrientes con el efectivo generado en el año. Depende de la refinanciación o venta de inventario."
+        },
+        {
+          "name": "Cash Flow to Debt Ratio",
+          "formula": "Operating Cash Flow / Total Debt",
+          "value": 0.24,
+          "industryBenchmark": 0.2,
+          "variance": 20,
+          "status": "above",
+          "interpretation": "Cálculo: $338,686 / $1,438,326 (Total Pasivos). Indica que la empresa podría pagar toda su deuda en aprox. 4 años con el flujo actual, lo cual es aceptable para empresas intensivas en capital."
+        }
+      ]
+    }
+  ],
+  "overallAnalysis": "Análisis Integrado (Fuente Rev156-1 & Informe 2024-1): NLTS-PR presenta una posición financiera mixta al cierre de 2024. FORTALEZAS: La eficiencia en la gestión de cobros es sobresaliente (DSO 37 días) [15] y la cobertura de intereses es robusta (11.93x) [6], mitigando riesgos de solvencia inmediata. La rentabilidad sobre activos (ROA >21%) es superior al promedio. DEBILIDADES: Existe un apalancamiento elevado (Debt/Equity 2.70) [3] y una dependencia crítica del inventario para la liquidez (Quick Ratio 0.63). El Margen EBITDA del 17.39% [9] está por debajo del objetivo de industria (>30%) [10], sugiriendo que, aunque la empresa es rentable, tiene espacio significativo para optimizar costos operativos y eficiencia de flota."
+}

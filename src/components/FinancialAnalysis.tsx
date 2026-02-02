@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import * as Switch from '@radix-ui/react-switch';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -312,20 +312,32 @@ export default function FinancialAnalysis() {
                 console.log('Executive Summary loaded via:', summaryData.source);
             }
 
-        } catch (error) {
-            console.error('Sync error:', error);
-        } finally {
+            // Step 3: Load Detailed Analysis (Markdown)
+            console.log('Loading Detailed Analysis...');
+            let parsedData: any = {};
 
-            setSummaryLoading(false);
-        }
+            if (isProduction) {
+                try {
+                    const analysisFile = `/data/detailed_analysis_${language}.json`;
+                    const analysisRes = await fetch(analysisFile);
+                    if (analysisRes.ok) {
+                        parsedData = await analysisRes.json();
+                        console.log('Detailed Analysis loaded from static file');
+                    } else {
+                        console.warn('Analysis file not found:', analysisFile);
+                    }
+                } catch (e) {
+                    console.error('Failed to load static analysis:', e);
+                }
+            } else {
+                // Development: Live Generation
+                let query = "";
+                const langInstruction = language === 'es'
+                    ? 'IMPORTANTE: Responde COMPLETAMENTE en español. Todas las explicaciones, análisis e interpretaciones deben estar en español.\n\n'
+                    : 'IMPORTANT: Respond COMPLETELY in English. All explanations, analysis, and interpretations must be in English.\n\n';
 
-        let query = "";
-        const langInstruction = language === 'es'
-            ? 'IMPORTANTE: Responde COMPLETAMENTE en español. Todas las explicaciones, análisis e interpretaciones deben estar en español.\n\n'
-            : 'IMPORTANT: Respond COMPLETELY in English. All explanations, analysis, and interpretations must be in English.\n\n';
-
-        if (timeframe === 'yearly') {
-            query = langInstruction + `COMPREHENSIVE FINANCIAL RATIO ANALYSIS REQUEST(NLTS - PR FS 12 31 2024):
+                if (timeframe === 'yearly') {
+                    query = langInstruction + `COMPREHENSIVE FINANCIAL RATIO ANALYSIS REQUEST(NLTS - PR FS 12 31 2024):
 
 Based on the audited financial statements file "NLTS-PR FS 12 31 2024 Rev156-3", provide a complete financial ratio analysis.
 
@@ -398,36 +410,39 @@ Return a JSON object with this EXACT structure:
     ],
     "overallAnalysis": "..."
 }`;
-        } else {
-            query = "Monthly breakdown request...";
-        }
-
-        try {
-            const response = await fetch('http://localhost:3001/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: query })
-            });
-            const data = await response.json();
-            let rawContent = data.content || "";
-            let parsedData: any = {};
-
-            try {
-                const wrapperJson = JSON.parse(rawContent);
-                if (wrapperJson.status === "success" && wrapperJson.answer) {
-                    rawContent = wrapperJson.answer;
+                } else {
+                    query = "Monthly breakdown request...";
                 }
-            } catch (e) { }
 
-            const jsonMatch = rawContent.match(/\{[\s\S]*"ratioCategories"[\s\S]*\}/) || rawContent.match(/\{[\s\S]*\}/);
-            if (jsonMatch) {
                 try {
-                    parsedData = JSON.parse(jsonMatch[0]);
-                } catch (e) {
-                    parsedData = { rawAnswer: rawContent, error: "Parse failed" };
+                    const response = await fetch('http://localhost:3001/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: query })
+                    });
+                    const data = await response.json();
+                    let rawContent = data.content || "";
+
+                    try {
+                        const wrapperJson = JSON.parse(rawContent);
+                        if (wrapperJson.status === "success" && wrapperJson.answer) {
+                            rawContent = wrapperJson.answer;
+                        }
+                    } catch (e) { }
+
+                    const jsonMatch = rawContent.match(/\{[\s\S]*"ratioCategories"[\s\S]*\}/) || rawContent.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        try {
+                            parsedData = JSON.parse(jsonMatch[0]);
+                        } catch (e) {
+                            parsedData = { rawAnswer: rawContent, error: "Parse failed" };
+                        }
+                    } else {
+                        parsedData = { rawAnswer: rawContent };
+                    }
+                } catch (error) {
+                    console.error(error);
                 }
-            } else {
-                parsedData = { rawAnswer: rawContent };
             }
 
             const now = new Date().toLocaleString();
@@ -438,9 +453,10 @@ Return a JSON object with this EXACT structure:
             localStorage.setItem(`${cacheKey}_time`, now);
 
         } catch (error) {
-            console.error(error);
+            console.error('Sync error:', error);
         } finally {
             setTimeout(() => setLoading(false), 500);
+            setSummaryLoading(false);
         }
     }, [timeframe, language, t, API_BASE_URL]);
 

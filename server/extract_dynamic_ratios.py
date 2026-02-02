@@ -390,14 +390,14 @@ def main():
         if ratios[cat]:
             print(f"\n{cat} ({len(ratios[cat])}):")
             for r in ratios[cat]:
-                status_icon = '✓' if r['status'] == 'good' else ('⚠' if r['status'] == 'warning' else '✕')
+                status_icon = '[OK]' if r['status'] == 'good' else ('[!]' if r['status'] == 'warning' else '[x]')
                 print(f"  {status_icon} {r['name']}: {r['current']} (prior: {r['prior']})")
     
     # Save to JSON
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(ratios, f, indent=2, ensure_ascii=False)
     
-    print(f"\n✓ Saved to {OUTPUT_FILE}")
+    print(f"\n[OK] Saved to {OUTPUT_FILE}")
     return ratios
 
 

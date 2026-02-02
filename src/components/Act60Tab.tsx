@@ -1,4 +1,7 @@
 import { useLanguage } from '../context/LanguageContext'
+import Act60Flowchart from './ley60/Act60Flowchart';
+import Act60OrgChart from './ley60/Act60OrgChart';
+import ComplianceWizard from './ley60/ComplianceWizard';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 
 export default function Act60Tab() {
@@ -177,6 +180,15 @@ export default function Act60Tab() {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            {/* Interactive Wizard */}
+            <ComplianceWizard />
+
+            {/* Visual Explanations */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+                <Act60Flowchart />
+                <Act60OrgChart />
             </div>
 
             {/* Structure Comparison */}
