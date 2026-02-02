@@ -272,18 +272,34 @@ export default function FinancialAnalysis() {
 
             // Step 2: Generate AI Executive Summary
             console.log('Generating AI Executive Summary...');
-            const summaryResponse = await fetch(`${API_BASE_URL}/api/executive-summary/generate`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ language })
-            });
-            const summaryData = await summaryResponse.json();
+            let summaryData;
+
+            if (isProduction) {
+                // Production: Load pre-generated static summary
+                try {
+                    const sumResponse = await fetch('/data/executive_summary.json');
+                    const sumJson = await sumResponse.json();
+                    summaryData = sumJson;
+                } catch (e) {
+                    console.warn('No static summary found');
+                    summaryData = { success: false };
+                }
+            } else {
+                // Development: Generate via live API
+                const summaryResponse = await fetch(`${API_BASE_URL}/api/executive-summary/generate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ language })
+                });
+                summaryData = await summaryResponse.json();
+            }
+
             if (summaryData.success && summaryData.content) {
                 setExecutiveSummary(summaryData.content);
                 // Persist to localStorage
                 localStorage.setItem('executiveSummary', summaryData.content);
                 localStorage.setItem('executiveSummaryLang', language);
-                console.log('Executive Summary generated and cached via:', summaryData.source);
+                console.log('Executive Summary loaded via:', summaryData.source);
             }
 
         } catch (error) {
