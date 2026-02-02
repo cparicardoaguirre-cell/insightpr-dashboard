@@ -487,7 +487,7 @@ app.get('/api/financial-ratios/sync', async (req, res) => {
 
         let stdout, stderr;
         try {
-            const result = await execAsync(`python "${pythonScript}" 2>&1`, { timeout: 120000 });
+            const result = await execAsync(`"${PYTHON_PATH}" "${pythonScript}" 2>&1`, { timeout: 120000 });
             stdout = result.stdout;
             stderr = result.stderr;
         } catch (cmdError) {

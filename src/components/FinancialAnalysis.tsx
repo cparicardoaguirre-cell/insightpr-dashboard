@@ -190,7 +190,6 @@ export default function FinancialAnalysis() {
     const { t, language } = useLanguage();
     const [timeframe, setTimeframe] = useState<'yearly' | 'monthly'>('yearly');
     const [loading, setLoading] = useState(false);
-    const [progress, setProgress] = useState(0);
     const [financialData, setFinancialData] = useState<any>(null);
     const [lastSync, setLastSync] = useState<string | null>(null);
     const [fsRatios, setFsRatios] = useState<any>(null);
@@ -238,25 +237,14 @@ export default function FinancialAnalysis() {
     }, [isProduction]);
 
     const fetchFinancialData = useCallback(async () => {
-        // Production mode: Data is already pre-loaded, just show a message
-        if (isProduction) {
-            alert(language === 'es'
-                ? '📊 Los datos financieros ya están cargados.\n\nPara obtener datos actualizados en tiempo real, contacte a CPA Ricardo Aguirre.'
-                : '📊 Financial data is already loaded.\n\nFor real-time updated data, contact CPA Ricardo Aguirre.');
-            return;
-        }
+        // Always use real sync now
+        // if (isProduction) { ... } logic removed to ensure actual backend call
+
 
         // Development mode: Full sync functionality
+        // Development mode: Full sync functionality
         setLoading(true);
-        setProgress(0);
         setSummaryLoading(true);
-
-        const interval = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 90) return 90;
-                return prev + 5;
-            });
-        }, 800);
 
         try {
             // Step 1: Sync ratios from Excel (dynamic extraction)
@@ -411,11 +399,9 @@ Return a JSON object with this EXACT structure:
         } catch (error) {
             console.error(error);
         } finally {
-            clearInterval(interval);
-            setProgress(100);
             setTimeout(() => setLoading(false), 500);
         }
-    }, [timeframe, language, t]);
+    }, [timeframe, language, t, API_BASE_URL]);
 
     // Initial Load from Cache
     useEffect(() => {
@@ -535,81 +521,12 @@ Return a JSON object with this EXACT structure:
             {loading && (
                 <div className="card" style={{ textAlign: 'center', padding: '1.5rem', position: 'relative', overflow: 'hidden' }}>
                     <div style={{ marginBottom: '0.75rem', fontSize: '1rem', fontWeight: 600, color: 'var(--accent-primary)' }}>
-                        {t('financial.syncing')} - {progress}%
+                        {t('financial.syncing')}...
                     </div>
-                    {/* Bull Run Progress Track */}
-                    <div style={{
-                        position: 'relative',
-                        width: '100%',
-                        height: '50px',
-                        backgroundColor: 'var(--bg-secondary)',
-                        borderRadius: '8px',
-                        overflow: 'hidden',
-                        marginBottom: '0.5rem'
-                    }}>
-                        {/* Progress Trail */}
-                        <div style={{
-                            position: 'absolute',
-                            left: 0,
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            width: `${progress}%`,
-                            height: '4px',
-                            background: 'linear-gradient(90deg, #10b981, #059669)',
-                            boxShadow: '0 0 8px rgba(16, 185, 129, 0.6)',
-                            transition: 'width 0.3s ease-in-out',
-                            borderRadius: '2px'
-                        }} />
-                        {/* The Running Wall Street Bull */}
-                        <div style={{
-                            position: 'absolute',
-                            left: `calc(${progress}% - 25px)`,
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            width: '50px',
-                            height: '40px',
-                            transition: 'left 0.3s ease-in-out',
-                            animation: 'bullRun 0.2s ease-in-out infinite',
-                            filter: 'drop-shadow(2px 2px 4px rgba(0,0,0,0.4))'
-                        }}>
-                            <img
-                                src="/images/wall-street-bull.png"
-                                alt="Wall Street Bull"
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'contain'
-                                }}
-                            />
-                        </div>
-                        {/* Finish Flag */}
-                        <div style={{
-                            position: 'absolute',
-                            right: '8px',
-                            top: '50%',
-                            transform: 'translateY(-50%)',
-                            fontSize: '1.2rem',
-                            opacity: 0.5
-                        }}>
-                            🏁
-                        </div>
-                    </div>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>
-                        {language === 'es' ? '📈 Bull Market en progreso...' : '📈 Bull Market in progress...'}
-                    </div>
-                    <style>{`
-                        @keyframes bullRun {
-                            0% { transform: translateY(-50%) translateX(0) rotate(-3deg); }
-                            25% { transform: translateY(-55%) translateX(2px) rotate(0deg); }
-                            50% { transform: translateY(-50%) translateX(0) rotate(3deg); }
-                            75% { transform: translateY(-45%) translateX(-2px) rotate(0deg); }
-                            100% { transform: translateY(-50%) translateX(0) rotate(-3deg); }
-                        }
-                    `}</style>
                 </div>
             )}
 
-            {!loading && timeframe === 'yearly' && financialData && (
+            {!loading && timeframe === 'yearly' && (financialData || fsRatios) && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                     {/* Snapshots */}
                     {financialData.companySnapshot && (
