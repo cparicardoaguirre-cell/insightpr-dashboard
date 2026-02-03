@@ -16,6 +16,7 @@ export default function Header({ activeTab, setActiveTab }: HeaderProps) {
     const navItems = [
         { id: 'overview', labelKey: 'nav.dashboard' },
         { id: 'financials', labelKey: 'nav.financials' },
+        { id: 'statements', labelKey: 'statements.title' }, // New Tab
         { id: 'industry', labelKey: 'nav.industry' },
         { id: 'act60', labelKey: 'nav.act60' },
         { id: 'compliance', labelKey: 'nav.compliance' },

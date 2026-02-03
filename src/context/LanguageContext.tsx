@@ -319,6 +319,20 @@ const translations: Record<Language, Record<string, string>> = {
         'act60.wizard.btn.yes': 'Yes',
         'act60.wizard.btn.no': 'No',
 
+        // Financial Statements
+        'statements.title': 'Financial Statements',
+        'statements.subtitle': 'Interactive Audited Reports (2023-2024)',
+        'statements.bs': 'Balance Sheet',
+        'statements.is': 'Income Statement',
+        'statements.toggleEducation': 'Show Educational Context (Tax Mapping)',
+        'statements.auditLabel': 'Audited Source',
+        'statements.trend': 'Trend',
+        'statements.lineItem': 'Line Item',
+        'statements.taxMap': 'Tax Form Map',
+        'statements.desc': 'Description',
+        'statements.2024': '2024',
+        'statements.2023': '2023',
+
         // Misc
         'misc.more': 'more',
     },
@@ -630,6 +644,20 @@ const translations: Record<Language, Record<string, string>> = {
         'act60.wizard.btn.start': 'Verificar Elegibilidad',
         'act60.wizard.btn.yes': 'Sí',
         'act60.wizard.btn.no': 'No',
+
+        // Financial Statements
+        'statements.title': 'Estados Financieros',
+        'statements.subtitle': 'Reportes Auditados Interactivos (2023-2024)',
+        'statements.bs': 'Balance General',
+        'statements.is': 'Estado de Ingresos',
+        'statements.toggleEducation': 'Mostrar Contexto Educativo (Mapa de Planillas)',
+        'statements.auditLabel': 'Fuente Auditada',
+        'statements.trend': 'Tendencia',
+        'statements.lineItem': 'Partida',
+        'statements.taxMap': 'Mapa Contributivo',
+        'statements.desc': 'Descripción',
+        'statements.2024': '2024',
+        'statements.2023': '2023',
 
         // Misc
         'misc.more': 'más',

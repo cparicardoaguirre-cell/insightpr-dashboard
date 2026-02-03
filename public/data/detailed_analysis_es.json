@@ -1,168 +1,195 @@
 {
   "companySnapshot": {
     "totalRevenue": 4541335,
-    "netIncome": 423154,
-    "totalAssets": 1970444,
-    "totalEquity": 532118,
+    "netIncome": 182722,
+    "totalAssets": 1835172,
+    "totalEquity": 291686,
     "fiscalYear": "2024"
   },
   "ratioCategories": [
     {
-      "category": "Liquidity Ratios",
-      "description": "Evalúa la capacidad de NLTS-PR para cumplir obligaciones a corto plazo.",
+      "category": "1. LIQUIDITY RATIOS",
+      "description": "Evalúa la capacidad de la empresa para cumplir obligaciones a corto plazo tras el ajuste severo de inventario.",
       "ratios": [
         {
           "name": "Current Ratio",
-          "formula": "Current Assets / Current Liabilities",
-          "value": 2.01,
-          "industryBenchmark": 1.5,
-          "variance": 34,
-          "status": "above",
-          "interpretation": "Con un ratio de 2.01 [3], la empresa tiene $2.01 en activos líquidos por cada $1 de deuda a corto plazo. Esto indica una solvencia sólida, superando el estándar teórico de 1.5, permitiendo cubrir pasivos sin estrés de caja inmediato."
+          "formula": "Current Assets ($981,355) / Current Liabilities ($845,668)",
+          "value": 1.16,
+          "industryBenchmark": 2,
+          "variance": -42,
+          "status": "below",
+          "interpretation": "Ajustado. La liquidez corriente cayó drásticamente tras los castigos de inventario. Aunque positivo (>1), es ajustado para la industria de distribución [6]."
         },
         {
           "name": "Quick Ratio",
-          "formula": "(Current Assets - Inventory) / Current Liabilities",
-          "value": 0.63,
+          "formula": "(Current Assets ($981,355) - Inventory ($339,039)) / Current Liabilities ($845,668)",
+          "value": 0.76,
           "industryBenchmark": 1,
-          "variance": -37,
+          "variance": -24,
           "status": "below",
-          "interpretation": "Al excluir el inventario ($1,344,575) [6], el ratio cae a 0.63 [3]. Esto revela una alta dependencia de la venta de inventario para pagar deudas. En la industria de maquinaria pesada esto es común, pero un valor bajo 1.0 sugiere riesgo si las ventas se frenan."
+          "interpretation": "Dependencia del inventario. La empresa tiene menos de $1 líquido por cada $1 de deuda inmediata, lo que exige una cobranza agresiva [6]."
         },
         {
           "name": "Cash Ratio",
-          "formula": "Cash / Current Liabilities",
-          "value": 0.16,
+          "formula": "Cash ($155,134) / Current Liabilities ($845,668)",
+          "value": 0.18,
           "industryBenchmark": 0.2,
-          "variance": -20,
-          "status": "below",
-          "interpretation": "Calculado: $155,134 [14] / $978,114 [1]. La empresa mantiene niveles bajos de efectivo puro frente a sus obligaciones, confiando en la rotación de cuentas por cobrar para liquidez."
+          "variance": -10,
+          "status": "at",
+          "interpretation": "Aceptable. Mantiene caja suficiente para cubrir casi el 20% de pasivos inmediatos, alineado con estándares de operación 'just-in-time' [6]."
         },
         {
           "name": "Working Capital",
-          "formula": "Current Assets - Current Liabilities",
-          "value": 992330,
-          "industryBenchmark": 0,
-          "variance": 0,
-          "status": "above",
-          "interpretation": "Capital de trabajo positivo ($1,970,444 - $978,114) [1], lo que confirma la capacidad operativa para financiar el ciclo de negocio sin crédito externo inmediato."
+          "formula": "Current Assets ($981,355) - Current Liabilities ($845,668)",
+          "value": 135687,
+          "industryBenchmark": 500000,
+          "variance": -72.8,
+          "status": "below",
+          "interpretation": "Capital de trabajo positivo pero delgado, erosionado por la reclasificación de deuda y limpieza de inventario obsoleto [6]."
         }
       ]
     },
     {
-      "category": "Profitability Ratios",
-      "description": "Mide la eficiencia de NLTS-PR para generar ganancias sobre ventas y activos.",
+      "category": "2. PROFITABILITY RATIOS",
+      "description": "Mide el retorno real tras los ajustes de auditoría que redujeron el ingreso neto en un 56% respecto a los borradores.",
       "ratios": [
         {
           "name": "Gross Profit Margin",
-          "formula": "Gross Profit / Revenue * 100",
-          "value": 22.73,
+          "formula": "Gross Profit ($643,740) / Revenue ($4,541,335) * 100",
+          "value": 14.18,
           "industryBenchmark": 25,
-          "variance": -9.08,
+          "variance": -43.2,
           "status": "below",
-          "interpretation": "Margen del 22.73% [4]. Comparado con estándares de distribución de maquinaria, es ajustado. Refleja altos costos de venta (COGS) o precios competitivos agresivos."
+          "interpretation": "Bajo. Impactado por altos costos de venta ($3.89M). La industria busca márgenes brutos superiores al 25% en modelos de servicio/venta [11][7]."
+        },
+        {
+          "name": "Operating Profit Margin",
+          "formula": "Income from Operations ($303,455) / Revenue ($4,541,335) * 100",
+          "value": 6.68,
+          "industryBenchmark": 15,
+          "variance": -55.4,
+          "status": "below",
+          "interpretation": "Margen operativo comprimido por gastos generales ($340k), incluyendo rentas altas y servicios profesionales por auditoría [7]."
         },
         {
           "name": "Net Profit Margin",
-          "formula": "Net Income / Revenue * 100",
-          "value": 9.32,
-          "industryBenchmark": 5,
-          "variance": 86.4,
-          "status": "above",
-          "interpretation": "Un margen neto del 9.32% [4] es saludable para un distribuidor de equipo pesado, superando márgenes típicos de volumen que rondan el 3-5%."
+          "formula": "Net Income ($182,722) / Revenue ($4,541,335) * 100",
+          "value": 4.02,
+          "industryBenchmark": 8,
+          "variance": -49.7,
+          "status": "below",
+          "interpretation": "Estrecho. A pesar de los incentivos fiscales discutidos, la carga final deja solo 4 centavos de ganancia por dólar vendido [7]."
         },
         {
           "name": "Return on Assets (ROA)",
-          "formula": "Net Income / Total Assets * 100",
-          "value": 21.47,
-          "industryBenchmark": 10,
-          "variance": 114.7,
+          "formula": "Net Income ($182,722) / Total Assets ($1,835,172) * 100",
+          "value": 9.96,
+          "industryBenchmark": 5,
+          "variance": 99.2,
           "status": "above",
-          "interpretation": "Cálculo: $423,154 / $1,970,444 = 21.47%. Indica una excelente eficiencia en el uso de los activos para generar ganancias. (Nota: La fuente [5] reporta 40.07% usando Ingreso Antes de Impuestos; aquí usamos Neto)."
+          "interpretation": "Eficiente. El ROA es alto artificialmente porque la base de activos se redujo significativamente tras el 'write-off' de inventario y depreciación [6][7]."
+        },
+        {
+          "name": "Return on Equity (ROE)",
+          "formula": "Net Income ($182,722) / Total Equity ($291,686) * 100",
+          "value": 62.64,
+          "industryBenchmark": 15,
+          "variance": 317.6,
+          "status": "above",
+          "interpretation": "Extremadamente alto debido a la sub-capitalización. La base de capital ($291k) es muy pequeña en relación a las operaciones, inflando el retorno [6]."
         },
         {
           "name": "EBITDA Margin",
-          "formula": "EBITDA / Revenue * 100",
-          "value": 17.39,
+          "formula": "(Op. Income $303,455 + D&A $141,599 + Other Inc $12,909) / Revenue ($4,541,335) * 100",
+          "value": 10.08,
           "industryBenchmark": 30,
-          "variance": -42.03,
+          "variance": -66.4,
           "status": "below",
-          "interpretation": "EBITDA reportado de $789,577 [9] sobre ventas resulta en 17.39%. Según la fuente [10], la industria busca márgenes >30-40%. NLTS está por debajo, indicando posibles ineficiencias operativas o altos costos de mantenimiento."
+          "interpretation": "Crítico. Lejos del objetivo de la industria de alquiler de >40% o promedio de 30% [12], indicando ineficiencia operativa o precios bajos."
         }
       ]
     },
     {
-      "category": "Leverage / Solvency Ratios",
-      "description": "Analiza la estructura de capital y riesgo financiero.",
+      "category": "3. LEVERAGE / SOLVENCY RATIOS",
+      "description": "Evidencia una estructura de capital altamente apalancada y dependiente de financiamiento externo y partes relacionadas.",
       "ratios": [
         {
           "name": "Debt-to-Equity Ratio",
-          "formula": "Total Liabilities / Shareholders Equity",
-          "value": 2.7,
-          "industryBenchmark": 2,
-          "variance": 35,
+          "formula": "Total Liabilities ($1,543,486) / Total Equity ($291,686)",
+          "value": 5.29,
+          "industryBenchmark": 2.5,
+          "variance": 111.6,
           "status": "above",
-          "interpretation": "Ratio de 2.70 [3]. La empresa está altamente apalancada, financiando sus activos mayormente con deuda ($1.4M) frente a capital ($532k) [1]. Riesgo financiero moderado-alto."
+          "interpretation": "Alto riesgo. Por cada $1 de los dueños, hay $5.29 de deuda. Refleja alta dependencia de acreedores y partes relacionadas [6]."
         },
         {
           "name": "Interest Coverage Ratio",
-          "formula": "EBIT / Interest Expense",
-          "value": 11.93,
+          "formula": "EBIT ($303,455) / Interest Expense ($66,186)",
+          "value": 4.58,
           "industryBenchmark": 3,
-          "variance": 297.6,
+          "variance": 52.6,
           "status": "above",
-          "interpretation": "Con un ratio de 11.93 [6], la empresa genera suficiente ganancia operativa ($789k) para cubrir sus gastos de intereses ($66k) casi 12 veces. El riesgo de impago técnico es mínimo."
+          "interpretation": "Saludable. La empresa genera suficiente ingreso operativo para cubrir sus gastos de intereses 4.5 veces [7]."
         }
       ]
     },
     {
-      "category": "Efficiency Ratios",
-      "description": "Mide la gestión de inventarios y cobros.",
+      "category": "4. EFFICIENCY RATIOS",
+      "description": "Destaca la alta rotación de activos y la excelente gestión de cobros.",
       "ratios": [
         {
+          "name": "Asset Turnover",
+          "formula": "Revenue ($4,541,335) / Total Assets ($1,835,172)",
+          "value": 2.47,
+          "industryBenchmark": 1.5,
+          "variance": 64.6,
+          "status": "above",
+          "interpretation": "Muy eficiente. Genera $2.47 en ventas por cada dólar en activos, impulsado por una base de activos 'liviana' tras ajustes [6]."
+        },
+        {
           "name": "Inventory Turnover",
-          "formula": "COGS / Average Inventory",
-          "value": 3.22,
+          "formula": "Cost of Revenue ($3,897,595) / Inventory ($339,039)",
+          "value": 11.5,
           "industryBenchmark": 4,
-          "variance": -19.5,
-          "status": "below",
-          "interpretation": "Cálculo: COGS $3.5M / Inv. Promedio $1.08M = 3.22 veces. El inventario rota cada 113 días. Puede indicar sobre-stock o equipo de alquiler inmovilizado."
+          "variance": 187.5,
+          "status": "above",
+          "interpretation": "Excepcional (aparentemente). El ratio se disparó matemáticamente al reducir el denominador (Inventario) por obsolescencia. Indica alta rotación del inventario remanente útil."
         },
         {
           "name": "Days Sales Outstanding (DSO)",
-          "formula": "(Accounts Receivable / Revenue) * 365",
-          "value": 37.42,
-          "industryBenchmark": 45,
-          "variance": -16.8,
+          "formula": "(Accounts Receivable $464,323 / Revenue $4,541,335) * 365",
+          "value": 37.32,
+          "industryBenchmark": 60,
+          "variance": -37.8,
           "status": "above",
-          "interpretation": "DSO de 37.42 días [15]. Excelente gestión de cobros comparada con el promedio de la industria en Puerto Rico (60-90 días), mejorando el flujo de caja."
+          "interpretation": "Excelente desempeño. Cobra en 37 días frente a un estándar local de 60-90 días, confirmando la calidad de la cartera [13]."
         }
       ]
     },
     {
-      "category": "Cash Flow Ratios",
-      "description": "Evaluación basada en el Informe de Auditoría [13] para datos de flujo.",
+      "category": "5. CASH FLOW RATIOS",
+      "description": "Análisis del flujo de caja operativo basado en el Estado de Flujo de Efectivo Auditado.",
       "ratios": [
         {
           "name": "Operating Cash Flow Ratio",
-          "formula": "Operating Cash Flow / Current Liabilities",
-          "value": 0.35,
+          "formula": "Op. Cash Flow ($338,686) / Current Liabilities ($845,668)",
+          "value": 0.4,
           "industryBenchmark": 0.5,
-          "variance": -30,
+          "variance": -20,
           "status": "below",
-          "interpretation": "Cálculo: $338,686 (Fuente [13]) / $978,114. La empresa cubre el 35% de sus pasivos corrientes con el efectivo generado en el año. Depende de la refinanciación o venta de inventario."
+          "interpretation": "Moderado. El flujo operativo cubre el 40% de los pasivos corrientes, lo cual es decente pero sugiere dependencia de refinanciamiento [10]."
         },
         {
-          "name": "Cash Flow to Debt Ratio",
-          "formula": "Operating Cash Flow / Total Debt",
-          "value": 0.24,
-          "industryBenchmark": 0.2,
-          "variance": 20,
-          "status": "above",
-          "interpretation": "Cálculo: $338,686 / $1,438,326 (Total Pasivos). Indica que la empresa podría pagar toda su deuda en aprox. 4 años con el flujo actual, lo cual es aceptable para empresas intensivas en capital."
+          "name": "Free Cash Flow",
+          "formula": "Op. Cash Flow ($338,686) - CapEx ($0 reported in investing cash outflow)",
+          "value": 338686,
+          "industryBenchmark": 0,
+          "variance": 0,
+          "status": "at",
+          "interpretation": "Positivo. No se reportaron salidas de efectivo por inversión en equipos (CapEx) en el estado de flujo, solo adquisiciones no monetarias (ROU), preservando caja [10]."
         }
       ]
     }
   ],
-  "overallAnalysis": "Análisis Integrado (Fuente Rev156-1 & Informe 2024-1): NLTS-PR presenta una posición financiera mixta al cierre de 2024. FORTALEZAS: La eficiencia en la gestión de cobros es sobresaliente (DSO 37 días) [15] y la cobertura de intereses es robusta (11.93x) [6], mitigando riesgos de solvencia inmediata. La rentabilidad sobre activos (ROA >21%) es superior al promedio. DEBILIDADES: Existe un apalancamiento elevado (Debt/Equity 2.70) [3] y una dependencia crítica del inventario para la liquidez (Quick Ratio 0.63). El Margen EBITDA del 17.39% [9] está por debajo del objetivo de industria (>30%) [10], sugiriendo que, aunque la empresa es rentable, tiene espacio significativo para optimizar costos operativos y eficiencia de flota."
+  "overallAnalysis": "La entidad muestra una estructura financiera de alto riesgo/alto retorno tras la auditoría de 2024. Fortalezas: Gestión de cobros superior (DSO 37 días) y eficiencia en el uso de activos (ROA 9.9%). Debilidades: Apalancamiento excesivo (Debt/Equity 5.29), márgenes brutos bajos (14%) y una base de capital erosionada. La 'purificación' del inventario mejoró los ratios de rotación pero debilitó la liquidez inmediata. La empresa depende críticamente de su flujo de caja operativo y financiamiento externo para sostener operaciones."
 }

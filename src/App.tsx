@@ -7,6 +7,7 @@ import LoginPage from './components/LoginPage'
 import Overview from './components/Overview'
 import NotebookChat from './components/NotebookChat'
 import FinancialAnalysis from './components/FinancialAnalysis'
+import FinancialStatements from './components/FinancialStatements'
 import ComplianceTracker from './components/ComplianceTracker'
 import IndustryAnalysis from './components/IndustryAnalysis'
 import Act60Tab from './components/Act60Tab'
@@ -22,6 +23,7 @@ function Dashboard() {
       <main className="container animate-fade-in">
         {activeTab === 'overview' && <Overview />}
         {activeTab === 'financials' && <FinancialAnalysis />}
+        {activeTab === 'statements' && <FinancialStatements />}
         {activeTab === 'compliance' && <ComplianceTracker />}
         {activeTab === 'industry' && <IndustryAnalysis />}
         {activeTab === 'act60' && <Act60Tab />}

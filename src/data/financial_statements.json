@@ -1,0 +1,408 @@
+{
+  "BS": [
+    {
+      "name": "Cash",
+      "2024": 155134,
+      "2023": 192263,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Accounts Receivable Trade",
+      "2024": 464323,
+      "2023": 523728,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Inventory",
+      "2024": 339039,
+      "2023": 271469,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Prepaid Taxes",
+      "2024": 0,
+      "2023": 12639,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Prepaid Expenses",
+      "2024": 22859,
+      "2023": 22859,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Total Current Assets",
+      "2024": 981355,
+      "2023": 1022958,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Machinery and Equipment",
+      "2024": 857516,
+      "2023": 906466,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Furniture and Fixtures",
+      "2024": 3500,
+      "2023": 3500,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Motor Vehicles",
+      "2024": 66000,
+      "2023": 66000,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Less: Accumulated Depreciation",
+      "2024": -424794,
+      "2023": -275356,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Land, Building, and Equipment - Net",
+      "2024": 502222,
+      "2023": 700611,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Right-of-Use Assets Under Operating Lease, Net",
+      "2024": 351595,
+      "2023": 0,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Total Right of Use Assets",
+      "2024": 351595,
+      "2023": 0,
+      "section": "ASSETS"
+    },
+    {
+      "name": "TOTAL ASSETS",
+      "2024": 1835172,
+      "2023": 1723569,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Income Tax Payable",
+      "2024": 67456,
+      "2023": 0,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Accounts Payable",
+      "2024": 505478,
+      "2023": 617774,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Due to Affiliates",
+      "2024": 0,
+      "2023": 13636,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Accrued Expenses",
+      "2024": 140894,
+      "2023": 92974,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Current Portion of Operating Lease Obligation",
+      "2024": 115633,
+      "2023": 0,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Current Portion of Finance Lease Obligation",
+      "2024": 16207,
+      "2023": 0,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Total Current Liabilities",
+      "2024": 845668,
+      "2023": 724384,
+      "section": "ASSETS"
+    },
+    {
+      "name": "LONG-TERM DEBT, Less Current Portion",
+      "2024": 439778,
+      "2023": 852418,
+      "section": "ASSETS"
+    },
+    {
+      "name": "OPERATING LEASE OBLIGATIONS, Less Current Portion",
+      "2024": 185793,
+      "2023": 0,
+      "section": "ASSETS"
+    },
+    {
+      "name": "FINANCE LEASE OBLIGATIONS, Less Current Portion",
+      "2024": 72247,
+      "2023": 37803,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Total Long-Term Liabilities",
+      "2024": 697818,
+      "2023": 890221,
+      "section": "ASSETS"
+    },
+    {
+      "name": "TOTAL LIABILITIES",
+      "2024": 1543486,
+      "2023": 1614605,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Common Stock, Par Value $10 Per Share, Authorized 1,000,000 and 100 Issued and Outstanding.",
+      "2024": 100,
+      "2023": 100,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Total Contributed Capital",
+      "2024": 100,
+      "2023": 100,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Retained Earnings",
+      "2024": 291586,
+      "2023": 108864,
+      "section": "ASSETS"
+    },
+    {
+      "name": "Total Shareholders' Equity",
+      "2024": 291686,
+      "2023": 108964,
+      "section": "ASSETS"
+    },
+    {
+      "name": "TOTAL LIABILITIES AND SHAREHOLDERS' EQUITY",
+      "2024": 1835172,
+      "2023": 1723569,
+      "section": "ASSETS"
+    }
+  ],
+  "IS": [
+    {
+      "name": "Labor",
+      "2024": 159890,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Labor Burden",
+      "2024": 304977,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Equipment",
+      "2024": 20255,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Depreciation and Amortization",
+      "2024": 141599,
+      "2023": 162397,
+      "section": "Revenue"
+    },
+    {
+      "name": "Material",
+      "2024": 1790063,
+      "2023": -162397,
+      "section": "Revenue"
+    },
+    {
+      "name": "Administrative",
+      "2024": 173236,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Other",
+      "2024": 79565,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Cost of Revenue",
+      "2024": 3897595,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Gross Profit Before Transfer Ins (Outs) From (To) Affiliates",
+      "2024": 643740,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Gross Profit",
+      "2024": 643740,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Advertising",
+      "2024": 16810,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Bad Debts",
+      "2024": 20447,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Bank Charges",
+      "2024": 2830,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Commissions",
+      "2024": 12204,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Computer and Internet Expenses",
+      "2024": 11925,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Insurances",
+      "2024": 11272,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Licenses and Permits",
+      "2024": 6097,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Meals and Entertainment",
+      "2024": 4644,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Office Expense",
+      "2024": 16200,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Professional Services",
+      "2024": 56088,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Rent",
+      "2024": 150925,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Repair and Maintenance",
+      "2024": 3083,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Telephone",
+      "2024": 7157,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Travel Expenses",
+      "2024": 17991,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Utilities",
+      "2024": 2612,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Total General and Administrative Expenses",
+      "2024": 340285,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Income from Operations",
+      "2024": 303455,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Interest Expense",
+      "2024": -66186,
+      "2023": 0,
+      "section": "Revenue"
+    },
+    {
+      "name": "Total Other Income and Expense",
+      "2024": -53277,
+      "2023": 0,
+      "section": "Other Income"
+    },
+    {
+      "name": "Income from Continuing Operations",
+      "2024": 250178,
+      "2023": 0,
+      "section": "Other Income"
+    },
+    {
+      "name": "Income Before Income Tax Provision",
+      "2024": 250178,
+      "2023": 0,
+      "section": "Other Income"
+    },
+    {
+      "name": "Provision for Income Tax Expense (Benefit)",
+      "2024": 67456,
+      "2023": 0,
+      "section": "Other Income"
+    },
+    {
+      "name": "Net Income",
+      "2024": 182722,
+      "2023": 0,
+      "section": "Other Income"
+    },
+    {
+      "name": "Change in Retained Earnings - For the Beginning of Year",
+      "2024": 108864,
+      "2023": 108864,
+      "section": "Other Income"
+    },
+    {
+      "name": "Change in Retained Earnings - For the End of Year",
+      "2024": 291586,
+      "2023": 108864,
+      "section": "Other Income"
+    },
+    {
+      "name": "1",
+      "2024": 3,
+      "2023": 5,
+      "section": "Other Income"
+    }
+  ]
+}
