@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 // Helper for classes
+// Build version: 2026.02.03.v4 - Refactored to CSS classes
 function cn(...inputs: (string | undefined | null | false)[]) {
     return twMerge(clsx(inputs));
 }
@@ -54,6 +55,8 @@ const TAX_MAP: Record<string, string> = {
 type TabType = 'BS' | 'IS' | 'CF' | 'Lead' | 'TaxLead' | 'Docs';
 
 export default function FinancialStatements() {
+    const BUILD_VERSION = '2026.02.03.v4'; // Force rebuild - CSS classes
+    console.log('FinancialStatements build:', BUILD_VERSION);
     const { t, language } = useLanguage();
     const [activeTab, setActiveTab] = useState<TabType>('BS');
     const [showEducation, setShowEducation] = useState(true);
@@ -63,12 +66,7 @@ export default function FinancialStatements() {
 
     // Helper: Dynamic Value Formatting based on Excel Format
     const formatValue = (val: number | string, fmt?: string) => {
-        // Handle zeros or nulls if needed, though data has 0
         if (val === null || val === undefined || val === '') return '';
-
-        // If it's a string that shouldn't be parsed as a number (like "Total"), return it
-        // Check if val is number-like but we want to treat it as string based on fmt?
-        // Actually, if fmt is General, we just return string representation.
 
         const cleanFmt = fmt?.trim().toLowerCase();
 
@@ -82,10 +80,10 @@ export default function FinancialStatements() {
         const numVal = Number(val);
 
         // Detect Percentages
-        if (fmt?.includes('%') || fmt?.includes('P')) { // Check for P if used in extraction logic or just %
+        if (fmt?.includes('%') || fmt?.includes('P')) {
             return new Intl.NumberFormat(language === 'es' ? 'es-PR' : 'en-US', {
                 style: 'percent',
-                minimumFractionDigits: 5, // High precision as requested
+                minimumFractionDigits: 5,
                 maximumFractionDigits: 5
             }).format(numVal);
         }
@@ -97,20 +95,16 @@ export default function FinancialStatements() {
         if (isExplicitNumber) {
             return new Intl.NumberFormat(language === 'es' ? 'es-PR' : 'en-US', {
                 style: 'decimal',
-                minimumFractionDigits: 2, // Requests #,###.00
+                minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             }).format(numVal);
         }
 
-        // If it looks like a number but no specific format, stick to default currency if it's in main tables, 
-        // but for Grid we might want to be careful. 
-        // IF fmt is undefined, let's just return string or minimal format.
         if (!fmt) {
-            // For grids, if no format, try to keep as string or simple number
             return val.toString();
         }
 
-        // Default to Currency USD (usually for BS/IS main cols with $)
+        // Default to Currency USD
         return new Intl.NumberFormat(language === 'es' ? 'es-PR' : 'en-US', {
             style: 'currency',
             currency: 'USD',
@@ -118,34 +112,33 @@ export default function FinancialStatements() {
         }).format(numVal);
     };
 
-    // Render Standard Financial Table (BS, IS, CF) with High Fidelity
+    // Render Standard Financial Table (BS, IS, CF) using CSS classes
     const renderStandardTable = (items: LineItem[]) => {
-        // ... (unchanged grouping logic)
         const groupedItems: Record<string, LineItem[]> = {};
         items.forEach(item => {
-            if (item.row_hidden) return; // SKIP HIDDEN ROWS
+            if (item.row_hidden) return;
             if (!groupedItems[item.section]) groupedItems[item.section] = [];
             groupedItems[item.section].push(item);
         });
 
         return (
-            <div className="overflow-x-auto border border-gray-500 rounded-lg bg-white shadow-sm">
-                <table className="w-full text-sm text-left border-collapse border border-gray-500">
-                    <thead className="bg-gray-50 border-b border-gray-500">
+            <div className="fs-table-container">
+                <table className="fs-table">
+                    <thead className="fs-thead">
                         <tr>
-                            <th className="py-3 px-4 font-semibold text-gray-700 w-1/2 border border-gray-500">{t('statements.lineItem')}</th>
-                            <th className="py-3 px-4 font-semibold text-gray-700 text-right w-1/6 min-w-[120px] border border-gray-500">{t('statements.2024')}</th>
-                            <th className="py-3 px-4 font-semibold text-gray-700 text-right w-1/6 min-w-[120px] border border-gray-500">{t('statements.2023')}</th>
-                            <th className="py-3 px-4 font-semibold text-gray-700 text-center w-1/6 border border-gray-500">{t('statements.trend')}</th>
+                            <th className="fs-th fs-th--left">{t('statements.lineItem')}</th>
+                            <th className="fs-th fs-th--right">{t('statements.2024')}</th>
+                            <th className="fs-th fs-th--right">{t('statements.2023')}</th>
+                            <th className="fs-th fs-th--center">{t('statements.trend')}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {Object.entries(groupedItems).map(([section, sectionItems]) => (
-                            <div key={section} className="contents">
+                            <>
                                 {/* Section Header */}
                                 {section !== 'General' && (
-                                    <tr className="bg-gray-50/50">
-                                        <td colSpan={4} className="py-2 px-4 font-bold text-xs uppercase tracking-wider text-gray-500 mt-4 border border-gray-500">
+                                    <tr key={`section-${section}`} className="fs-section-row">
+                                        <td colSpan={4} className="fs-section-cell">
                                             {section}
                                         </td>
                                     </tr>
@@ -161,53 +154,55 @@ export default function FinancialStatements() {
                                     const isTotal = item.name.toLowerCase().includes('total');
                                     const isPadding = !item.name;
 
-                                    if (isPadding) return <tr key={`${section}-${idx}`} className="h-4"><td colSpan={4} className="border border-gray-500"></td></tr>;
+                                    if (isPadding) {
+                                        return (
+                                            <tr key={`${section}-${idx}`} className="fs-row--padding">
+                                                <td colSpan={4} className="fs-td"></td>
+                                            </tr>
+                                        );
+                                    }
+
+                                    const rowClass = cn(
+                                        'fs-row',
+                                        isTotal ? 'fs-row--total' : (idx % 2 === 0 ? 'fs-row--even' : 'fs-row--odd')
+                                    );
 
                                     return (
-                                        <tr
-                                            key={`${section}-${idx}`}
-                                            className={cn(
-                                                "transition-colors group",
-                                                isTotal ? "bg-gray-50 font-semibold" : "hover:bg-blue-50/10"
-                                            )}
-                                        >
-                                            <td className="py-2 px-4 relative border border-gray-500">
-                                                <div
-                                                    className={cn("text-gray-800", isTotal ? "font-bold" : "font-normal")}
-                                                    style={{ paddingLeft: `${(item.indent || 0) * 20}px` }}
-                                                >
-                                                    {item.name}
-                                                    {showEducation && taxMapping && !isTotal && (
-                                                        <div className="text-[10px] text-amber-600 mt-0.5 inline-flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-2">
-                                                            <span>📋</span>
-                                                            {TAX_MAP[taxMapping]}
-                                                        </div>
-                                                    )}
-                                                </div>
+                                        <tr key={`${section}-${idx}`} className={rowClass}>
+                                            <td
+                                                className={cn('fs-td', isTotal ? 'fs-td--name-total' : 'fs-td--name')}
+                                                style={{ paddingLeft: `${16 + (item.indent || 0) * 24}px` }}
+                                            >
+                                                {item.name}
+                                                {showEducation && taxMapping && !isTotal && (
+                                                    <span className="fs-tax-ref">
+                                                        📋 {TAX_MAP[taxMapping]}
+                                                    </span>
+                                                )}
                                             </td>
-                                            <td className={cn("py-2 px-4 text-right font-mono border border-gray-500", isTotal ? "text-black" : "text-gray-900")}>
+                                            <td className={cn('fs-td fs-td--amount', isTotal && 'fs-td--amount-total')}>
                                                 {formatValue(item['2024'], item.format)}
                                             </td>
-                                            <td className="py-2 px-4 text-right font-mono text-gray-500 border border-gray-500">
+                                            <td className="fs-td fs-td--prior">
                                                 {formatValue(item['2023'], item.format)}
                                             </td>
-                                            <td className="py-2 px-4 text-center border border-gray-500">
+                                            <td className="fs-td fs-td--trend">
                                                 {variance > 0 ? (
-                                                    <span className="text-green-600 font-medium text-xs bg-green-50 px-2 py-0.5 rounded-full inline-block min-w-[60px]">
+                                                    <span className="fs-variance fs-variance--positive">
                                                         +{variance.toFixed(1)}%
                                                     </span>
                                                 ) : variance < 0 ? (
-                                                    <span className="text-red-500 font-medium text-xs bg-red-50 px-2 py-0.5 rounded-full inline-block min-w-[60px]">
+                                                    <span className="fs-variance fs-variance--negative">
                                                         {variance.toFixed(1)}%
                                                     </span>
                                                 ) : (
-                                                    <span className="text-gray-300 text-xs">-</span>
+                                                    <span className="fs-variance--neutral">—</span>
                                                 )}
                                             </td>
                                         </tr>
                                     );
                                 })}
-                            </div>
+                            </>
                         ))}
                     </tbody>
                 </table>
@@ -215,16 +210,13 @@ export default function FinancialStatements() {
         );
     };
 
-    // Render Raw Data Grid (Leadsheets)
+    // Render Raw Data Grid (Leadsheets) using CSS classes
     const renderGrid = (rows: CellData[][]) => {
-        // DETECT PERCENTAGE COLUMN
-        // We scan the first 10 rows for a header containing "%" or "Change" to identify the percentage column.
         let percentColIdx = -1;
         for (let r = 0; r < Math.min(rows.length, 10); r++) {
             const row = rows[r];
             row.forEach((cell, idx) => {
                 const valStr = String(cell.v).toLowerCase();
-                // "change %" or just "%" or "var %"
                 if (valStr.includes('%') || (valStr.includes('change') && !valStr.includes('change in'))) {
                     percentColIdx = idx;
                 }
@@ -233,98 +225,92 @@ export default function FinancialStatements() {
         }
 
         return (
-            <div className="w-full overflow-x-auto border border-gray-500 bg-white shadow-sm">
-                {/* Ensure border-collapse is strictly applied for visible gridlines */}
-                <table className="w-full text-sm text-left font-mono whitespace-nowrap border-collapse border border-gray-500">
+            <div className="fs-grid-container">
+                <table className="fs-grid">
                     <tbody>
-                        {rows.map((row, rIdx) => (
-                            <tr key={rIdx} className={rIdx < 5 ? 'bg-gray-100 font-bold' : 'hover:bg-blue-50/10'}>
-                                {row.map((cell, cIdx) => {
-                                    let formattedVal = formatValue(cell.v, cell.f);
+                        {rows.map((row, rIdx) => {
+                            const isHeader = rIdx < 5;
+                            const rowClass = isHeader
+                                ? 'fs-grid-row--header'
+                                : (rIdx % 2 === 0 ? 'fs-grid-row--even' : 'fs-grid-row--odd');
 
-                                    // OVERRIDE FOR PERCENTAGE COLUMN
-                                    // If we detected a % column, OR if the value is a small float (abs < 2) and header detection failed but it looks like a rate
-                                    // Be careful with small float heuristic, so relied on column index mostly.
-                                    // Adding a fallback: if Column 8 (index 8) is usually Change%, we can default to it if detection fails, 
-                                    // but specifically extracting 5 decimals as requested: 0.00000%
+                            return (
+                                <tr key={rIdx} className={rowClass}>
+                                    {row.map((cell, cIdx) => {
+                                        let formattedVal = formatValue(cell.v, cell.f);
 
-                                    const isLikelyPercentCol = cIdx === percentColIdx;
+                                        const isLikelyPercentCol = cIdx === percentColIdx;
 
-                                    if (isLikelyPercentCol && typeof cell.v === 'number' && Math.abs(cell.v) < 100) {
-                                        // Assume it's a rate (0.10 for 10%)
-                                        formattedVal = new Intl.NumberFormat(language === 'es' ? 'es-PR' : 'en-US', {
-                                            style: 'percent',
-                                            minimumFractionDigits: 5,
-                                            maximumFractionDigits: 5
-                                        }).format(cell.v);
-                                    }
+                                        if (isLikelyPercentCol && typeof cell.v === 'number' && Math.abs(cell.v) < 100) {
+                                            formattedVal = new Intl.NumberFormat(language === 'es' ? 'es-PR' : 'en-US', {
+                                                style: 'percent',
+                                                minimumFractionDigits: 5,
+                                                maximumFractionDigits: 5
+                                            }).format(cell.v);
+                                        }
 
-                                    return (
-                                        <td
-                                            key={`${rIdx}-${cIdx}`}
-                                            className="py-1 px-2 border border-gray-500 min-w-[100px] text-right"
-                                        >
-                                            {formattedVal}
-                                        </td>
-                                    );
-                                })}
-                            </tr>
-                        ))}
+                                        const isNumeric = typeof cell.v === 'number' ||
+                                            (typeof cell.v === 'string' && !isNaN(Number(cell.v.replace(/[,$%]/g, ''))));
+
+                                        const cellClasses = cn(
+                                            'fs-grid-cell',
+                                            isHeader ? 'fs-grid-cell--header' : 'fs-grid-cell--data',
+                                            (isNumeric || cIdx > 0) ? 'fs-grid-cell--right' : 'fs-grid-cell--left'
+                                        );
+
+                                        return (
+                                            <td key={`${rIdx}-${cIdx}`} className={cellClasses}>
+                                                {formattedVal}
+                                            </td>
+                                        );
+                                    })}
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
         );
     };
 
-    // Render PDF Viewer (High Fidelity "Image" / Iframe)
+    // Render PDF Viewer using CSS classes
     const renderPdfViewer = () => (
-        <div className="flex flex-col h-[calc(100vh-200px)] min-h-[800px] w-full bg-gray-50 rounded-lg border border-gray-200 overflow-hidden shadow-sm">
-            <div className="bg-white p-4 border-b border-gray-200 flex justify-between items-center shadow-sm z-10">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-red-100 rounded-lg text-red-600">
-                        <FileText className="w-5 h-5" />
+        <div className="pdf-viewer-container">
+            {/* Header Bar */}
+            <div className="pdf-viewer-header">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="pdf-viewer-icon-wrapper">
+                        <FileText className="pdf-viewer-icon" />
                     </div>
                     <div>
-                        <h3 className="font-semibold text-gray-900">Audited Financial Statements 2024</h3>
-                        <p className="text-xs text-gray-500">Official PDF • {data.Metadata?.SourceFile}</p>
+                        <h3 className="pdf-viewer-title">
+                            {language === 'es' ? 'Estados Financieros Auditados 2024' : 'Audited Financial Statements 2024'}
+                        </h3>
+                        <p className="pdf-viewer-subtitle">
+                            {language === 'es' ? 'Incluye Opinión del Auditor y Notas' : 'Includes Auditor Opinion & Notes'} • {data.Metadata?.SourceFile}
+                        </p>
                     </div>
                 </div>
-                <div className="flex items-center gap-3">
-
-                    <a
-                        href="/documents/audited_financials.pdf"
-                        download
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-black transition shadow-sm hover:shadow-md"
-                    >
-                        <Download className="w-4 h-4" />
-                        {t('download_pdf')}
-                    </a>
-                </div>
+                <a href="/documents/audited_financials.pdf" download className="pdf-download-btn">
+                    <Download style={{ width: '16px', height: '16px' }} />
+                    {t('download_pdf')}
+                </a>
             </div>
-            {/* The closest we can get to "Presentation in Totality as Image" without rasterizing pages server-side is a full iframe embedding */}
-            {/* Use object tag for better PDF embedding support with iframe fallback */}
-            <object
-                data="/documents/audited_financials.pdf#view=FitH&toolbar=1"
-                type="application/pdf"
-                className="w-full h-full bg-gray-100"
-            >
-                <iframe
-                    src="/documents/audited_financials.pdf#view=FitH&toolbar=1"
-                    className="w-full h-full bg-gray-100"
-                    title="Audited Financial Statements"
-                >
-                    <div className="flex flex-col items-center justify-center h-full p-8 text-center text-gray-500">
-                        <p className="mb-4">Unable to display PDF directly.</p>
-                        <a
-                            href="/documents/audited_financials.pdf"
-                            download
-                            className="text-blue-600 hover:underline font-medium"
-                        >
-                            Download PDF to view
-                        </a>
-                    </div>
-                </iframe>
-            </object>
+            {/* PDF Embed */}
+            <div className="pdf-embed-container">
+                <embed
+                    src="/documents/audited_financials.pdf#toolbar=1&navpanes=1&scrollbar=1&view=FitH"
+                    type="application/pdf"
+                    className="pdf-embed"
+                />
+            </div>
+            {/* Fallback message */}
+            <noscript>
+                <div className="pdf-fallback">
+                    <p>Your browser does not support embedded PDFs.</p>
+                    <a href="/documents/audited_financials.pdf">Click here to download the PDF</a>
+                </div>
+            </noscript>
         </div>
     );
 

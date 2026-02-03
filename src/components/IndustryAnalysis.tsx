@@ -1,7 +1,7 @@
 import { useLanguage } from '../context/LanguageContext'
 
 export default function IndustryAnalysis() {
-    const { t } = useLanguage()
+    const { t, language } = useLanguage()
 
     const naicsData = {
         code: '532490',
@@ -132,8 +132,103 @@ export default function IndustryAnalysis() {
         }
     ]
 
+    // Glossary terms for client education
+    const glossaryTerms = [
+        {
+            term: 'NAICS',
+            definition: language === 'es'
+                ? 'Sistema de Clasificación Industrial de Norteamérica - código estándar que identifica su tipo de negocio para propósitos tributarios y estadísticos.'
+                : 'North American Industry Classification System - the standard code identifying your business type for tax and statistical purposes.'
+        },
+        {
+            term: 'CAGR',
+            definition: language === 'es'
+                ? 'Tasa de Crecimiento Anual Compuesta - la tasa de crecimiento promedio anual durante un período de tiempo.'
+                : 'Compound Annual Growth Rate - the average annual growth rate over a period of time.'
+        },
+        {
+            term: 'Act 60',
+            definition: language === 'es'
+                ? 'Código de Incentivos de Puerto Rico - ofrece beneficios tributarios significativos a negocios que cualifiquen.'
+                : 'Puerto Rico Incentives Code - offers significant tax benefits to qualifying businesses.'
+        },
+        {
+            term: 'OSHA',
+            definition: language === 'es'
+                ? 'Administración de Seguridad y Salud Ocupacional - regula estándares de seguridad en el lugar de trabajo.'
+                : 'Occupational Safety and Health Administration - regulates workplace safety standards.'
+        },
+        {
+            term: 'CARB',
+            definition: language === 'es'
+                ? 'Junta de Recursos del Aire de California - establece estándares de emisiones que a menudo se convierten en tendencias nacionales.'
+                : 'California Air Resources Board - sets emissions standards that often become national trends.'
+        },
+        {
+            term: 'YoY',
+            definition: language === 'es'
+                ? 'Año contra Año - comparación de métricas entre el mismo período en años diferentes.'
+                : 'Year over Year - comparison of metrics between the same period in different years.'
+        }
+    ]
+
+    // Checklist items for client preparation
+    const checklistItems = language === 'es' ? [
+        'Revisar su clasificación NAICS actual y confirmar precisión',
+        'Evaluar elegibilidad para incentivos de Acta 60',
+        'Auditar cumplimiento con OSHA para documentación de equipos',
+        'Desarrollar plan de contingencia para interrupciones de energía',
+        'Investigar opciones de flota de montacargas eléctricos',
+        'Programar revisión de estrategia con su CPA'
+    ] : [
+        'Review your current NAICS classification and confirm accuracy',
+        'Evaluate eligibility for Act 60 incentives',
+        'Audit OSHA compliance for equipment documentation',
+        'Develop contingency plan for power outages',
+        'Research electric forklift fleet options',
+        'Schedule strategy review with your CPA'
+    ]
+
     return (
         <div className="industry-analysis">
+            {/* Educational Introduction Banner - NEW */}
+            <div className="industry-intro-banner">
+                <h3 className="industry-intro-title">
+                    📚 {language === 'es' ? '¿Por Qué Este Análisis es Importante Para Usted?' : 'Why This Analysis Matters For You'}
+                </h3>
+                <p className="industry-intro-text">
+                    {language === 'es'
+                        ? 'Este análisis de industria le ayuda a entender su posición competitiva, identificar oportunidades de ahorro tributario, y prepararse para cambios regulatorios que podrían afectar su negocio. Revise cada sección con su asesor para desarrollar estrategias proactivas.'
+                        : 'This industry analysis helps you understand your competitive position, identify tax-saving opportunities, and prepare for regulatory changes that could impact your business. Review each section with your advisor to develop proactive strategies.'
+                    }
+                </p>
+
+                {/* Client Checklist */}
+                <ul className="industry-checklist">
+                    {checklistItems.map((item, idx) => (
+                        <li key={idx} className="industry-checklist-item">
+                            <span className="industry-checklist-icon">✓</span>
+                            <span>{item}</span>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* Glossary Section - NEW */}
+            <div className="industry-glossary">
+                <h4 className="industry-glossary-title">
+                    📖 {language === 'es' ? 'Términos Clave' : 'Key Terms'}
+                </h4>
+                <div className="industry-glossary-grid">
+                    {glossaryTerms.map((item, idx) => (
+                        <div key={idx} className="industry-glossary-item">
+                            <div className="industry-glossary-term">{item.term}</div>
+                            <div className="industry-glossary-def">{item.definition}</div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+
             {/* NAICS Classification Header */}
             <div className="card" style={{ marginBottom: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
@@ -178,7 +273,7 @@ export default function IndustryAnalysis() {
                     <div key={idx} className="card" style={{ padding: '1rem', textAlign: 'center' }}>
                         <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{stat.icon}</div>
                         <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--accent-primary)' }}>{stat.value}</div>
-                        <div style={{ fontSize: '0.8rem', color: 'var(--success)', marginBottom: '0.25rem' }}>{stat.growth}</div>
+                        <div style={{ fontSize: '0.8rem', color: '#22c55e', marginBottom: '0.25rem' }}>{stat.growth}</div>
                         <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{stat.label}</div>
                     </div>
                 ))}
@@ -188,7 +283,7 @@ export default function IndustryAnalysis() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
                 {/* Challenges */}
                 <div className="card">
-                    <h3 style={{ margin: 0, marginBottom: '1rem', color: 'var(--warning)' }}>
+                    <h3 style={{ margin: 0, marginBottom: '1rem', color: '#f59e0b' }}>
                         ⚠️ {t('industry.challengesTitle') || 'Current Challenges'}
                     </h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -206,7 +301,7 @@ export default function IndustryAnalysis() {
 
                 {/* Opportunities */}
                 <div className="card">
-                    <h3 style={{ margin: 0, marginBottom: '1rem', color: 'var(--success)' }}>
+                    <h3 style={{ margin: 0, marginBottom: '1rem', color: '#22c55e' }}>
                         ✅ {t('industry.opportunitiesTitle') || 'Growth Opportunities'}
                     </h3>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -273,7 +368,7 @@ export default function IndustryAnalysis() {
                                 minWidth: '32px',
                                 height: '32px',
                                 borderRadius: '50%',
-                                backgroundColor: rec.priority === 'high' ? 'var(--accent-primary)' : 'var(--bg-tertiary)',
+                                backgroundColor: rec.priority === 'high' ? 'var(--accent-primary)' : 'var(--bg-card)',
                                 color: rec.priority === 'high' ? 'white' : 'var(--text-secondary)',
                                 display: 'flex',
                                 alignItems: 'center',
@@ -285,7 +380,7 @@ export default function IndustryAnalysis() {
                             <div style={{ flex: 1 }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.25rem' }}>
                                     <span style={{ fontWeight: 600 }}>{rec.title}</span>
-                                    <span style={{ fontSize: '0.7rem', backgroundColor: 'var(--bg-tertiary)', padding: '2px 8px', borderRadius: '4px' }}>
+                                    <span style={{ fontSize: '0.7rem', backgroundColor: 'var(--bg-card)', padding: '2px 8px', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
                                         {rec.timeline}
                                     </span>
                                 </div>
@@ -294,6 +389,19 @@ export default function IndustryAnalysis() {
                         </div>
                     ))}
                 </div>
+            </div>
+
+            {/* Action Callout - NEW */}
+            <div className="industry-action-callout">
+                <h4 className="industry-action-title">
+                    📞 {language === 'es' ? 'Próximos Pasos' : 'Next Steps'}
+                </h4>
+                <p className="industry-action-text">
+                    {language === 'es'
+                        ? 'Para discutir cómo estas tendencias de la industria afectan específicamente su negocio y desarrollar un plan de acción personalizado, comuníquese con su asesor de NLT-PR. Estamos aquí para ayudarle a navegar estos cambios y capitalizar las oportunidades disponibles.'
+                        : 'To discuss how these industry trends specifically affect your business and develop a customized action plan, contact your NLT-PR advisor. We\'re here to help you navigate these changes and capitalize on available opportunities.'
+                    }
+                </p>
             </div>
         </div>
     )
