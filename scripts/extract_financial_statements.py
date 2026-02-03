@@ -124,6 +124,31 @@ def extract_financials():
             if item["2024"] != 0 or item["2023"] != 0:
                 financials["BS"].append(item)
 
+    # 4. Tax Leadschedule / Leadschedule
+    # Found names: 'Leadschedules', 'TaxLeadschedules'
+    def extract_table_sheet(sheet_keyword, target_key):
+        # Find sheet name (Exact match preferred, or case-insensitive)
+        sheet_name = next((s for s in wb.sheetnames if sheet_keyword.lower() == s.lower()), None)
+        if not sheet_name:
+            print(f"Skipping {sheet_keyword} (Not found)")
+            return
+
+        print(f"Processing {sheet_name} into {target_key}...")
+        ws = wb[sheet_name]
+        
+        # Simple extraction of first 12 columns for first 200 rows
+        table_data = []
+        for row in ws.iter_rows(min_row=1, max_row=200, max_col=12, values_only=True):
+            # Clean row
+            clean_row = [str(c).strip() if c is not None else "" for c in row]
+            if any(clean_row): # If not all empty
+                table_data.append(clean_row)
+        
+        financials[target_key] = table_data
+
+    extract_table_sheet("TaxLeadschedules", "TaxLead")
+    extract_table_sheet("Leadschedules", "Lead")
+
     # Extract Income Statement (IS)
     if "IS" in wb.sheetnames:
         print("Processing Income Statement (IS)...")
