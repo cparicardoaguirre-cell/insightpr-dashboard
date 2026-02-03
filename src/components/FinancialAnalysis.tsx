@@ -237,12 +237,6 @@ export default function FinancialAnalysis() {
     }, [isProduction]);
 
     const fetchFinancialData = useCallback(async () => {
-        // Always use real sync now
-        // if (isProduction) { ... } logic removed to ensure actual backend call
-
-
-        // Development mode: Full sync functionality
-        // Development mode: Full sync functionality
         setLoading(true);
         setSummaryLoading(true);
 
@@ -251,57 +245,55 @@ export default function FinancialAnalysis() {
             console.log('Syncing ratios...');
             let syncData;
 
-            if (isProduction) {
-                // Production: Load pre-generated static data
+            try {
+                // Try live backend first
+                const syncResponse = await fetch(`${API_BASE_URL}/api/financial-ratios/sync`);
+                if (!syncResponse.ok) throw new Error('Backend unavailable');
+                syncData = await syncResponse.json();
+            } catch (err) {
+                console.warn('Backend failed, falling back to static data for Ratios');
+                // Fallback to static
                 const response = await fetch('/data/financial_ratios.json');
                 const data = await response.json();
-                syncData = { success: true, data }; // Wrap to match API structure
-
-                // Simulate network delay for UX
-                await new Promise(resolve => setTimeout(resolve, 800));
-            } else {
-                // Development: Sync from backend
-                const syncResponse = await fetch(`${API_BASE_URL}/api/financial-ratios/sync`);
-                syncData = await syncResponse.json();
+                syncData = { success: true, data };
             }
 
             if (syncData.success && syncData.data) {
                 setFsRatios(syncData.data);
-                console.log('Ratios loaded from:', syncData.data.source);
+                console.log('Ratios loaded from:', syncData.data.source || 'Static File');
             }
 
             // Step 2: Generate AI Executive Summary
-            console.log('Generating AI Executive Summary...');
+            console.log('Generating Executive Summary...');
             let summaryData;
 
-            if (isProduction) {
-                // Production: Load pre-generated static summary
-                try {
-                    // Try language-specific file first
-                    const langFile = `/data/executive_summary_${language}.json`;
-                    const sumResponse = await fetch(langFile);
-                    if (!sumResponse.ok) throw new Error('Language file not found');
-
-                    const sumJson = await sumResponse.json();
-                    summaryData = sumJson;
-                } catch (e) {
-                    // Fallback to default if specific lang fails
-                    try {
-                        const defaultResponse = await fetch('/data/executive_summary.json');
-                        summaryData = await defaultResponse.json();
-                    } catch (err) {
-                        console.warn('No static summary found');
-                        summaryData = { success: false };
-                    }
-                }
-            } else {
-                // Development: Generate via live API
+            try {
+                // Try live backend first
                 const summaryResponse = await fetch(`${API_BASE_URL}/api/executive-summary/generate`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ language })
                 });
+                if (!summaryResponse.ok) throw new Error('Backend unavailable');
                 summaryData = await summaryResponse.json();
+            } catch (err) {
+                console.warn('Backend failed, falling back to static data for Summary');
+                // Fallback to static
+                try {
+                    const langFile = `/data/executive_summary_${language}.json`;
+                    const sumResponse = await fetch(langFile);
+                    if (!sumResponse.ok) throw new Error('Language file not found');
+                    const sumJson = await sumResponse.json();
+                    summaryData = { success: true, content: sumJson.content || sumJson.executiveSummary || sumJson }; // Handle various JSON structures
+                    // If the static file is just the string/object, wrap it
+                    if (typeof summaryData.content !== 'string') {
+                        // Attempt to find the string content if structure varies
+                        // But for now assume standard structure or loose handling
+                    }
+                } catch (e) {
+                    console.warn('Analysis file fallback failed:', e);
+                    summaryData = { success: false };
+                }
             }
 
             if (summaryData.success && summaryData.content) {
@@ -309,140 +301,22 @@ export default function FinancialAnalysis() {
                 // Persist to localStorage
                 localStorage.setItem('executiveSummary', summaryData.content);
                 localStorage.setItem('executiveSummaryLang', language);
-                console.log('Executive Summary loaded via:', summaryData.source);
             }
 
             // Step 3: Load Detailed Analysis (Markdown)
             console.log('Loading Detailed Analysis...');
             let parsedData: any = {};
 
-            if (isProduction) {
-                try {
-                    const analysisFile = `/data/detailed_analysis_${language}.json`;
-                    const analysisRes = await fetch(analysisFile);
-                    if (analysisRes.ok) {
-                        parsedData = await analysisRes.json();
-                        console.log('Detailed Analysis loaded from static file');
-                    } else {
-                        console.warn('Analysis file not found:', analysisFile);
-                    }
-                } catch (e) {
-                    console.error('Failed to load static analysis:', e);
+            // Try static file DIRECTLY for analysis as it's usually valid in this architecture
+            try {
+                const analysisFile = `/data/detailed_analysis_${language}.json`;
+                const analysisRes = await fetch(analysisFile);
+                if (analysisRes.ok) {
+                    parsedData = await analysisRes.json();
+                    console.log('Detailed Analysis loaded from static file');
                 }
-            } else {
-                // Development: Live Generation
-                let query = "";
-                const langInstruction = language === 'es'
-                    ? 'IMPORTANTE: Responde COMPLETAMENTE en español. Todas las explicaciones, análisis e interpretaciones deben estar en español.\n\n'
-                    : 'IMPORTANT: Respond COMPLETELY in English. All explanations, analysis, and interpretations must be in English.\n\n';
-
-                if (timeframe === 'yearly') {
-                    query = langInstruction + `COMPREHENSIVE FINANCIAL RATIO ANALYSIS REQUEST(NLTS - PR FS 12 31 2024):
-
-Based on the audited financial statements file "NLTS-PR FS 12 31 2024 Rev156-3", provide a complete financial ratio analysis.
-
-EXTRACT AND CALCULATE THE FOLLOWING RATIOS:
-
-1. LIQUIDITY RATIOS:
-- Current Ratio(Current Assets / Current Liabilities)
-- Quick Ratio((Current Assets - Inventory) / Current Liabilities)
-- Cash Ratio(Cash & Equivalents / Current Liabilities)
-- Working Capital(Current Assets - Current Liabilities)
-
-2. PROFITABILITY RATIOS:
-- Gross Profit Margin(Gross Profit / Revenue × 100)
-- Operating Profit Margin(Operating Income / Revenue × 100)
-- Net Profit Margin(Net Income / Revenue × 100)
-- Return on Assets(ROA)(Net Income / Total Assets × 100)
-- Return on Equity(ROE)(Net Income / Shareholders' Equity × 100)
-- EBITDA Margin(EBITDA / Revenue × 100)
-
-3. LEVERAGE / SOLVENCY RATIOS:
-- Debt-to-Equity Ratio(Total Liabilities / Shareholders' Equity)
-- Debt-to-Assets Ratio(Total Liabilities / Total Assets)
-- Interest Coverage Ratio(EBIT / Interest Expense)
-- Equity Multiplier(Total Assets / Shareholders' Equity)
-
-4. EFFICIENCY RATIOS:
-- Asset Turnover(Revenue / Average Total Assets)
-- Inventory Turnover(COGS / Average Inventory)
-- Days Sales Outstanding(Accounts Receivable / Revenue × 365)
-- Days Payable Outstanding(Accounts Payable / COGS × 365)
-- Accounts Receivable Turnover(Revenue / Average Accounts Receivable)
-
-5. CASH FLOW RATIOS:
-- Operating Cash Flow Ratio(Operating Cash Flow / Current Liabilities)
-- Free Cash Flow(Operating Cash Flow - Capital Expenditures)
-- Cash Flow to Debt Ratio(Operating Cash Flow / Total Debt)
-
-For EACH RATIO provide:
-- Calculated value for NLTS-PR
-- Industry benchmark
-- Variance percentage
-- Status (above/below/at)
-- Brief explanation
-
-Return a JSON object with this EXACT structure:
-{
-    "companySnapshot": {
-        "totalRevenue": number,
-        "netIncome": number,
-        "totalAssets": number,
-        "totalEquity": number,
-        "fiscalYear": "2024"
-    },
-    "ratioCategories": [
-        {
-            "category": "Liquidity Ratios",
-            "description": "...",
-            "ratios": [
-                {
-                    "name": "Current Ratio",
-                    "formula": "...",
-                    "value": number,
-                    "industryBenchmark": number,
-                    "variance": number,
-                    "status": "above|below|at",
-                    "interpretation": "..."
-                }
-            ]
-        }
-    ],
-    "overallAnalysis": "..."
-}`;
-                } else {
-                    query = "Monthly breakdown request...";
-                }
-
-                try {
-                    const response = await fetch('http://localhost:3001/api/chat', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ message: query })
-                    });
-                    const data = await response.json();
-                    let rawContent = data.content || "";
-
-                    try {
-                        const wrapperJson = JSON.parse(rawContent);
-                        if (wrapperJson.status === "success" && wrapperJson.answer) {
-                            rawContent = wrapperJson.answer;
-                        }
-                    } catch (e) { }
-
-                    const jsonMatch = rawContent.match(/\{[\s\S]*"ratioCategories"[\s\S]*\}/) || rawContent.match(/\{[\s\S]*\}/);
-                    if (jsonMatch) {
-                        try {
-                            parsedData = JSON.parse(jsonMatch[0]);
-                        } catch (e) {
-                            parsedData = { rawAnswer: rawContent, error: "Parse failed" };
-                        }
-                    } else {
-                        parsedData = { rawAnswer: rawContent };
-                    }
-                } catch (error) {
-                    console.error(error);
-                }
+            } catch (e) {
+                console.error('Failed to load static analysis:', e);
             }
 
             const now = new Date().toLocaleString();

@@ -22,9 +22,8 @@ ECHO   DEPLOYING TO PRODUCTION (NETLIFY)
 ECHO ========================================================
 ECHO.
 
-git add public/data/financial_ratios.json
-git add public/data/executive_summary.json
-git commit -m "Auto-update financial data and AI summary"
+git add .
+git commit -m "Update dashboard: code changes and financial data"
 git push origin master
 
 ECHO.

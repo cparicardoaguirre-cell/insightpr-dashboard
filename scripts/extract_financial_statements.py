@@ -98,18 +98,26 @@ def extract_financials():
         ws = wb[sheet_name]
         current_section = "General"
         
-        for i, row in enumerate(ws.iter_rows(min_row=5, values_only=True)):
+        # values_only=False to get cell objects for format/hidden checks
+        for i, row in enumerate(ws.iter_rows(min_row=5, values_only=False)):
             if not row or len(row) < 5: continue
             
-            desc = row[col_map['desc']]
-            val_2024 = row[col_map['2024']]
-            val_2023 = row[col_map['2023']]
+            # Row index is i + 5 (1-based for openpyxl)
+            row_idx = i + 5
+            is_hidden = False
+            if row_idx in ws.row_dimensions and ws.row_dimensions[row_idx].hidden:
+                is_hidden = True
+
+            c_desc = row[col_map['desc']]
+            c_24 = row[col_map['2024']]
+            c_23 = row[col_map['2023']]
             
-            # Debug CF
-            if sheet_name == "CF":
-                if desc and (val_2024 != None or val_2023 != None):
-                     pass
-                     # print(f"CF Row {i+5}: Desc='{desc}', 24={val_2024}, 23={val_2023}")
+            desc = c_desc.value
+            val_2024 = c_24.value
+            val_2023 = c_23.value
+            
+            # Capture format from 2024 column
+            fmt = c_24.number_format
 
             if not desc: continue
             
@@ -120,21 +128,33 @@ def extract_financials():
                 current_section = desc_str
                 # Usually headers
                 if val_2024 is None and val_2023 is None:
-                    continue
+                    # Even if value is None, we might want to keep it if it's a section header
+                    # But for now, let's stick to existing logic unless requested
+                    pass
 
-            # Skip empty value rows
+            # Skip empty value rows? 
+            # If high fidelity, we might want to keep them if they are spacers, but 
+            # usually we only want data. Logic: if hidden, we capture it as hidden.
+            # If not hidden and no data, maybe spacer?
             if val_2024 is None and val_2023 is None:
+                # If it's a section header, we might keep it?
+                # For now, let's skip unless it has a value, OR if we want to show headers.
+                # The user wants "High Fidelity", so let's include everything that isn't empty-empty?
+                # But original logic skipped. Let's stick to skipping for now, unless it's a section header line.
                 continue
 
             def clean_val(v):
-                if isinstance(v, (int, float)): return round(v)
+                if isinstance(v, (int, float)): return v  # Keep float for formatting
                 return 0
 
             item = {
                 "name": desc_str,
                 "2024": clean_val(val_2024),
                 "2023": clean_val(val_2023),
-                "section": current_section
+                "section": current_section,
+                "row_hidden": is_hidden,
+                "format": fmt,
+                "indent": c_desc.alignment.indent if c_desc.alignment and c_desc.alignment.indent else 0
             }
 
             if item["2024"] != 0 or item["2023"] != 0:
@@ -160,10 +180,33 @@ def extract_financials():
         ws = wb[sheet_name]
         
         table_data = []
-        for row in ws.iter_rows(min_row=1, max_row=200, max_col=12, values_only=True):
-            clean_row = [str(c).strip() if c is not None else "" for c in row]
-            if any(clean_row):
-                table_data.append(clean_row)
+        # values_only=False to capture formats
+        for row in ws.iter_rows(min_row=1, max_row=200, max_col=14, values_only=False):
+            row_data = []
+            has_data = False
+            for cell in row:
+                val = cell.value
+                fmt = cell.number_format
+                
+                if val is not None:
+                    has_data = True
+                
+                # Normalize value for JSON
+                json_val = val
+                if val is None:
+                    json_val = ""
+                elif isinstance(val, (int, float, str)):
+                     json_val = val
+                else:
+                     json_val = str(val)
+
+                row_data.append({
+                    "v": json_val,
+                    "f": fmt
+                })
+            
+            if has_data:
+                table_data.append(row_data)
         
         financials[target_key] = table_data
 
