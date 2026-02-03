@@ -19,19 +19,46 @@ export default function IndustryAnalysis() {
             label: t('industry.globalMarket') || 'Global Forklift Rental Market',
             value: '$5.39B',
             growth: '+6.2% CAGR',
-            icon: '🏭'
+            icon: '🏭',
+            explanation: language === 'es'
+                ? 'El mercado mundial de alquiler de montacargas vale $5.39 billones. El crecimiento de 6.2% CAGR (Tasa de Crecimiento Anual Compuesta) significa que este mercado está creciendo más rápido que la economía general.'
+                : 'The global forklift rental market is worth $5.39 billion. The 6.2% CAGR (Compound Annual Growth Rate) means this market is growing faster than the general economy.',
+            whatItMeans: language === 'es'
+                ? '✅ Su negocio está en una industria en crecimiento. Hay más demanda cada año para servicios de alquiler de equipos.'
+                : '✅ Your business is in a growing industry. There is more demand each year for equipment rental services.',
+            action: language === 'es'
+                ? '💡 Considere expandir su flota gradualmente para capturar parte de este crecimiento. Evalúe financiamiento o leasing para nuevos equipos.'
+                : '💡 Consider gradually expanding your fleet to capture part of this growth. Evaluate financing or leasing for new equipment.'
         },
         {
             label: t('industry.materialHandling') || 'Material Handling Equipment Rental',
             value: '$32.9B',
             growth: '+3.1% YoY',
-            icon: '📦'
+            icon: '📦',
+            explanation: language === 'es'
+                ? 'El mercado de alquiler de equipo de manejo de materiales (incluyendo montacargas, paletas, y equipo de almacén) es de $32.9 billones. El +3.1% YoY significa crecimiento del 3.1% comparado con el año anterior.'
+                : 'The material handling equipment rental market (including forklifts, pallets, and warehouse equipment) is $32.9 billion. The +3.1% YoY means 3.1% growth compared to the previous year.',
+            whatItMeans: language === 'es'
+                ? '✅ Hay oportunidad de diversificar su oferta. Además de montacargas, el equipo relacionado también tiene demanda creciente.'
+                : '✅ There is opportunity to diversify your offerings. Beyond forklifts, related equipment also has growing demand.',
+            action: language === 'es'
+                ? '💡 Explore añadir equipo complementario a su inventario (transpaletas eléctricas, equipo de almacén). Esto puede atraer nuevos clientes.'
+                : '💡 Explore adding complementary equipment to your inventory (electric pallet jacks, warehouse equipment). This can attract new customers.'
         },
         {
             label: t('industry.prManufacturing') || 'PR Manufacturing Share of GDP',
             value: '44.2%',
             growth: '+1.2% avg',
-            icon: '🇵🇷'
+            icon: '🇵🇷',
+            explanation: language === 'es'
+                ? 'La manufactura representa el 44.2% del PIB de Puerto Rico - casi la mitad de toda la economía. Esto es significativamente más alto que el promedio de EE.UU. (11%). El crecimiento promedio de 1.2% indica estabilidad.'
+                : 'Manufacturing represents 44.2% of Puerto Rico\'s GDP - almost half of the entire economy. This is significantly higher than the US average (11%). The 1.2% average growth indicates stability.',
+            whatItMeans: language === 'es'
+                ? '✅ Puerto Rico es un mercado ideal para su negocio. Las farmacéuticas, electrónicas y manufactura dependen de equipo como el suyo.'
+                : '✅ Puerto Rico is an ideal market for your business. Pharmaceuticals, electronics, and manufacturing depend on equipment like yours.',
+            action: language === 'es'
+                ? '💡 Enfoque su marketing en las industrias farmacéutica y manufactura de alta tecnología. Considere certificaciones especiales (sala limpia, FDA) para servir mejor estos clientes.'
+                : '💡 Focus your marketing on pharmaceutical and high-tech manufacturing industries. Consider special certifications (clean room, FDA) to better serve these clients.'
         }
     ]
 
@@ -267,16 +294,119 @@ export default function IndustryAnalysis() {
                 </div>
             </div>
 
-            {/* Market Statistics */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
-                {marketStats.map((stat, idx) => (
-                    <div key={idx} className="card" style={{ padding: '1rem', textAlign: 'center' }}>
-                        <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{stat.icon}</div>
-                        <div style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--accent-primary)' }}>{stat.value}</div>
-                        <div style={{ fontSize: '0.8rem', color: '#22c55e', marginBottom: '0.25rem' }}>{stat.growth}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{stat.label}</div>
-                    </div>
-                ))}
+            {/* Market Statistics - Enhanced with Explanations */}
+            <div className="card" style={{ marginBottom: '1.5rem' }}>
+                <h3 style={{ margin: 0, marginBottom: '1rem' }}>
+                    📊 {language === 'es' ? 'Métricas de Mercado - Explicadas' : 'Market Metrics - Explained'}
+                </h3>
+                <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+                    {language === 'es'
+                        ? 'Estas son las métricas clave que muestran la salud y oportunidades en su industria. Haga clic en cada una para más detalles.'
+                        : 'These are the key metrics showing the health and opportunities in your industry. Click each one for more details.'}
+                </p>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {marketStats.map((stat, idx) => (
+                        <div key={idx} style={{
+                            backgroundColor: 'var(--bg-secondary)',
+                            borderRadius: '12px',
+                            border: '1px solid var(--border-color)',
+                            overflow: 'hidden'
+                        }}>
+                            {/* Metric Header */}
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                padding: '1rem 1.5rem',
+                                borderBottom: '1px solid var(--border-color)',
+                                backgroundColor: 'rgba(0,150,255,0.05)'
+                            }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                    <span style={{ fontSize: '2rem' }}>{stat.icon}</span>
+                                    <div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>
+                                            {stat.label}
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem' }}>
+                                            <span style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--accent-primary)' }}>
+                                                {stat.value}
+                                            </span>
+                                            <span style={{ fontSize: '0.9rem', color: '#22c55e', fontWeight: 600 }}>
+                                                {stat.growth}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Explanation Section */}
+                            <div style={{ padding: '1.25rem 1.5rem' }}>
+                                {/* What is this? */}
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <div style={{
+                                        fontSize: '0.7rem',
+                                        fontWeight: 600,
+                                        color: 'var(--text-secondary)',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.5px',
+                                        marginBottom: '0.5rem'
+                                    }}>
+                                        🔍 {language === 'es' ? '¿Qué significa esto?' : 'What does this mean?'}
+                                    </div>
+                                    <p style={{ fontSize: '0.875rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.6 }}>
+                                        {stat.explanation}
+                                    </p>
+                                </div>
+
+                                {/* What it means for you */}
+                                <div style={{
+                                    padding: '0.75rem 1rem',
+                                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                                    borderRadius: '8px',
+                                    borderLeft: '4px solid #22c55e',
+                                    marginBottom: '1rem'
+                                }}>
+                                    <div style={{
+                                        fontSize: '0.7rem',
+                                        fontWeight: 600,
+                                        color: '#22c55e',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.5px',
+                                        marginBottom: '0.25rem'
+                                    }}>
+                                        {language === 'es' ? 'Para Su Negocio' : 'For Your Business'}
+                                    </div>
+                                    <p style={{ fontSize: '0.875rem', color: 'var(--text-primary)', margin: 0 }}>
+                                        {stat.whatItMeans}
+                                    </p>
+                                </div>
+
+                                {/* Recommended Action */}
+                                <div style={{
+                                    padding: '0.75rem 1rem',
+                                    backgroundColor: 'rgba(0, 150, 255, 0.1)',
+                                    borderRadius: '8px',
+                                    borderLeft: '4px solid var(--accent-primary)'
+                                }}>
+                                    <div style={{
+                                        fontSize: '0.7rem',
+                                        fontWeight: 600,
+                                        color: 'var(--accent-primary)',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.5px',
+                                        marginBottom: '0.25rem'
+                                    }}>
+                                        {language === 'es' ? 'Acción Recomendada' : 'Recommended Action'}
+                                    </div>
+                                    <p style={{ fontSize: '0.875rem', color: 'var(--text-primary)', margin: 0 }}>
+                                        {stat.action}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
 
             {/* Challenges & Opportunities Grid */}
