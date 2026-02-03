@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 // Helper for classes
-// Build version: 2026.02.03.v4 - Refactored to CSS classes
+// Build version: 2026.02.03.v5 - Added sectioned leadschedules
 function cn(...inputs: (string | undefined | null | false)[]) {
     return twMerge(clsx(inputs));
 }
@@ -23,19 +23,29 @@ interface LineItem {
 }
 
 interface CellData {
-    v: string | number;
+    v: string | number | boolean;
     f?: string;
+}
+
+interface LeadSection {
+    name_en: string;
+    name_es: string;
+    icon: string;
+    data: CellData[][];
 }
 
 interface FinancialData {
     BS: LineItem[];
     IS: LineItem[];
     CF: LineItem[];
-    TaxLead: CellData[][];
-    Lead: CellData[][];
+    TaxLead?: CellData[][];
+    Lead?: CellData[][];
+    LeadSections?: Record<string, LeadSection>;
+    TaxLeadSections?: Record<string, LeadSection>;
     Metadata: {
         SourceFile: string;
         PdfAvailable: boolean;
+        Version?: string;
     }
 }
 
@@ -55,18 +65,21 @@ const TAX_MAP: Record<string, string> = {
 type TabType = 'BS' | 'IS' | 'CF' | 'Lead' | 'TaxLead' | 'Docs';
 
 export default function FinancialStatements() {
-    const BUILD_VERSION = '2026.02.03.v4'; // Force rebuild - CSS classes
+    const BUILD_VERSION = '2026.02.03.v5'; // Sectioned leadschedules
     console.log('FinancialStatements build:', BUILD_VERSION);
     const { t, language } = useLanguage();
     const [activeTab, setActiveTab] = useState<TabType>('BS');
     const [showEducation, setShowEducation] = useState(true);
+    const [activeLeadSection, setActiveLeadSection] = useState<string>('all');
+    const [activeTaxLeadSection, setActiveTaxLeadSection] = useState<string>('all');
 
     // Cast JSON data
     const data = financialsData as FinancialData;
 
     // Helper: Dynamic Value Formatting based on Excel Format
-    const formatValue = (val: number | string, fmt?: string) => {
-        if (val === null || val === undefined || val === '') return '';
+    const formatValue = (val: number | string | boolean, fmt?: string) => {
+        if (val === null || val === undefined || val === '' || val === false) return '';
+        if (val === true) return '✓';
 
         const cleanFmt = fmt?.trim().toLowerCase();
 
@@ -83,8 +96,8 @@ export default function FinancialStatements() {
         if (fmt?.includes('%') || fmt?.includes('P')) {
             return new Intl.NumberFormat(language === 'es' ? 'es-PR' : 'en-US', {
                 style: 'percent',
-                minimumFractionDigits: 5,
-                maximumFractionDigits: 5
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
             }).format(numVal);
         }
 
@@ -212,23 +225,19 @@ export default function FinancialStatements() {
 
     // Render Raw Data Grid (Leadsheets) using CSS classes
     const renderGrid = (rows: CellData[][]) => {
-        let percentColIdx = -1;
-        for (let r = 0; r < Math.min(rows.length, 10); r++) {
-            const row = rows[r];
-            row.forEach((cell, idx) => {
-                const valStr = String(cell.v).toLowerCase();
-                if (valStr.includes('%') || (valStr.includes('change') && !valStr.includes('change in'))) {
-                    percentColIdx = idx;
-                }
-            });
-            if (percentColIdx !== -1) break;
+        if (!rows || rows.length === 0) {
+            return (
+                <div className="text-center py-12 text-gray-500">
+                    {language === 'es' ? 'No hay datos disponibles' : 'No data available'}
+                </div>
+            );
         }
 
         return (
             <div className="fs-grid-container">
                 <table className="fs-grid">
                     <tbody>
-                        {rows.map((row, rIdx) => {
+                        {rows.slice(0, 200).map((row, rIdx) => {
                             const isHeader = rIdx < 5;
                             const rowClass = isHeader
                                 ? 'fs-grid-row--header'
@@ -236,21 +245,11 @@ export default function FinancialStatements() {
 
                             return (
                                 <tr key={rIdx} className={rowClass}>
-                                    {row.map((cell, cIdx) => {
-                                        let formattedVal = formatValue(cell.v, cell.f);
-
-                                        const isLikelyPercentCol = cIdx === percentColIdx;
-
-                                        if (isLikelyPercentCol && typeof cell.v === 'number' && Math.abs(cell.v) < 100) {
-                                            formattedVal = new Intl.NumberFormat(language === 'es' ? 'es-PR' : 'en-US', {
-                                                style: 'percent',
-                                                minimumFractionDigits: 5,
-                                                maximumFractionDigits: 5
-                                            }).format(cell.v);
-                                        }
+                                    {row.slice(0, 10).map((cell, cIdx) => {
+                                        const formattedVal = formatValue(cell.v, cell.f);
 
                                         const isNumeric = typeof cell.v === 'number' ||
-                                            (typeof cell.v === 'string' && !isNaN(Number(cell.v.replace(/[,$%]/g, ''))));
+                                            (typeof cell.v === 'string' && !isNaN(Number(cell.v.toString().replace(/[,$%]/g, ''))));
 
                                         const cellClasses = cn(
                                             'fs-grid-cell',
@@ -269,8 +268,143 @@ export default function FinancialStatements() {
                         })}
                     </tbody>
                 </table>
+                {rows.length > 200 && (
+                    <div className="text-center py-4 text-gray-400 text-sm">
+                        {language === 'es'
+                            ? `Mostrando 200 de ${rows.length} filas`
+                            : `Showing 200 of ${rows.length} rows`}
+                    </div>
+                )}
             </div>
         );
+    };
+
+    // Render Section Selector for Leadschedules
+    const renderSectionSelector = (
+        sections: Record<string, LeadSection> | undefined,
+        activeSection: string,
+        setActiveSection: (s: string) => void,
+        title: string
+    ) => {
+        if (!sections || Object.keys(sections).length === 0) {
+            return null;
+        }
+
+        return (
+            <div className="mb-6">
+                <div className="flex items-center gap-3 mb-4">
+                    <h3 className="text-lg font-semibold text-gray-700">{title}</h3>
+                    <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
+                        {Object.keys(sections).length} {language === 'es' ? 'secciones' : 'sections'}
+                    </span>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                    <button
+                        onClick={() => setActiveSection('all')}
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all border",
+                            activeSection === 'all'
+                                ? 'bg-purple-600 text-white border-purple-600 shadow-md'
+                                : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300 hover:text-purple-600'
+                        )}
+                    >
+                        📊 {language === 'es' ? 'Ver Todo' : 'View All'}
+                    </button>
+
+                    {Object.entries(sections).map(([key, section]) => (
+                        <button
+                            key={key}
+                            onClick={() => setActiveSection(key)}
+                            className={cn(
+                                "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all border",
+                                activeSection === key
+                                    ? 'bg-purple-600 text-white border-purple-600 shadow-md'
+                                    : 'bg-white text-gray-600 border-gray-200 hover:border-purple-300 hover:text-purple-600'
+                            )}
+                        >
+                            <span>{section.icon}</span>
+                            {language === 'es' ? section.name_es : section.name_en}
+                            <span className="text-xs opacity-70">({section.data.length})</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+        );
+    };
+
+    // Render Leadschedules with Section Tabs
+    const renderLeadschedules = () => {
+        const sections = data.LeadSections;
+
+        // If we have sectioned data, use it
+        if (sections && Object.keys(sections).length > 0) {
+            const gridData = activeLeadSection === 'all'
+                ? data.Lead || []
+                : sections[activeLeadSection]?.data || [];
+
+            return (
+                <div>
+                    {renderSectionSelector(
+                        sections,
+                        activeLeadSection,
+                        setActiveLeadSection,
+                        language === 'es' ? 'Cédulas Contables por Categoría' : 'Accounting Leadschedules by Category'
+                    )}
+                    {renderGrid(gridData)}
+                </div>
+            );
+        }
+
+        // Fallback to full grid
+        return renderGrid(data.Lead || []);
+    };
+
+    // Render Tax Leadschedules with Section Tabs
+    const renderTaxLeadschedules = () => {
+        const sections = data.TaxLeadSections;
+
+        // If we have sectioned data, use it
+        if (sections && Object.keys(sections).length > 0) {
+            const gridData = activeTaxLeadSection === 'all'
+                ? data.TaxLead || []
+                : sections[activeTaxLeadSection]?.data || [];
+
+            return (
+                <div>
+                    {renderSectionSelector(
+                        sections,
+                        activeTaxLeadSection,
+                        setActiveTaxLeadSection,
+                        language === 'es' ? 'Cédulas Fiscales por Categoría' : 'Tax Leadschedules by Category'
+                    )}
+
+                    {/* Section Description */}
+                    {activeTaxLeadSection !== 'all' && sections[activeTaxLeadSection] && (
+                        <div className="mb-4 p-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl border border-purple-100">
+                            <div className="flex items-center gap-3">
+                                <span className="text-3xl">{sections[activeTaxLeadSection].icon}</span>
+                                <div>
+                                    <h4 className="font-semibold text-gray-800">
+                                        {language === 'es'
+                                            ? sections[activeTaxLeadSection].name_es
+                                            : sections[activeTaxLeadSection].name_en}
+                                    </h4>
+                                    <p className="text-sm text-gray-500">
+                                        {sections[activeTaxLeadSection].data.length} {language === 'es' ? 'filas de datos' : 'data rows'}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {renderGrid(gridData)}
+                </div>
+            );
+        }
+
+        // Fallback to full grid
+        return renderGrid(data.TaxLead || []);
     };
 
     // Render PDF Viewer using CSS classes
@@ -323,6 +457,11 @@ export default function FinancialStatements() {
                     <p className="text-gray-500 mt-1 flex items-center gap-2">
                         {t('statements.subtitle')}
                         <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">Audited</span>
+                        {data.Metadata?.Version && (
+                            <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                                v{data.Metadata.Version}
+                            </span>
+                        )}
                     </p>
                 </div>
 
@@ -364,24 +503,24 @@ export default function FinancialStatements() {
                     {/* Extended Tabs */}
                     <div className="flex bg-gray-100 p-1 rounded-xl flex-wrap">
                         <button
-                            onClick={() => setActiveTab('Lead')}
+                            onClick={() => { setActiveTab('Lead'); setActiveLeadSection('all'); }}
                             className={cn(
                                 "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all",
                                 activeTab === 'Lead' ? 'bg-white text-purple-600 shadow-sm ring-1 ring-black/5' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
                             )}
                         >
                             <FileSpreadsheet className="w-4 h-4" />
-                            Lead
+                            {language === 'es' ? 'Cédulas' : 'Lead'}
                         </button>
                         <button
-                            onClick={() => setActiveTab('TaxLead')}
+                            onClick={() => { setActiveTab('TaxLead'); setActiveTaxLeadSection('all'); }}
                             className={cn(
                                 "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg transition-all",
                                 activeTab === 'TaxLead' ? 'bg-white text-purple-600 shadow-sm ring-1 ring-black/5' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
                             )}
                         >
                             <Calculator className="w-4 h-4" />
-                            Tax
+                            {language === 'es' ? 'Fiscal' : 'Tax'}
                         </button>
                     </div>
 
@@ -424,8 +563,8 @@ export default function FinancialStatements() {
                 {activeTab === 'BS' && renderStandardTable(data.BS)}
                 {activeTab === 'IS' && renderStandardTable(data.IS)}
                 {activeTab === 'CF' && renderStandardTable(data.CF)}
-                {activeTab === 'Lead' && renderGrid(data.Lead)}
-                {activeTab === 'TaxLead' && renderGrid(data.TaxLead)}
+                {activeTab === 'Lead' && renderLeadschedules()}
+                {activeTab === 'TaxLead' && renderTaxLeadschedules()}
                 {activeTab === 'Docs' && renderPdfViewer()}
             </div>
 
