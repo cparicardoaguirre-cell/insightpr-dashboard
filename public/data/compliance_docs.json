@@ -1,7 +1,7 @@
 {
   "success": true,
   "directory": "D:\\NLTS-PR",
-  "totalFiles": 99,
+  "totalFiles": 102,
   "documentTypes": [
     "Financial Statements",
     "Tax Returns",
@@ -1118,6 +1118,41 @@
         "documentPeriodDate": "2024-12-31T04:00:00.000Z",
         "documentPeriodFormatted": "December 31, 2024",
         "lastModifiedFormatted": "Nov 7, 2025, 04:38 AM"
+      }
+    ],
+    "Municipal Taxes": [
+      {
+        "filename": "PATENTE MUNICIPAL NLTSPR.pdf",
+        "path": "D:\\NLTS-PR\\NLTS-PR 2024\\PATENTE MUNICIPAL NLTSPR.pdf",
+        "documentType": "Municipal Taxes",
+        "modifiedAt": "2026-02-03T17:35:48.082Z",
+        "createdAt": "2026-02-03T20:52:15.729Z",
+        "size": 75374,
+        "documentPeriodDate": null,
+        "documentPeriodFormatted": "Unknown period",
+        "lastModifiedFormatted": "Feb 3, 2026, 01:35 PM"
+      },
+      {
+        "filename": "PATENTE MUNICIPAL.pdf",
+        "path": "D:\\NLTS-PR\\NLTS-PR 2024\\PATENTE MUNICIPAL.pdf",
+        "documentType": "Municipal Taxes",
+        "modifiedAt": "2026-02-03T17:35:40.859Z",
+        "createdAt": "2026-02-03T20:52:15.724Z",
+        "size": 573641,
+        "documentPeriodDate": null,
+        "documentPeriodFormatted": "Unknown period",
+        "lastModifiedFormatted": "Feb 3, 2026, 01:35 PM"
+      },
+      {
+        "filename": "PATENTE - NLTSPR.pdf",
+        "path": "D:\\NLTS-PR\\NLTS-PR 2024\\PATENTE - NLTSPR.pdf",
+        "documentType": "Municipal Taxes",
+        "modifiedAt": "2026-02-03T17:35:29.379Z",
+        "createdAt": "2026-02-03T20:52:15.714Z",
+        "size": 1757282,
+        "documentPeriodDate": null,
+        "documentPeriodFormatted": "Unknown period",
+        "lastModifiedFormatted": "Feb 3, 2026, 01:35 PM"
       }
     ]
   }
