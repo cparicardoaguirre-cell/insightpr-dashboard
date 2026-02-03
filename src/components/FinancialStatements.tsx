@@ -13,6 +13,13 @@ interface LineItem {
 interface FinancialData {
     BS: LineItem[];
     IS: LineItem[];
+    CF: LineItem[];
+    TaxLead: string[][];
+    Lead: string[][];
+    Metadata: {
+        SourceFile: string;
+        PdfAvailable: boolean;
+    }
 }
 
 // Educational Tooltips mapping (Tax Form 480.20)
@@ -68,8 +75,8 @@ export default function FinancialStatements() {
                         <button
                             onClick={() => setActiveTab('BS')}
                             className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${activeTab === 'BS'
-                                    ? 'bg-white text-blue-600 shadow-sm'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                ? 'bg-white text-blue-600 shadow-sm'
+                                : 'text-gray-500 hover:text-gray-700'
                                 }`}
                         >
                             {t('statements.bs')}
@@ -77,8 +84,8 @@ export default function FinancialStatements() {
                         <button
                             onClick={() => setActiveTab('IS')}
                             className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${activeTab === 'IS'
-                                    ? 'bg-white text-blue-600 shadow-sm'
-                                    : 'text-gray-500 hover:text-gray-700'
+                                ? 'bg-white text-blue-600 shadow-sm'
+                                : 'text-gray-500 hover:text-gray-700'
                                 }`}
                         >
                             {t('statements.is')}
@@ -89,8 +96,8 @@ export default function FinancialStatements() {
                     <button
                         onClick={() => setShowEducation(!showEducation)}
                         className={`flex items-center gap-2 px-3 py-2 text-xs font-medium rounded-full border transition-colors ${showEducation
-                                ? 'bg-amber-50 text-amber-700 border-amber-200'
-                                : 'bg-white text-gray-400 border-gray-200'
+                            ? 'bg-amber-50 text-amber-700 border-amber-200'
+                            : 'bg-white text-gray-400 border-gray-200'
                             }`}
                     >
                         <span>💡</span>

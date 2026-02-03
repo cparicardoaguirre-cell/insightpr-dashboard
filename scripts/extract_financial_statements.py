@@ -1,19 +1,77 @@
 import openpyxl
 import json
 import os
+import shutil
+import glob
+import re
+import warnings
 
-# Configuration
-SOURCE_FILE = r"D:\NLTS-PR\NLTS-PR FS 12 31 2024 Rev156-3.xlsm"
-OUTPUT_FILE = r"src\data\financial_statements.json"
+# Suppress warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
+SOURCE_DIR = r"D:\NLTS-PR"
+OUTPUT_JSON = r"src/data/financial_statements.json"
+PUBLIC_DOCS_DIR = r"public/documents"
+
+def find_latest_files():
+    # Find all Excel files matching pattern
+    excel_pattern = os.path.join(SOURCE_DIR, "NLTS-PR FS*.xlsm")
+    excel_files = glob.glob(excel_pattern)
+    
+    if not excel_files:
+        print("No Excel files found.")
+        return None, None
+
+    # Sort by revision number (e.g., Rev156-3)
+    def parse_revision(fname):
+        match = re.search(r"Rev(\d+)-(\d+)", fname)
+        if match:
+            return int(match.group(1)) * 1000 + int(match.group(2))
+        return 0
+
+    latest_excel = max(excel_files, key=parse_revision)
+    print(f"Latest Excel found: {latest_excel}")
+
+    # Find matching PDF (Look in subfolders too)
+    # Strategy: Look for strict name match first, then same revision
+    base_name = os.path.splitext(os.path.basename(latest_excel))[0]
+    
+    # 1. Look for exact PDF name in ROOT
+    pdf_candidates = glob.glob(os.path.join(SOURCE_DIR, f"{base_name}.pdf"))
+    
+    # 2. Look for exact PDF name in 2024 subfolder
+    if not pdf_candidates:
+        pdf_candidates = glob.glob(os.path.join(SOURCE_DIR, "**", f"{base_name}.pdf"), recursive=True)
+    
+    latest_pdf = pdf_candidates[0] if pdf_candidates else None
+    
+    if latest_pdf:
+        print(f"Matching PDF found: {latest_pdf}")
+    else:
+        print("No matching PDF found.")
+
+    return latest_excel, latest_pdf
 
 def extract_financials():
-    if not os.path.exists(SOURCE_FILE):
-        print(f"Error: Source file not found at {SOURCE_FILE}")
+    latest_excel, latest_pdf = find_latest_files()
+    
+    if not latest_excel:
         return
 
-    print(f"Loading workbook: {SOURCE_FILE}")
+    # Create public docs dir
+    if not os.path.exists(PUBLIC_DOCS_DIR):
+        os.makedirs(PUBLIC_DOCS_DIR)
+
+    # Copy files to public
+    print(f"Copying {latest_excel} to public...")
+    shutil.copy2(latest_excel, os.path.join(PUBLIC_DOCS_DIR, "latest_source.xlsm"))
+    if latest_pdf:
+        print(f"Copying {latest_pdf} to public...")
+        shutil.copy2(latest_pdf, os.path.join(PUBLIC_DOCS_DIR, "audited_financials.pdf"))
+
+    print(f"Loading workbook: {latest_excel}")
     try:
-        wb = openpyxl.load_workbook(SOURCE_FILE, data_only=True)
+        wb = openpyxl.load_workbook(latest_excel, data_only=True)
     except Exception as e:
         print(f"Error loading workbook: {e}")
         return
@@ -105,12 +163,15 @@ def extract_financials():
                 financials["IS"].append(item)
 
     # Ensure output directory exists
-    os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
-    
-    with open(OUTPUT_FILE, "w", encoding='utf-8') as f:
+    os.makedirs(os.path.dirname(OUTPUT_JSON), exist_ok=True)
+    # Save
+    if not os.path.exists(os.path.dirname(OUTPUT_JSON)):
+        os.makedirs(os.path.dirname(OUTPUT_JSON), exist_ok=True)
+        
+    with open(OUTPUT_JSON, "w") as f:
         json.dump(financials, f, indent=2)
     
-    print(f"Extraction complete. Saved to {OUTPUT_FILE}")
+    print(f"Extraction complete. Saved to {OUTPUT_JSON}")
     print(f"BS Items: {len(financials['BS'])}")
     print(f"IS Items: {len(financials['IS'])}")
 
