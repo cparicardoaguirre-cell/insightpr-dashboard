@@ -75,41 +75,59 @@ def extract_financials():
     except Exception as e:
         print(f"Error loading workbook: {e}")
         return
-
+    
     financials = {
         "BS": [],
-        "IS": []
+        "IS": [],
+        "CF": [],
+        "TaxLead": [],
+        "Lead": [],
+        "Metadata": {
+            "SourceFile": os.path.basename(latest_excel),
+            "PdfAvailable": bool(latest_pdf)
+        }
     }
 
-    # Extract Balance Sheet (BS)
-    if "BS" in wb.sheetnames:
-        print("Processing Balance Sheet (BS)...")
-        ws = wb["BS"]
-        current_section = "Assets" # Default start
-        
-        for row in ws.iter_rows(min_row=5, values_only=True): 
-            desc = row[0] # Column A
-            val_2024 = row[2] # Column C
-            val_2023 = row[4] # Column E
-            
-            if not desc:
-                continue
+    # Helper function for standard 5-col extraction (BS/IS/CF)
+    def extract_standard_sheet(sheet_name, target_key, col_map):
+        if sheet_name not in wb.sheetnames:
+            print(f"Skipping {sheet_name} (Not found)")
+            return
 
+        print(f"Processing {sheet_name}...")
+        ws = wb[sheet_name]
+        current_section = "General"
+        
+        for i, row in enumerate(ws.iter_rows(min_row=5, values_only=True)):
+            if not row or len(row) < 5: continue
+            
+            desc = row[col_map['desc']]
+            val_2024 = row[col_map['2024']]
+            val_2023 = row[col_map['2023']]
+            
+            # Debug CF
+            if sheet_name == "CF":
+                if desc and (val_2024 != None or val_2023 != None):
+                     pass
+                     # print(f"CF Row {i+5}: Desc='{desc}', 24={val_2024}, 23={val_2023}")
+
+            if not desc: continue
+            
             desc_str = str(desc).strip()
             
-            # Detect Sections (Heuristic)
-            if desc_str.upper() in ["ASSETS", "LIABILITIES", "STOCKHOLDERS' EQUITY", "LIABILITIES AND STOCKHOLDERS' EQUITY"]:
+            # Heuristic Section detection
+            if desc_str.isupper() and len(desc_str) > 4:
                 current_section = desc_str
-                continue
-            
-            # Skip headers/empty rows
+                # Usually headers
+                if val_2024 is None and val_2023 is None:
+                    continue
+
+            # Skip empty value rows
             if val_2024 is None and val_2023 is None:
                 continue
 
-            # Clean values
             def clean_val(v):
-                if isinstance(v, (int, float)):
-                    return round(v)
+                if isinstance(v, (int, float)): return round(v)
                 return 0
 
             item = {
@@ -118,16 +136,21 @@ def extract_financials():
                 "2023": clean_val(val_2023),
                 "section": current_section
             }
-            
-            # Filter out zero rows unless meaningful? 
-            # For now, keep if at least one year has data or it looks important
-            if item["2024"] != 0 or item["2023"] != 0:
-                financials["BS"].append(item)
 
+            if item["2024"] != 0 or item["2023"] != 0:
+                financials[target_key].append(item)
+
+    # 1. BS Extraction (Desc:0, 24:2, 23:4)
+    extract_standard_sheet("BS", "BS", {'desc': 0, '2024': 2, '2023': 4})
+    
+    # 2. IS Extraction (Desc:0, 24:2, 23:4)
+    extract_standard_sheet("IS", "IS", {'desc': 0, '2024': 2, '2023': 4})
+
+    # 3. CF Extraction (Desc:0, 24:2, 23:4)
+    extract_standard_sheet("CF", "CF", {'desc': 0, '2024': 2, '2023': 4})
+    
     # 4. Tax Leadschedule / Leadschedule
-    # Found names: 'Leadschedules', 'TaxLeadschedules'
     def extract_table_sheet(sheet_keyword, target_key):
-        # Find sheet name (Exact match preferred, or case-insensitive)
         sheet_name = next((s for s in wb.sheetnames if sheet_keyword.lower() == s.lower()), None)
         if not sheet_name:
             print(f"Skipping {sheet_keyword} (Not found)")
@@ -136,12 +159,10 @@ def extract_financials():
         print(f"Processing {sheet_name} into {target_key}...")
         ws = wb[sheet_name]
         
-        # Simple extraction of first 12 columns for first 200 rows
         table_data = []
         for row in ws.iter_rows(min_row=1, max_row=200, max_col=12, values_only=True):
-            # Clean row
             clean_row = [str(c).strip() if c is not None else "" for c in row]
-            if any(clean_row): # If not all empty
+            if any(clean_row):
                 table_data.append(clean_row)
         
         financials[target_key] = table_data
@@ -149,56 +170,17 @@ def extract_financials():
     extract_table_sheet("TaxLeadschedules", "TaxLead")
     extract_table_sheet("Leadschedules", "Lead")
 
-    # Extract Income Statement (IS)
-    if "IS" in wb.sheetnames:
-        print("Processing Income Statement (IS)...")
-        ws = wb["IS"]
-        current_section = "Income"
-        
-        for row in ws.iter_rows(min_row=5, values_only=True):
-            desc = row[0] 
-            val_2024 = row[2]
-            val_2023 = row[4]
-
-            if not desc:
-                continue
-
-            desc_str = str(desc).strip()
-
-            if desc_str.upper() in ["REVENUE", "OPERATING EXPENSES", "OTHER INCOME", "INCOME TAX PROVISION"]:
-                current_section = desc_str
-                continue
-
-            if val_2024 is None and val_2023 is None:
-                continue
-
-            def clean_val(v):
-                if isinstance(v, (int, float)):
-                    return round(v)
-                return 0
-
-            item = {
-                "name": desc_str,
-                "2024": clean_val(val_2024),
-                "2023": clean_val(val_2023),
-                "section": current_section
-            }
-
-            if item["2024"] != 0 or item["2023"] != 0:
-                financials["IS"].append(item)
-
-    # Ensure output directory exists
-    os.makedirs(os.path.dirname(OUTPUT_JSON), exist_ok=True)
     # Save
     if not os.path.exists(os.path.dirname(OUTPUT_JSON)):
         os.makedirs(os.path.dirname(OUTPUT_JSON), exist_ok=True)
         
     with open(OUTPUT_JSON, "w") as f:
         json.dump(financials, f, indent=2)
-    
+
     print(f"Extraction complete. Saved to {OUTPUT_JSON}")
     print(f"BS Items: {len(financials['BS'])}")
     print(f"IS Items: {len(financials['IS'])}")
+    print(f"CF Items: {len(financials['CF'])}")
 
 if __name__ == "__main__":
     extract_financials()
