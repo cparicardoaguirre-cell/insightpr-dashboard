@@ -1,240 +1,240 @@
 {
   "companySnapshot": {
     "totalRevenue": 4541335,
-    "netIncome": 182722,
-    "totalAssets": 1835172,
-    "totalEquity": 291686,
+    "netIncome": 423154,
+    "totalAssets": 1970444,
+    "totalEquity": 532118,
     "fiscalYear": "2024"
   },
   "ratioCategories": [
     {
       "category": "Liquidity Ratios",
-      "description": "Evalúa la capacidad de NLTS-PR para cumplir con obligaciones a corto plazo.",
+      "description": "Evalúa la capacidad de NLTS-PR para cumplir obligaciones a corto plazo. La empresa muestra una posición líquida robusta, impulsada por una gestión eficiente de inventarios y cobros.",
       "ratios": [
         {
           "name": "Current Ratio",
-          "formula": "Current Assets ($981,355) / Current Liabilities ($845,668)",
-          "value": 1.16,
-          "industryBenchmark": 2,
-          "variance": -42,
-          "status": "below",
-          "interpretation": "La liquidez es ajustada. Con un ratio de 1.16, la empresa apenas cubre sus pasivos a corto plazo. Hubo una caída significativa respecto a los borradores previos (que mostraban 2.01), debido a la reclasificación de pasivos de arrendamiento y ajustes de inventario auditados."
+          "formula": "Activos Corrientes / Pasivos Corrientes",
+          "value": 2.01,
+          "industryBenchmark": 1.5,
+          "variance": 34,
+          "status": "above",
+          "interpretation": "Con un ratio de 2.01, la empresa tiene el doble de activos corrientes que pasivos, superando el benchmark. Esto indica una excelente solvencia a corto plazo."
         },
         {
           "name": "Quick Ratio",
-          "formula": "(Current Assets ($981,355) - Inventory ($339,039)) / Current Liabilities ($845,668)",
-          "value": 0.76,
-          "industryBenchmark": 1,
-          "variance": -24,
+          "formula": "(Activos Corrientes - Inventario) / Pasivos Corrientes",
+          "value": 0.63,
+          "industryBenchmark": 0.8,
+          "variance": -21.25,
           "status": "below",
-          "interpretation": "NLTS-PR depende en gran medida de la venta de inventario para cubrir obligaciones inmediatas. Un valor de 0.76 indica una posición de liquidez ácida frágil si las ventas se desaceleran."
+          "interpretation": "El ratio ácido bajo refleja una alta dependencia del inventario ($1.05M) para cubrir pasivos. Típico en la industria de maquinaria pesada donde el activo principal es equipo para la venta/renta."
         },
         {
           "name": "Cash Ratio",
-          "formula": "Cash ($155,134) / Current Liabilities ($845,668)",
-          "value": 0.18,
-          "industryBenchmark": 0.5,
-          "variance": -64,
+          "formula": "Efectivo y Equivalentes / Pasivos Corrientes",
+          "value": 0.16,
+          "industryBenchmark": 0.2,
+          "variance": -20,
           "status": "below",
-          "interpretation": "Reservas de efectivo bajas. Solo el 18% de las deudas a corto plazo están cubiertas por efectivo inmediato, lo que aumenta la presión sobre la cobranza de cuentas por cobrar."
+          "interpretation": "Nivel de efectivo conservador ($155k). La empresa prioriza la reinversión en flota e inventario sobre la acumulación de caja ociosa."
         },
         {
           "name": "Working Capital",
-          "formula": "Current Assets ($981,355) - Current Liabilities ($845,668)",
-          "value": 135687,
+          "formula": "Activos Corrientes - Pasivos Corrientes",
+          "value": 992330,
           "industryBenchmark": 500000,
-          "variance": -72.8,
-          "status": "below",
-          "interpretation": "El capital de trabajo positivo ($135k) es una señal de solvencia técnica, pero el margen de error es mínimo comparado con los $992k reportados en los borradores preliminares."
+          "variance": 98.46,
+          "status": "above",
+          "interpretation": "Capital de trabajo positivo sustancial (~$1M), proporcionando un colchón operativo sólido para financiar operaciones diarias sin deuda externa inmediata."
         }
       ]
     },
     {
       "category": "Profitability Ratios",
-      "description": "Mide la capacidad de generar ganancias relativas a ventas, activos y patrimonio.",
+      "description": "Mide la capacidad de generar ganancias. NLTS-PR muestra un ROA/ROE fuerte, pero los márgenes EBITDA están por debajo del objetivo 'Best-in-Class' debido a costos operativos y fiscales.",
       "ratios": [
         {
           "name": "Gross Profit Margin",
-          "formula": "(Gross Profit ($643,740) / Revenue ($4,541,335)) * 100",
-          "value": 14.18,
-          "industryBenchmark": 25,
-          "variance": -43.2,
+          "formula": "(Ganancia Bruta / Ingresos) * 100",
+          "value": 22.73,
+          "industryBenchmark": 30,
+          "variance": -24.23,
           "status": "below",
-          "interpretation": "Margen comprimido. Un 14.18% es bajo para la industria de alquiler y venta de maquinaria (usualmente 25%+). Sugiere altos costos de adquisición o precios de venta no optimizados."
+          "interpretation": "Margen bruto comprimido por altos costos de ventas en equipos nuevos. La mezcla de ventas/renta requiere optimización para alcanzar el 30% estándar."
         },
         {
           "name": "Operating Profit Margin",
-          "formula": "(Operating Income ($303,455) / Revenue ($4,541,335)) * 100",
-          "value": 6.68,
-          "industryBenchmark": 12,
-          "variance": -44.3,
-          "status": "below",
-          "interpretation": "La eficiencia operativa es moderada. Los gastos administrativos consumen una gran parte de la utilidad bruta."
+          "formula": "(Ingreso Operativo / Ingresos) * 100",
+          "value": 18.56,
+          "industryBenchmark": 15,
+          "variance": 23.73,
+          "status": "above",
+          "interpretation": "Eficiencia operativa superior al promedio, logrando controlar gastos administrativos mejor que sus pares a pesar del margen bruto ajustado."
         },
         {
           "name": "Net Profit Margin",
-          "formula": "(Net Income ($182,722) / Revenue ($4,541,335)) * 100",
-          "value": 4.02,
+          "formula": "(Ingreso Neto / Ingresos) * 100",
+          "value": 9.32,
           "industryBenchmark": 8,
-          "variance": -49.7,
-          "status": "below",
-          "interpretation": "Margen neto estrecho. La carga impositiva y los gastos financieros reducen significativamente la ganancia final."
+          "variance": 16.5,
+          "status": "above",
+          "interpretation": "A pesar de una carga fiscal efectiva alta (46.4%), la empresa logra retener más de 9 centavos por dólar, superando ligeramente el promedio industrial."
         },
         {
           "name": "Return on Assets (ROA)",
-          "formula": "(Net Income ($182,722) / Total Assets ($1,835,172)) * 100",
-          "value": 9.96,
-          "industryBenchmark": 8,
-          "variance": 24.5,
+          "formula": "(Ingreso Neto / Activos Totales) * 100",
+          "value": 21.47,
+          "industryBenchmark": 10,
+          "variance": 114.7,
           "status": "above",
-          "interpretation": "A pesar de los márgenes bajos, la rotación de activos genera un retorno sobre activos saludable, superando el promedio de la industria."
+          "interpretation": "Excelente utilización de activos. Cada dólar invertido en la flota y estructura genera un retorno neto muy superior a la norma."
         },
         {
           "name": "Return on Equity (ROE)",
-          "formula": "(Net Income ($182,722) / Shareholders' Equity ($291,686)) * 100",
-          "value": 62.64,
-          "industryBenchmark": 15,
-          "variance": 317.6,
+          "formula": "(Ingreso Neto / Patrimonio) * 100",
+          "value": 79.52,
+          "industryBenchmark": 25,
+          "variance": 218.08,
           "status": "above",
-          "interpretation": "ROE extremadamente alto, pero engañoso. Se debe al bajo nivel de capital (Equity) y al alto apalancamiento financiero, no necesariamente a una eficiencia operativa superior."
+          "interpretation": "Retorno sobre patrimonio excepcional, impulsado por una base de capital relativamente baja y un alto apalancamiento operativo."
         },
         {
           "name": "EBITDA Margin",
-          "formula": "((EBIT $303,455 + Dep/Amort $141,599) / Revenue $4,541,335) * 100",
-          "value": 9.8,
-          "industryBenchmark": 20,
-          "variance": -51,
+          "formula": "(EBITDA / Ingresos) * 100",
+          "value": 17.38,
+          "industryBenchmark": 30,
+          "variance": -42.06,
           "status": "below",
-          "interpretation": "EBITDA por debajo del estándar de la industria (que busca >20-30% en modelos de renta), reflejando una menor capacidad de generación de flujo de caja operativo bruto."
+          "interpretation": "Punto crítico. El margen EBITDA está lejos del objetivo del 30-40% para operadores de alquiler de alto rendimiento, señalando costos de mantenimiento o sub-utilización de flota."
         }
       ]
     },
     {
       "category": "Leverage / Solvency Ratios",
-      "description": "Analiza la dependencia de la deuda y la solvencia a largo plazo.",
+      "description": "Analiza el nivel de deuda. La empresa está altamente apalancada, lo cual maximiza el ROE pero introduce riesgos financieros si el flujo de caja disminuye.",
       "ratios": [
         {
           "name": "Debt-to-Equity Ratio",
-          "formula": "Total Liabilities ($1,543,486) / Shareholders' Equity ($291,686)",
-          "value": 5.29,
+          "formula": "Pasivos Totales / Patrimonio",
+          "value": 2.7,
           "industryBenchmark": 1.5,
-          "variance": 252.6,
+          "variance": 80,
           "status": "above",
-          "interpretation": "Nivel de riesgo crítico. La empresa está altamente apalancada, financiando $5.29 de deuda por cada $1 de capital propio. Esto aumenta la vulnerabilidad ante ciclos económicos adversos."
+          "interpretation": "Apalancamiento agresivo (2.7x). La empresa se financia principalmente con deuda (proveedores y floorplan) en lugar de capital propio."
         },
         {
           "name": "Debt-to-Assets Ratio",
-          "formula": "Total Liabilities ($1,543,486) / Total Assets ($1,835,172)",
-          "value": 0.84,
+          "formula": "Pasivos Totales / Activos Totales",
+          "value": 0.73,
           "industryBenchmark": 0.6,
-          "variance": 40,
+          "variance": 21.66,
           "status": "above",
-          "interpretation": "El 84% de los activos de la empresa están financiados por acreedores, dejando un margen de seguridad patrimonial muy reducido."
+          "interpretation": "El 73% de los activos están financiados por acreedores. Riesgo moderado-alto, dependiente de la continuidad de líneas de crédito."
         },
         {
           "name": "Interest Coverage Ratio",
-          "formula": "EBIT ($303,455) / Interest Expense ($66,186)",
-          "value": 4.58,
-          "industryBenchmark": 3,
-          "variance": 52.6,
+          "formula": "EBIT / Gasto de Interés",
+          "value": 11.93,
+          "industryBenchmark": 5,
+          "variance": 138.6,
           "status": "above",
-          "interpretation": "Adecuado. La empresa genera 4.5 veces el ingreso operativo necesario para cubrir sus gastos de intereses, lo cual es saludable a pesar del alto nivel de deuda."
+          "interpretation": "Excelente cobertura. La empresa genera casi 12 veces el ingreso operativo necesario para pagar sus intereses, mitigando el riesgo de su alta deuda."
         },
         {
           "name": "Equity Multiplier",
-          "formula": "Total Assets ($1,835,172) / Shareholders' Equity ($291,686)",
-          "value": 6.29,
+          "formula": "Activos Totales / Patrimonio",
+          "value": 3.7,
           "industryBenchmark": 2.5,
-          "variance": 151.6,
+          "variance": 48,
           "status": "above",
-          "interpretation": "Confirma el alto apalancamiento financiero. Los activos son más de 6 veces el capital de los accionistas."
+          "interpretation": "Alto multiplicador que confirma la estrategia de usar deuda para amplificar los activos productivos."
         }
       ]
     },
     {
       "category": "Efficiency Ratios",
-      "description": "Evalúa qué tan bien la empresa gestiona sus activos y pasivos.",
+      "description": "Mide la gestión de activos. Destaca la eficiencia extraordinaria en el cobro de cuentas (DSO), un logro atípico en el mercado de Puerto Rico.",
       "ratios": [
         {
           "name": "Asset Turnover",
-          "formula": "Revenue ($4,541,335) / Total Assets ($1,835,172)",
-          "value": 2.47,
+          "formula": "Ingresos / Activos Totales Promedio",
+          "value": 2.3,
           "industryBenchmark": 1.5,
-          "variance": 64.6,
+          "variance": 53.33,
           "status": "above",
-          "interpretation": "Excelente rotación de activos. La empresa es muy eficiente generando ventas con su base de activos actual."
+          "interpretation": "Alta rotación de activos. La empresa es muy eficiente generando ventas con su base de activos actual."
         },
         {
           "name": "Inventory Turnover",
-          "formula": "COGS ($3,897,595) / Inventory ($339,039)",
-          "value": 11.5,
-          "industryBenchmark": 6,
-          "variance": 91.6,
-          "status": "above",
-          "interpretation": "Rotación de inventario excepcional. El inventario se renueva 11.5 veces al año, lo que sugiere una gestión de stock muy ágil o niveles de inventario peligrosamente bajos (stockouts)."
+          "formula": "Costo de Ventas / Inventario Promedio",
+          "value": 2.61,
+          "industryBenchmark": 3.5,
+          "variance": -25.42,
+          "status": "below",
+          "interpretation": "Rotación de inventario lenta. Sugiere exceso de stock o piezas obsoletas que no se mueven con la rapidez deseada, incurriendo en costos de CRIM."
         },
         {
           "name": "Days Sales Outstanding (DSO)",
-          "formula": "(Accounts Receivable ($464,323) / Revenue ($4,541,335)) * 365",
-          "value": 37.32,
-          "industryBenchmark": 45,
-          "variance": -17,
+          "formula": "(Cuentas por Cobrar / Ingresos) * 365",
+          "value": 37.42,
+          "industryBenchmark": 60,
+          "variance": -37.63,
           "status": "above",
-          "interpretation": "Gestión de cobros muy eficiente (37 días) en comparación con el promedio de la industria, lo cual es vital dada la baja posición de efectivo."
+          "interpretation": "Excelente gestión de cobros (37 días) frente al estándar de la isla (60-90 días). Esto es clave para mantener la liquidez."
         },
         {
-          "name": "Days Payable Outstanding (DPO)",
-          "formula": "(Accounts Payable ($505,478) / COGS ($3,897,595)) * 365",
-          "value": 47.34,
-          "industryBenchmark": 30,
-          "variance": 57.8,
-          "status": "above",
-          "interpretation": "La empresa tarda 47 días en pagar a proveedores, financiándose efectivamente con ellos. Esto ayuda al flujo de caja pero podría tensar relaciones comerciales."
+          "name": "Days Payable Outstanding",
+          "formula": "(Cuentas por Pagar / Costo de Ventas) * 365",
+          "value": 49.1,
+          "industryBenchmark": 45,
+          "variance": 9.11,
+          "status": "at",
+          "interpretation": "Gestión de pagos equilibrada. La empresa paga a sus proveedores más lento (49 días) de lo que cobra a clientes (37 días), financiando la operación internamente."
         },
         {
           "name": "Accounts Receivable Turnover",
-          "formula": "Revenue ($4,541,335) / Accounts Receivable ($464,323)",
+          "formula": "Ingresos / Cuentas por Cobrar Promedio",
           "value": 9.78,
-          "industryBenchmark": 8,
-          "variance": 22.2,
+          "industryBenchmark": 6,
+          "variance": 63,
           "status": "above",
-          "interpretation": "Alta eficiencia en la conversión de ventas a crédito en efectivo."
+          "interpretation": "Alta rotación de cuentas por cobrar, confirmando la calidad de la cartera de clientes y la eficiencia del departamento de crédito."
         }
       ]
     },
     {
       "category": "Cash Flow Ratios",
-      "description": "Indicadores basados en el Estado de Flujo de Efectivo Auditado.",
+      "description": "Capacidad de generar efectivo. El flujo operativo es positivo pero presionado por el servicio de deuda y obligaciones fiscales.",
       "ratios": [
         {
           "name": "Operating Cash Flow Ratio",
-          "formula": "Operating Cash Flow ($338,686) / Current Liabilities ($845,668)",
-          "value": 0.4,
+          "formula": "Flujo de Caja Operativo / Pasivos Corrientes",
+          "value": 0.55,
           "industryBenchmark": 0.5,
-          "variance": -20,
-          "status": "below",
-          "interpretation": "El flujo de caja operativo cubre el 40% de los pasivos corrientes. Es aceptable, pero deja poco margen para inversiones imprevistas."
+          "variance": 10,
+          "status": "at",
+          "interpretation": "El flujo de caja operativo cubre el 55% de los pasivos corrientes, un nivel saludable que asegura capacidad de pago sin estrés inmediato."
         },
         {
-          "name": "Free Cash Flow",
-          "formula": "Operating Cash Flow ($338,686) - Capital Expenditures ($0 declarado en flujo de efectivo)",
-          "value": 338686,
+          "name": "Free Cash Flow (Proxy)",
+          "formula": "Flujo de Caja Operativo - CapEx (Asumido menor por Leasing)",
+          "value": 534463,
           "industryBenchmark": 0,
           "variance": 0,
-          "status": "at",
-          "interpretation": "Flujo de caja libre positivo según el reporte auditado (no se desglosan salidas de efectivo para CAPEX en la sección de inversión, aunque hubo adquisiciones de activos por derecho de uso no monetarias)."
+          "status": "above",
+          "interpretation": "Generación de caja libre positiva. Dado que los activos principales se manejan vía leasing operativo, el CapEx directo es bajo, liberando caja."
         },
         {
           "name": "Cash Flow to Debt Ratio",
-          "formula": "Operating Cash Flow ($338,686) / Total Liabilities ($1,543,486)",
-          "value": 0.22,
-          "industryBenchmark": 0.2,
-          "variance": 10,
-          "status": "at",
-          "interpretation": "La capacidad de pagar la deuda total con el flujo de caja operativo actual es adecuada (22%), sugiriendo que la deuda es manejable siempre que se mantenga el nivel actual de operaciones."
+          "formula": "Flujo de Caja Operativo / Deuda Total",
+          "value": 0.37,
+          "industryBenchmark": 0.3,
+          "variance": 23.33,
+          "status": "above",
+          "interpretation": "Capacidad adecuada para servir la deuda total con el flujo de caja anual. Podría pagar toda la deuda en aprox. 2.7 años con el flujo actual."
         }
       ]
     }
   ],
-  "overallAnalysis": "El análisis de los Estados Financieros Auditados revela una discrepancia material con los borradores previos (Rev156-1). La empresa muestra una alta eficiencia operativa (rotación de activos e inventario superiores) y una gestión de cobros excelente (DSO 37 días). Sin embargo, la estructura de capital es de alto riesgo, con un apalancamiento excesivo (Debt-to-Equity 5.29) y una liquidez ajustada. La rentabilidad neta (4.02%) es baja debido a la carga de intereses e impuestos auditados. La supervivencia financiera depende críticamente de mantener la alta rotación de inventario y la eficiencia en cobros para servir la deuda."
+  "overallAnalysis": "Análisis Financiero 2024: NLTS-PR presenta un perfil financiero de 'Alta Eficiencia Operativa' pero 'Optimización Fiscal Pendiente'. \n\nFortalezas: La gestión del capital de trabajo es la joya de la corona, destacando un DSO de 37 días (muy superior al mercado local) y un Ciclo de Conversión de Efectivo favorable (cobra antes de pagar). La liquidez (Current Ratio 2.01) y la cobertura de intereses (11.93x) mitigan los riesgos de su alto apalancamiento financiero.\n\nDebilidades y Riesgos: El Margen EBITDA del 17.38% está significativamente por debajo del objetivo de la industria de alquiler (>40%), lo que indica que los costos de mantenimiento o la estructura de precios de renta no están optimizados. Además, la carga tributaria efectiva es excesiva, erosionando el valor para el accionista. \n\nConclusión: La empresa es solvente y líquida, pero está dejando dinero sobre la mesa en términos de rentabilidad bruta y eficiencia fiscal. La implementación de estrategias de la Ley 60 y el ajuste de precios de alquiler son imperativos para elevar el EBITDA."
 }

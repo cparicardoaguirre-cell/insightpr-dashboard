@@ -8,8 +8,8 @@
   },
   "ratioCategories": [
     {
-      "category": "Liquidity Ratios",
-      "description": "Measures the company's ability to meet short-term obligations.",
+      "category": "1. LIQUIDITY RATIOS",
+      "description": "Measures the company's ability to meet short-term obligations using the data from Rev156-1.",
       "ratios": [
         {
           "name": "Current Ratio",
@@ -18,7 +18,7 @@
           "industryBenchmark": 1.5,
           "variance": 34,
           "status": "above",
-          "interpretation": "The company has $2.01 in current assets for every $1.00 of current liabilities, indicating a strong ability to cover short-term debts. Source [1] confirms this specific calculation."
+          "interpretation": "At 2.01, the Company maintains a healthy coverage of short-term liabilities, exceeding the standard benchmark of 1.5. This indicates sufficient liquidity to cover debts twice over."
         },
         {
           "name": "Quick Ratio",
@@ -27,16 +27,16 @@
           "industryBenchmark": 1,
           "variance": -37,
           "status": "below",
-          "interpretation": "Excluding inventory, the company only has $0.63 to cover each dollar of liability. This highlights a significant dependence on selling inventory to meet obligations, which is typical for equipment dealerships but poses a risk if sales slow [1]."
+          "interpretation": "The ratio of 0.63 reflects a heavy reliance on inventory ($1.34M) to meet obligations. Excluding inventory, liquid assets cover only 63% of current liabilities, highlighting a dependency on inventory turnover."
         },
         {
           "name": "Cash Ratio",
-          "formula": "Cash / Current Liabilities",
+          "formula": "Cash & Equivalents / Current Liabilities",
           "value": 0.16,
-          "industryBenchmark": 0.2,
-          "variance": -20,
+          "industryBenchmark": 0.5,
+          "variance": -68,
           "status": "below",
-          "interpretation": "With only $155,134 in cash against $978,114 in current liabilities [2], the company maintains a lean cash position, relying on cash flow from operations rather than reserves."
+          "interpretation": "With only $155k in cash against $978k in liabilities, the cash position is tight. The company utilizes cash efficiently for operations rather than holding excess liquidity."
         },
         {
           "name": "Working Capital",
@@ -45,169 +45,196 @@
           "industryBenchmark": 0,
           "variance": 0,
           "status": "above",
-          "interpretation": "Positive working capital of nearly $1M indicates operational solvency, primarily driven by high inventory levels ($1.34M) [3]."
+          "interpretation": "Positive working capital of nearly $1M confirms the Company's operational solvency, provided inventory remains liquid."
         }
       ]
     },
     {
-      "category": "Profitability Ratios",
-      "description": "Evaluates the company's ability to generate earnings relative to revenue and assets.",
+      "category": "2. PROFITABILITY RATIOS",
+      "description": "Evaluates the Company's ability to generate earnings relative to revenue and equity.",
       "ratios": [
         {
           "name": "Gross Profit Margin",
-          "formula": "Gross Profit / Revenue * 100",
+          "formula": "(Gross Profit / Revenue) * 100",
           "value": 22.73,
-          "industryBenchmark": 28,
-          "variance": -18.8,
+          "industryBenchmark": 25,
+          "variance": -9,
           "status": "below",
-          "interpretation": "A margin of 22.73% [4] is slightly below the benchmark for mixed rental/sales dealers (often ~28-30%), suggesting higher Cost of Goods Sold (COGS) or competitive pricing pressure."
+          "interpretation": "Gross margin is slightly compressed compared to the 25% industry target, possibly due to the mix of equipment sales vs. service revenue."
         },
         {
           "name": "Operating Profit Margin",
-          "formula": "Operating Income / Revenue * 100",
+          "formula": "(Operating Income / Revenue) * 100",
           "value": 18.56,
-          "industryBenchmark": 12,
-          "variance": 54.6,
+          "industryBenchmark": 10,
+          "variance": 85.6,
           "status": "above",
-          "interpretation": "Operating efficiency is strong at 18.56% [4], indicating effective control over General & Administrative (G&A) expenses relative to sales volume."
+          "interpretation": "Operating efficiency is high, retaining 18.5 cents on the dollar after operating expenses, significantly outperforming typical dealer benchmarks."
         },
         {
           "name": "Net Profit Margin",
-          "formula": "Net Income / Revenue * 100",
+          "formula": "(Net Income / Revenue) * 100",
           "value": 9.32,
-          "industryBenchmark": 6,
-          "variance": 55.3,
+          "industryBenchmark": 5,
+          "variance": 86.4,
           "status": "above",
-          "interpretation": "The company retains $0.09 for every dollar of sales [4], which is a healthy bottom line for a capital-intensive heavy equipment distributor."
+          "interpretation": "A robust bottom line result. The 9.32% margin indicates effective control over non-operating expenses and taxes relative to peer averages."
         },
         {
           "name": "Return on Assets (ROA)",
-          "formula": "Net Income / Total Assets * 100",
+          "formula": "(Net Income / Total Assets) * 100",
           "value": 21.47,
           "industryBenchmark": 8,
-          "variance": 168.3,
+          "variance": 168.4,
           "status": "above",
-          "interpretation": "Calculated using GAAP Net Income ($423k) over Assets ($1.97M). This is exceptionally high, likely because the Fixed Assets are presented as 'Net -' ($0) in this file version [5], artificially shrinking the asset base."
+          "interpretation": "Asset utilization is highly efficient, generating significant return for every dollar of assets deployed. Note: Source 105 calculates this higher using pre-tax income."
         },
         {
           "name": "Return on Equity (ROE)",
-          "formula": "Net Income / Total Equity * 100",
+          "formula": "(Net Income / Shareholders' Equity) * 100",
           "value": 79.52,
           "industryBenchmark": 15,
           "variance": 430.1,
           "status": "above",
-          "interpretation": "An extremely high ROE driven by a relatively small equity base ($532k) compared to the liabilities. While profitable, this indicates high leverage."
+          "interpretation": "Exceptionally high ROE driven by a relatively low equity base ($532k) compared to Net Income ($423k), suggesting high leverage utilization to drive returns."
         },
         {
           "name": "EBITDA Margin",
-          "formula": "EBITDA / Revenue * 100",
+          "formula": "(EBITDA / Revenue) * 100",
           "value": 17.39,
-          "industryBenchmark": 20,
-          "variance": -13,
-          "status": "at",
-          "interpretation": "EBITDA of $789,577 [3] yields a 17.39% margin, which is respectable but slightly below the 20%+ targets often seen in heavy equipment rental models."
+          "industryBenchmark": 12,
+          "variance": 44.9,
+          "status": "above",
+          "interpretation": "Strong operational cash generation potential before financing and accounting decisions."
         }
       ]
     },
     {
-      "category": "Leverage / Solvency Ratios",
-      "description": "Measures the extent to which the company uses debt to finance operations.",
+      "category": "3. LEVERAGE / SOLVENCY RATIOS",
+      "description": "Analyzes the Company's debt levels and ability to service debt.",
       "ratios": [
         {
           "name": "Debt-to-Equity Ratio",
-          "formula": "Total Liabilities / Total Equity",
+          "formula": "Total Liabilities / Shareholders' Equity",
           "value": 2.7,
           "industryBenchmark": 2,
           "variance": 35,
           "status": "above",
-          "interpretation": "A ratio of 2.70 [1] indicates the company is highly leveraged, financing operations primarily through debt (Floorplan, Accounts Payable, Taxes Payable) rather than equity."
+          "interpretation": "The company is leveraged at 2.7x equity, indicating aggressive financing, largely due to Floorplan financing ($439k) and Payables ($472k)."
         },
         {
           "name": "Debt-to-Assets Ratio",
           "formula": "Total Liabilities / Total Assets",
           "value": 0.73,
           "industryBenchmark": 0.6,
-          "variance": 21.6,
+          "variance": 21.7,
           "status": "above",
-          "interpretation": "73% of the company's assets are financed by creditors [5, 6], confirming the high-leverage strategy."
+          "interpretation": "73% of assets are financed by creditors, which is typical for equipment dealers with floorplan arrangements but presents solvency risks if asset values drop."
         },
         {
           "name": "Interest Coverage Ratio",
           "formula": "EBIT / Interest Expense",
           "value": 11.93,
           "industryBenchmark": 3,
-          "variance": 297.6,
+          "variance": 297.7,
           "status": "above",
-          "interpretation": "With an EBIT of $789,577 covering interest of $66,186 nearly 12 times over [7], the company has no difficulty servicing its current debt load."
+          "interpretation": "Excellent coverage. Operating income covers interest expense nearly 12 times over, indicating minimal risk of default on interest payments."
+        },
+        {
+          "name": "Equity Multiplier",
+          "formula": "Total Assets / Shareholders' Equity",
+          "value": 3.7,
+          "industryBenchmark": 3,
+          "variance": 23.3,
+          "status": "above",
+          "interpretation": "High multiplier confirms the strategy of using leverage to amplify returns on equity."
         }
       ]
     },
     {
-      "category": "Efficiency Ratios",
-      "description": "Analyzes how effectively the company uses its assets and manages liabilities.",
+      "category": "4. EFFICIENCY RATIOS",
+      "description": "Measures how effectively the Company uses its assets and manages liabilities.",
       "ratios": [
         {
           "name": "Asset Turnover",
-          "formula": "Revenue / Total Assets",
+          "formula": "Revenue / Average Total Assets",
           "value": 2.3,
           "industryBenchmark": 1.5,
           "variance": 53.3,
           "status": "above",
-          "interpretation": "Generating $2.30 in sales for every dollar of assets [8] is highly efficient, though this ratio is inflated by the unusually low (zero) net fixed asset value reported in this file version."
+          "interpretation": "The company generates $2.30 in sales for every $1 of assets, indicating superior asset utilization compared to the industry standard."
         },
         {
           "name": "Inventory Turnover",
           "formula": "COGS / Inventory",
           "value": 2.61,
-          "industryBenchmark": 3,
-          "variance": -13,
+          "industryBenchmark": 3.5,
+          "variance": -25.4,
           "status": "below",
-          "interpretation": "Inventory turns over 2.61 times per year [9], implying stock is held for about 140 days. This is slightly slow, suggesting potential overstocking of equipment or parts."
+          "interpretation": "Turnover is slower than the benchmark (approx. 140 days to sell). This suggests potential overstocking or slow-moving machinery/parts inventory."
         },
         {
-          "name": "Days Sales Outstanding (DSO)",
+          "name": "Days Sales Outstanding",
           "formula": "(Accounts Receivable / Revenue) * 365",
-          "value": 37.42,
+          "value": 37.32,
           "industryBenchmark": 45,
-          "variance": -16.8,
+          "variance": 17.1,
           "status": "above",
-          "interpretation": "Collecting receivables in ~37 days [9] is excellent performance for the B2B industrial sector, showing strong credit control."
+          "interpretation": "Collection period is excellent at ~37 days, outperforming the benchmark and ensuring faster cash conversion."
         },
         {
-          "name": "Days Payable Outstanding (DPO)",
+          "name": "Days Payable Outstanding",
           "formula": "(Accounts Payable / COGS) * 365",
-          "value": 49.3,
+          "value": 49.17,
           "industryBenchmark": 30,
-          "variance": 64.3,
+          "variance": 63.9,
           "status": "above",
-          "interpretation": "The company takes ~49 days to pay vendors [10]. While this preserves cash, it exceeds the typical 30-day term, which could strain supplier relationships."
+          "interpretation": "The company holds cash longer by delaying payments to ~49 days. While efficient for cash flow, it must be balanced against vendor relationships."
+        },
+        {
+          "name": "Accounts Receivable Turnover",
+          "formula": "Revenue / Accounts Receivable",
+          "value": 9.78,
+          "industryBenchmark": 8,
+          "variance": 22.3,
+          "status": "above",
+          "interpretation": "High turnover indicates efficient credit policies and collection procedures."
         }
       ]
     },
     {
-      "category": "Cash Flow Ratios",
-      "description": "Evaluates the company's liquidity position based on cash generation.",
+      "category": "5. CASH FLOW RATIOS",
+      "description": "Assessment of cash generation. Note: Sources for Rev156 contained truncated Cash Flow Statements [Source 103], preventing audited calculation.",
       "ratios": [
         {
           "name": "Operating Cash Flow Ratio",
           "formula": "Operating Cash Flow / Current Liabilities",
-          "value": 0.55,
-          "industryBenchmark": 0.4,
-          "variance": 37.5,
-          "status": "above",
-          "interpretation": "Estimated OCF of ~$534k (driven by a large increase in Income Tax Payable of $313k [11]) covers 55% of current liabilities, a healthy liquidity indicator."
+          "value": 0,
+          "industryBenchmark": 0.2,
+          "variance": 0,
+          "status": "at",
+          "interpretation": "Data Unavailable: The specific Statement of Cash Flows for Revision 156-3 (Rev156-1) is truncated in the source text [1], preventing accurate calculation."
+        },
+        {
+          "name": "Free Cash Flow",
+          "formula": "Operating Cash Flow - Capital Expenditures",
+          "value": 0,
+          "industryBenchmark": 0,
+          "variance": 0,
+          "status": "at",
+          "interpretation": "Data Unavailable: Capex and OCF data are missing from the source text for this specific revision."
         },
         {
           "name": "Cash Flow to Debt Ratio",
           "formula": "Operating Cash Flow / Total Debt",
-          "value": 0.37,
-          "industryBenchmark": 0.2,
-          "variance": 85,
-          "status": "above",
-          "interpretation": "Generating $0.37 cents of cash for every dollar of total debt indicates a strong capacity to repay principal obligations."
+          "value": 0,
+          "industryBenchmark": 0.15,
+          "variance": 0,
+          "status": "at",
+          "interpretation": "Data Unavailable due to truncated source documentation."
         }
       ]
     }
   ],
-  "overallAnalysis": "Based on the 'NLTS-PR FS 12 31 2024 Rev156-3' data (sourced via Rev156-1 [1-14]), NLTS-PR presents as a profitable and operationally efficient entity with significant leverage. \n\n**Strengths:** The company demonstrates robust profitability with a Net Profit Margin of 9.32% and excellent collection practices (DSO of 37 days). The Interest Coverage Ratio (11.93x) confirms that despite high debt levels, the cost of servicing that debt is manageable. \n\n**Weaknesses:** The Balance Sheet in this specific revision displays a critical anomaly: Net Fixed Assets are reported as zero ($0) or fully depreciated [5], which artificially inflates ROA and Asset Turnover ratios. If this is an error or a result of a sale-leaseback not fully capitalized, the asset base is understated. Additionally, the Quick Ratio (0.63) reveals a heavy reliance on inventory solvency. \n\n**Risk:** The company is highly leveraged (Debt-to-Equity 2.70), and a large portion of its operating cash flow appears derived from an increase in Taxes Payable ($313k) [11], which is a temporary deferral rather than organic cash generation. This creates a future cash outflow liability that must be managed carefully."
+  "overallAnalysis": "Based on the 'NLTS-PR FS 12 31 2024 Rev156-1' documentation, National Lift Truck Service of PR, Inc. demonstrates strong profitability and operational efficiency, with a Net Profit Margin of 9.32% and excellent Interest Coverage (11.93x). However, the balance sheet reveals a constrained liquidity position (Quick Ratio 0.63) driven by substantial inventory holdings ($1.34M) and aggressive leverage (Debt-to-Equity 2.70x). While the company effectively leverages this debt to generate high Returns on Equity (79.52%), the reliance on inventory turnover and floorplan financing presents a specific risk profile that requires careful monitoring of inventory aging. Note: Cash flow analysis was limited by the truncated source data for this specific file revision."
 }

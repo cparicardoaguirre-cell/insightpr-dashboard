@@ -73,6 +73,11 @@ export default function FinancialStatements() {
     const [activeLeadSection, setActiveLeadSection] = useState<string>('all');
     const [activeTaxLeadSection, setActiveTaxLeadSection] = useState<string>('all');
 
+    // Pagination state for grids
+    const ROWS_PER_PAGE = 100;
+    const [leadPage, setLeadPage] = useState(1);
+    const [taxLeadPage, setTaxLeadPage] = useState(1);
+
     // Cast JSON data
     const data = financialsData as FinancialData;
 
@@ -223,8 +228,8 @@ export default function FinancialStatements() {
         );
     };
 
-    // Render Raw Data Grid (Leadsheets) using CSS classes
-    const renderGrid = (rows: CellData[][]) => {
+    // Render Raw Data Grid (Leadsheets) with Pagination
+    const renderGrid = (rows: CellData[][], currentPage: number, setPage: (page: number) => void) => {
         if (!rows || rows.length === 0) {
             return (
                 <div className="text-center py-12 text-gray-500">
@@ -233,18 +238,132 @@ export default function FinancialStatements() {
             );
         }
 
-        return (
-            <div className="fs-grid-container">
-                <table className="fs-grid">
-                    <tbody>
-                        {rows.slice(0, 200).map((row, rIdx) => {
-                            const isHeader = rIdx < 5;
-                            const rowClass = isHeader
-                                ? 'fs-grid-row--header'
-                                : (rIdx % 2 === 0 ? 'fs-grid-row--even' : 'fs-grid-row--odd');
+        const totalRows = rows.length;
+        const totalPages = Math.ceil(totalRows / ROWS_PER_PAGE);
+        const startIdx = (currentPage - 1) * ROWS_PER_PAGE;
+        const endIdx = Math.min(startIdx + ROWS_PER_PAGE, totalRows);
+        const pageRows = rows.slice(startIdx, endIdx);
+
+        // Pagination Controls Component
+        const PaginationControls = () => {
+            if (totalPages <= 1) return null;
+
+            return (
+                <div className="flex items-center justify-center gap-2 py-4 border-t border-gray-200 bg-gray-50 rounded-b-xl">
+                    {/* Previous Button */}
+                    <button
+                        onClick={() => setPage(Math.max(1, currentPage - 1))}
+                        disabled={currentPage === 1}
+                        className={cn(
+                            "px-3 py-2 text-sm font-medium rounded-lg transition-all",
+                            currentPage === 1
+                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                : 'bg-white text-gray-700 border border-gray-200 hover:bg-purple-50 hover:border-purple-300'
+                        )}
+                    >
+                        ← {language === 'es' ? 'Anterior' : 'Previous'}
+                    </button>
+
+                    {/* Page Numbers */}
+                    <div className="flex items-center gap-1">
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => {
+                            // Show first, last, current, and neighbors
+                            const showPage = pageNum === 1 ||
+                                pageNum === totalPages ||
+                                Math.abs(pageNum - currentPage) <= 1;
+
+                            const showEllipsis = (pageNum === 2 && currentPage > 3) ||
+                                (pageNum === totalPages - 1 && currentPage < totalPages - 2);
+
+                            if (!showPage && !showEllipsis) return null;
+
+                            if (showEllipsis && !showPage) {
+                                return <span key={pageNum} className="px-2 text-gray-400">...</span>;
+                            }
 
                             return (
-                                <tr key={rIdx} className={rowClass}>
+                                <button
+                                    key={pageNum}
+                                    onClick={() => setPage(pageNum)}
+                                    className={cn(
+                                        "min-w-[40px] px-3 py-2 text-sm font-medium rounded-lg transition-all",
+                                        currentPage === pageNum
+                                            ? 'bg-purple-600 text-white shadow-md'
+                                            : 'bg-white text-gray-700 border border-gray-200 hover:bg-purple-50 hover:border-purple-300'
+                                    )}
+                                >
+                                    {pageNum}
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* Next Button */}
+                    <button
+                        onClick={() => setPage(Math.min(totalPages, currentPage + 1))}
+                        disabled={currentPage === totalPages}
+                        className={cn(
+                            "px-3 py-2 text-sm font-medium rounded-lg transition-all",
+                            currentPage === totalPages
+                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                : 'bg-white text-gray-700 border border-gray-200 hover:bg-purple-50 hover:border-purple-300'
+                        )}
+                    >
+                        {language === 'es' ? 'Siguiente' : 'Next'} →
+                    </button>
+
+                    {/* Page Info */}
+                    <div className="ml-4 text-sm text-gray-500">
+                        {language === 'es'
+                            ? `Página ${currentPage} de ${totalPages} (${totalRows} filas)`
+                            : `Page ${currentPage} of ${totalPages} (${totalRows} rows)`
+                        }
+                    </div>
+                </div>
+            );
+        };
+
+        return (
+            <div className="fs-grid-container">
+                {/* Top Pagination */}
+                {totalPages > 1 && (
+                    <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-purple-50 to-blue-50 rounded-t-xl border-b border-purple-100">
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-gray-700">
+                                {language === 'es' ? 'Mostrando filas' : 'Showing rows'} {startIdx + 1} - {endIdx} {language === 'es' ? 'de' : 'of'} {totalRows}
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm text-gray-500">
+                                {language === 'es' ? 'Página' : 'Page'}:
+                            </span>
+                            <select
+                                value={currentPage}
+                                onChange={(e) => setPage(Number(e.target.value))}
+                                title={language === 'es' ? 'Seleccionar página' : 'Select page'}
+                                className="px-3 py-1.5 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            >
+                                {Array.from({ length: totalPages }, (_, i) => (
+                                    <option key={i + 1} value={i + 1}>
+                                        {i + 1}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                )}
+
+                <table className="fs-grid">
+                    <tbody>
+                        {pageRows.map((row, rIdx) => {
+                            const actualRowIdx = startIdx + rIdx;
+                            const isHeader = actualRowIdx < 5;
+                            const rowClass = isHeader
+                                ? 'fs-grid-row--header'
+                                : (actualRowIdx % 2 === 0 ? 'fs-grid-row--even' : 'fs-grid-row--odd');
+
+                            return (
+                                <tr key={actualRowIdx} className={rowClass}>
                                     {row.slice(0, 10).map((cell, cIdx) => {
                                         const formattedVal = formatValue(cell.v, cell.f);
 
@@ -258,7 +377,7 @@ export default function FinancialStatements() {
                                         );
 
                                         return (
-                                            <td key={`${rIdx}-${cIdx}`} className={cellClasses}>
+                                            <td key={`${actualRowIdx}-${cIdx}`} className={cellClasses}>
                                                 {formattedVal}
                                             </td>
                                         );
@@ -268,13 +387,9 @@ export default function FinancialStatements() {
                         })}
                     </tbody>
                 </table>
-                {rows.length > 200 && (
-                    <div className="text-center py-4 text-gray-400 text-sm">
-                        {language === 'es'
-                            ? `Mostrando 200 de ${rows.length} filas`
-                            : `Showing 200 of ${rows.length} rows`}
-                    </div>
-                )}
+
+                {/* Bottom Pagination */}
+                <PaginationControls />
             </div>
         );
     };
@@ -337,6 +452,12 @@ export default function FinancialStatements() {
     const renderLeadschedules = () => {
         const sections = data.LeadSections;
 
+        // Reset page when section changes
+        const handleLeadSectionChange = (section: string) => {
+            setActiveLeadSection(section);
+            setLeadPage(1);  // Reset to page 1 when changing sections
+        };
+
         // If we have sectioned data, use it
         if (sections && Object.keys(sections).length > 0) {
             const gridData = activeLeadSection === 'all'
@@ -348,21 +469,27 @@ export default function FinancialStatements() {
                     {renderSectionSelector(
                         sections,
                         activeLeadSection,
-                        setActiveLeadSection,
+                        handleLeadSectionChange,
                         language === 'es' ? 'Cédulas Contables por Categoría' : 'Accounting Leadschedules by Category'
                     )}
-                    {renderGrid(gridData)}
+                    {renderGrid(gridData, leadPage, setLeadPage)}
                 </div>
             );
         }
 
         // Fallback to full grid
-        return renderGrid(data.Lead || []);
+        return renderGrid(data.Lead || [], leadPage, setLeadPage);
     };
 
     // Render Tax Leadschedules with Section Tabs
     const renderTaxLeadschedules = () => {
         const sections = data.TaxLeadSections;
+
+        // Reset page when section changes
+        const handleTaxLeadSectionChange = (section: string) => {
+            setActiveTaxLeadSection(section);
+            setTaxLeadPage(1);  // Reset to page 1 when changing sections
+        };
 
         // If we have sectioned data, use it
         if (sections && Object.keys(sections).length > 0) {
@@ -375,7 +502,7 @@ export default function FinancialStatements() {
                     {renderSectionSelector(
                         sections,
                         activeTaxLeadSection,
-                        setActiveTaxLeadSection,
+                        handleTaxLeadSectionChange,
                         language === 'es' ? 'Cédulas Fiscales por Categoría' : 'Tax Leadschedules by Category'
                     )}
 
@@ -398,13 +525,13 @@ export default function FinancialStatements() {
                         </div>
                     )}
 
-                    {renderGrid(gridData)}
+                    {renderGrid(gridData, taxLeadPage, setTaxLeadPage)}
                 </div>
             );
         }
 
         // Fallback to full grid
-        return renderGrid(data.TaxLead || []);
+        return renderGrid(data.TaxLead || [], taxLeadPage, setTaxLeadPage);
     };
 
     // Render PDF Viewer using CSS classes
