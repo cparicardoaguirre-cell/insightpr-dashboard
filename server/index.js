@@ -220,8 +220,21 @@ const execAsync = promisify(exec);
 const NLTS_PR_DIR = 'D:\\NLTS-PR';
 
 // Document type patterns to search for in PDF content
+// IMPORTANT: Order matters - more specific patterns should be listed first within each category
 const DOCUMENT_PATTERNS = {
-    'Financial Statements': ['balance sheet', 'income statement', 'statement of cash flows', 'estado de situacion', 'nlts-pr fs', 'financial report'],
+    'Financial Statements': [
+        'financial statement',  // Added: matches "NLTS-PR Financial Statement December 31 2024-1.pdf"
+        'estado financiero',
+        'balance sheet',
+        'income statement',
+        'statement of cash flows',
+        'estado de situacion',
+        'nlts-pr fs',
+        'financial report',
+        'estados financieros',
+        'audited fs',
+        'audited financial'
+    ],
     'Tax Returns': ['form 1120', 'form 480', 'contribucion sobre ingresos', 'hacienda', 'corporate income', 'income tax return', 'retorno', 'pr expenses', '480.6', '480.30', 'expenses.pdf', '2024 expenses', 'tax return', 'pr 2024', 'gastos corporativos', 'declaracion', 'suri', 'income tax', 'national lift'],
     'Municipal Taxes': ['planilla municipal', 'patente municipal', 'patente', 'municipal tax', 'impuesto municipal', 'arbitrio', 'volumen de negocios'],
     'Property Tax (CRIM)': ['planilla inmueble', 'crim', 'contribucion sobre propiedad', 'property tax', 'impuesto sobre propiedad', 'contribucion inmueble', 'bienes inmuebles'],
@@ -237,6 +250,66 @@ const DOCUMENT_PATTERNS = {
 
 // Flag to indicate if a document type extracts dates from content (first paragraph) rather than filename
 const CONTENT_DATE_DOCUMENTS = ['Engagement Letter', 'Representation Letter'];
+
+/**
+ * Extract version number from filename suffix (e.g., "-1", "-2", "-5", "Rev156-3")
+ * Higher versions indicate more recent documents
+ * @param {string} filename - The filename to extract version from
+ * @returns {number} - The version number (0 if none found)
+ */
+function extractVersionNumber(filename) {
+    // Pattern 1: Simple suffix like "-1.pdf", "-2.pdf"
+    const simplePattern = /-([0-9]+)\.[a-zA-Z]+$/;
+    let match = filename.match(simplePattern);
+    if (match) {
+        return parseInt(match[1], 10);
+    }
+
+    // Pattern 2: Revision pattern like "Rev156-3" (extract the last number)
+    const revPattern = /Rev[0-9]*-([0-9]+)/i;
+    match = filename.match(revPattern);
+    if (match) {
+        return parseInt(match[1], 10);
+    }
+
+    // Pattern 3: Multiple revision numbers like "Rev156-3" - use full revision
+    const fullRevPattern = /Rev([0-9]+)/i;
+    match = filename.match(fullRevPattern);
+    if (match) {
+        return parseInt(match[1], 10);
+    }
+
+    return 0; // No version found
+}
+
+/**
+ * Calculate a composite recency score for intelligent document sorting
+ * Higher scores = more recent document
+ * @param {Object} doc - Document object with period, modified dates, and version
+ * @returns {number} - Composite score for sorting
+ */
+function calculateRecencyScore(doc) {
+    let score = 0;
+
+    // 1. Document period date (most important - weight: 1,000,000)
+    if (doc.documentPeriodDate) {
+        const periodDate = new Date(doc.documentPeriodDate);
+        score += periodDate.getTime() / 1000; // Convert to seconds for manageable numbers
+    }
+
+    // 2. Version number (second most important - weight: 10,000)
+    // Higher versions within same period indicate updated/corrected documents
+    score += (doc.versionNumber || 0) * 10000;
+
+    // 3. File modification time (third priority - weight: 1)
+    // More recently modified files are likely more current
+    if (doc.modifiedAt) {
+        const modifiedDate = new Date(doc.modifiedAt);
+        score += modifiedDate.getTime() / 1000000; // Smaller weight
+    }
+
+    return score;
+}
 
 // Function to extract text from first page of PDF using pdftotext (requires poppler)
 async function extractPdfContent(filePath) {
@@ -418,13 +491,17 @@ app.get('/api/compliance-docs', async (req, res) => {
                 finalDocType = 'Tax Returns';
             }
 
-            documents.push({
+            // Extract version number from filename (e.g., "-1" in "Financial Statement 2024-1.pdf")
+            const versionNumber = extractVersionNumber(filename);
+
+            const docObj = {
                 filename: filename,
                 path: filePath, // Full path might be needed or just relative
                 documentType: finalDocType,
                 modifiedAt: stats.mtime.toISOString(),
                 createdAt: stats.birthtime.toISOString(),
                 size: stats.size,
+                versionNumber: versionNumber, // NEW: version for intelligent sorting
                 documentPeriodDate: periodDate ? periodDate.toISOString() : null,
                 documentPeriodFormatted: periodDate ? periodDate.toLocaleDateString('en-US', {
                     year: 'numeric',
@@ -438,7 +515,12 @@ app.get('/api/compliance-docs', async (req, res) => {
                     hour: '2-digit',
                     minute: '2-digit'
                 })
-            });
+            };
+
+            // Calculate composite recency score for intelligent sorting
+            docObj.recencyScore = calculateRecencyScore(docObj);
+
+            documents.push(docObj);
         }
 
         // Group by document type
@@ -450,14 +532,19 @@ app.get('/api/compliance-docs', async (req, res) => {
             grouped[doc.documentType].push(doc);
         }
 
-        // Sort each group
+        // Sort each group using intelligent recency scoring
+        // This considers: 1) document period, 2) version number, 3) modification date
         for (const type of Object.keys(grouped)) {
             grouped[type].sort((a, b) => {
-                const aPeriod = a.documentPeriodDate ? new Date(a.documentPeriodDate).getTime() : 0;
-                const bPeriod = b.documentPeriodDate ? new Date(b.documentPeriodDate).getTime() : 0;
-                if (aPeriod !== bPeriod) return bPeriod - aPeriod;
-                return new Date(b.modifiedAt) - new Date(a.modifiedAt);
+                // Higher recency score = more recent = should come first
+                return b.recencyScore - a.recencyScore;
             });
+
+            // Log the top document for each category for debugging
+            if (grouped[type].length > 0) {
+                const top = grouped[type][0];
+                console.log(`[${type}] Top document: ${top.filename} (v${top.versionNumber}, period: ${top.documentPeriodFormatted}, score: ${top.recencyScore.toFixed(0)})`);
+            }
         }
 
         res.json({

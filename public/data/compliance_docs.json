@@ -30,17 +30,6 @@
         "lastModifiedFormatted": "Dec 5, 2025, 06:39 PM"
       },
       {
-        "filename": "NLTS-PR Financial Statement December 31 2024-1.pdf",
-        "path": "D:\\NLTS-PR\\NLTS-PR 2024\\NLTS-PR Financial Statement December 31 2024-1.pdf",
-        "documentType": "Other Document",
-        "modifiedAt": "2026-01-30T03:40:36.641Z",
-        "createdAt": "2026-01-30T03:32:57.277Z",
-        "size": 123986,
-        "documentPeriodDate": "2024-12-31T04:00:00.000Z",
-        "documentPeriodFormatted": "December 31, 2024",
-        "lastModifiedFormatted": "Jan 29, 2026, 11:40 PM"
-      },
-      {
         "filename": "CURRENT INTEREST ON FLOOR PLAN - DECEMBER 2024.pdf",
         "path": "D:\\NLTS-PR\\NLTS-PR 2024\\Floor Plan\\CURRENT INTEREST ON FLOOR PLAN - DECEMBER 2024.pdf",
         "documentType": "Other Document",
@@ -237,17 +226,6 @@
         "documentPeriodDate": "2022-12-31T04:00:00.000Z",
         "documentPeriodFormatted": "December 31, 2022",
         "lastModifiedFormatted": "Jan 14, 2026, 06:44 PM"
-      },
-      {
-        "filename": "NLtS-PR Audited FS 2019.pdf",
-        "path": "D:\\NLTS-PR\\NLtS-PR Audited FS 2019.pdf",
-        "documentType": "Other Document",
-        "modifiedAt": "2025-11-06T03:19:05.321Z",
-        "createdAt": "2025-11-06T03:19:05.372Z",
-        "size": 1628623,
-        "documentPeriodDate": "2019-12-31T04:00:00.000Z",
-        "documentPeriodFormatted": "December 31, 2019",
-        "lastModifiedFormatted": "Nov 5, 2025, 11:19 PM"
       },
       {
         "filename": "NLTS-PR The Lugo-Viña, Inc. (LVI) Real Estate Leas.tv5.pdf",
@@ -1054,6 +1032,17 @@
         "lastModifiedFormatted": "Feb 1, 2026, 12:15 PM"
       },
       {
+        "filename": "NLTS-PR Financial Statement December 31 2024-1.pdf",
+        "path": "D:\\NLTS-PR\\NLTS-PR 2024\\NLTS-PR Financial Statement December 31 2024-1.pdf",
+        "documentType": "Financial Statements",
+        "modifiedAt": "2026-01-30T03:40:36.641Z",
+        "createdAt": "2026-01-30T03:32:57.277Z",
+        "size": 123986,
+        "documentPeriodDate": "2024-12-31T04:00:00.000Z",
+        "documentPeriodFormatted": "December 31, 2024",
+        "lastModifiedFormatted": "Jan 29, 2026, 11:40 PM"
+      },
+      {
         "filename": "NLTS-PR FS 12 31 2024 Rev156-2.xlsm",
         "path": "D:\\NLTS-PR\\NLTS-PR FS 12 31 2024 Rev156-2.xlsm",
         "documentType": "Financial Statements",
@@ -1118,6 +1107,17 @@
         "documentPeriodDate": "2024-12-31T04:00:00.000Z",
         "documentPeriodFormatted": "December 31, 2024",
         "lastModifiedFormatted": "Nov 7, 2025, 04:38 AM"
+      },
+      {
+        "filename": "NLtS-PR Audited FS 2019.pdf",
+        "path": "D:\\NLTS-PR\\NLtS-PR Audited FS 2019.pdf",
+        "documentType": "Financial Statements",
+        "modifiedAt": "2025-11-06T03:19:05.321Z",
+        "createdAt": "2025-11-06T03:19:05.372Z",
+        "size": 1628623,
+        "documentPeriodDate": "2019-12-31T04:00:00.000Z",
+        "documentPeriodFormatted": "December 31, 2019",
+        "lastModifiedFormatted": "Nov 5, 2025, 11:19 PM"
       }
     ],
     "Municipal Taxes": [
