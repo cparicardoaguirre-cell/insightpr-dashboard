@@ -289,11 +289,40 @@ const generateRatioAnalysis = (ratio: Ratio, language: string) => {
             }
         };
 
+        // Insurance Company Perspective - for coverage decisions, premium calculations, and risk assessment
+        const insurancePerspective = {
+            en: {
+                title: '🛡️ Insurance Company Perspective',
+                analysis: name.includes('current') || name.includes('quick') || name.includes('liquidity')
+                    ? `${ratioName} (${val}) indicates the insured's ability to pay premiums and maintain coverage. ${isGood ? 'Strong liquidity suggests reliable premium payments and lower risk of policy lapse.' : isWarning ? 'Moderate liquidity may require premium payment monitoring.' : 'Low liquidity increases risk of coverage gaps - consider premium financing offers.'} For a forklift service company, consistent coverage is critical for liability protection during equipment repairs and operations.`
+                    : name.includes('asset') || name.includes('inventory') || name.includes('turnover')
+                        ? `${ratioName} (${val}) affects asset valuation for property insurance. ${isGood ? 'Efficient asset utilization suggests proper maintenance and lower loss exposure.' : 'Slow turnover may indicate idle equipment at higher risk of damage or theft.'} Insurance underwriters evaluate equipment age, condition, and utilization when setting premiums. Example: A $500K forklift fleet with ${val} turnover may qualify for ${isAbove ? 'preferred rates due to active use' : 'higher premiums due to potential obsolescence claims'}.`
+                        : name.includes('debt') || name.includes('equity') || name.includes('leverage')
+                            ? `${ratioName} (${val}) signals financial stability for insurance underwriting. ${isGood ? 'Lower leverage indicates stable operations and reduced business interruption risk.' : 'High leverage may suggest financial stress, increasing claim likelihood during downturns.'} Surety bond capacity and general liability coverage terms are directly impacted. At ${val} D/E, ${isAbove ? 'premium credits may apply' : 'additional collateral or higher premiums may be required'}.`
+                            : name.includes('profit') || name.includes('margin')
+                                ? `${ratioName} (${val}) reflects business viability for long-term coverage. ${isGood ? 'Healthy profits support safety investments and risk mitigation programs.' : 'Margin pressure may lead to deferred maintenance, increasing accident risk.'} Loss control programs are easier to implement with strong margins. Example: A company with ${val}% margins can afford OSHA training and equipment upgrades that reduce workers' comp claims.`
+                                : `${ratioName} (${val}) is evaluated when assessing overall insurability. ${isGood ? 'Strong financial metrics support favorable coverage terms and multi-policy discounts.' : 'Weak metrics may result in higher deductibles or coverage exclusions.'} For material handling operations, comprehensive coverage requires demonstrating financial responsibility. Industry comparison (${indVal}) helps benchmark risk profile.`
+            },
+            es: {
+                title: '🛡️ Perspectiva de la Compañía de Seguros',
+                analysis: name.includes('current') || name.includes('quick') || name.includes('liquidity')
+                    ? `${ratioName} (${val}) indica la capacidad del asegurado para pagar primas y mantener cobertura. ${isGood ? 'Liquidez fuerte sugiere pagos de primas confiables y menor riesgo de caducidad de póliza.' : isWarning ? 'Liquidez moderada puede requerir monitoreo de pagos de primas.' : 'Baja liquidez aumenta el riesgo de brechas de cobertura - considere ofertas de financiamiento de primas.'} Para una empresa de servicio de montacargas, la cobertura consistente es crítica para protección de responsabilidad durante reparaciones y operaciones.`
+                    : name.includes('asset') || name.includes('inventory') || name.includes('turnover')
+                        ? `${ratioName} (${val}) afecta la valoración de activos para seguros de propiedad. ${isGood ? 'La utilización eficiente de activos sugiere mantenimiento adecuado y menor exposición a pérdidas.' : 'La rotación lenta puede indicar equipo inactivo con mayor riesgo de daño o robo.'} Los suscriptores de seguros evalúan la edad, condición y utilización del equipo al establecer primas. Ejemplo: Una flota de montacargas de $500K con rotación de ${val} puede calificar para ${isAbove ? 'tarifas preferenciales debido al uso activo' : 'primas más altas debido a posibles reclamaciones por obsolescencia'}.`
+                        : name.includes('debt') || name.includes('equity') || name.includes('leverage')
+                            ? `${ratioName} (${val}) señala estabilidad financiera para suscripción de seguros. ${isGood ? 'Menor apalancamiento indica operaciones estables y menor riesgo de interrupción de negocio.' : 'Alto apalancamiento puede sugerir estrés financiero, aumentando la probabilidad de reclamaciones durante recesiones.'} La capacidad de fianzas y los términos de cobertura de responsabilidad general se ven directamente afectados. Con D/E de ${val}, ${isAbove ? 'pueden aplicar créditos de prima' : 'se puede requerir colateral adicional o primas más altas'}.`
+                            : name.includes('profit') || name.includes('margin')
+                                ? `${ratioName} (${val}) refleja la viabilidad del negocio para cobertura a largo plazo. ${isGood ? 'Ganancias saludables apoyan inversiones en seguridad y programas de mitigación de riesgos.' : 'La presión en márgenes puede llevar a mantenimiento diferido, aumentando el riesgo de accidentes.'} Los programas de control de pérdidas son más fáciles de implementar con márgenes fuertes. Ejemplo: Una empresa con márgenes de ${val}% puede pagar capacitación OSHA y mejoras de equipo que reducen reclamaciones de compensación laboral.`
+                                : `${ratioName} (${val}) se evalúa al determinar la asegurabilidad general. ${isGood ? 'Métricas financieras sólidas apoyan términos de cobertura favorables y descuentos multi-póliza.' : 'Métricas débiles pueden resultar en deducibles más altos o exclusiones de cobertura.'} Para operaciones de manejo de materiales, la cobertura integral requiere demostrar responsabilidad financiera. La comparación con la industria (${indVal}) ayuda a establecer el perfil de riesgo.`
+            }
+        };
+
         return {
             bank: language === 'es' ? bankPerspective.es : bankPerspective.en,
             fiscal: language === 'es' ? fiscalPerspective.es : fiscalPerspective.en,
             manufacturing: language === 'es' ? manufacturingPerspective.es : manufacturingPerspective.en,
-            investor: language === 'es' ? investorPerspective.es : investorPerspective.en
+            investor: language === 'es' ? investorPerspective.es : investorPerspective.en,
+            insurance: language === 'es' ? insurancePerspective.es : insurancePerspective.en
         };
     };
 
@@ -795,6 +824,13 @@ export const FinancialRatiosSection: React.FC<FinancialRatiosSectionProps> = ({ 
                                         <h5 style={{ margin: '0 0 0.5rem 0', color: '#10b981', fontSize: '0.85rem' }}>{ratioAnalysis.stakeholders.investor.title}</h5>
                                         <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.8rem', lineHeight: '1.5' }}>
                                             {ratioAnalysis.stakeholders.investor.analysis}
+                                        </p>
+                                    </div>
+                                    {/* Insurance Company Perspective - spans full width */}
+                                    <div style={{ gridColumn: '1 / -1', background: 'rgba(236, 72, 153, 0.08)', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid rgba(236, 72, 153, 0.2)' }}>
+                                        <h5 style={{ margin: '0 0 0.5rem 0', color: '#ec4899', fontSize: '0.85rem' }}>{ratioAnalysis.stakeholders.insurance.title}</h5>
+                                        <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.8rem', lineHeight: '1.5' }}>
+                                            {ratioAnalysis.stakeholders.insurance.analysis}
                                         </p>
                                     </div>
                                 </div>

@@ -11,8 +11,6 @@ export default function Header({ activeTab, setActiveTab }: HeaderProps) {
     const { logout, user } = useAuth()
 
 
-    const isProduction = window.location.hostname !== 'localhost';
-
     const navItems = [
         { id: 'overview', labelKey: 'nav.dashboard' },
         { id: 'financials', labelKey: 'nav.financials' },
@@ -20,12 +18,8 @@ export default function Header({ activeTab, setActiveTab }: HeaderProps) {
         { id: 'industry', labelKey: 'nav.industry' },
         { id: 'act60', labelKey: 'nav.act60' },
         { id: 'compliance', labelKey: 'nav.compliance' },
-        { id: 'chat', labelKey: 'nav.chat' }
-    ].filter(item => {
-        // Hide Chat in production
-        if (isProduction && item.id === 'chat') return false;
-        return true;
-    });
+        { id: 'chat', labelKey: 'nav.chat' }  // Now shows NotebookLM link in production
+    ];
 
     return (
         <header className="header">
