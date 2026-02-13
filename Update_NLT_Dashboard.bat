@@ -8,7 +8,7 @@ ECHO.
 ECHO 1. Building Application...
 ECHO.
 
-cd /d "c:\Users\cpari\.gemini\antigravity\NLT_PR_Dashboard"
+cd /d "c:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\NLT_PR_Dashboard"
 
 :: Build
 call npm run build

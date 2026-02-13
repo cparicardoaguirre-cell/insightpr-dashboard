@@ -11,6 +11,7 @@ import FinancialStatements from './components/FinancialStatements'
 import ComplianceTracker from './components/ComplianceTracker'
 import IndustryAnalysis from './components/IndustryAnalysis'
 import Act60Tab from './components/Act60Tab'
+import ErrorBoundary from './components/ErrorBoundary'
 import './index.css'
 
 function Dashboard() {
@@ -54,11 +55,13 @@ function AppContent() {
 
 function App() {
   return (
-    <LanguageProvider>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
-    </LanguageProvider>
+    <ErrorBoundary>
+      <LanguageProvider>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </LanguageProvider>
+    </ErrorBoundary>
   )
 }
 
