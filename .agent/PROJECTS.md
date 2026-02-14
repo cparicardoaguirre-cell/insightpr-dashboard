@@ -18,7 +18,7 @@ This document provides an overview of all projects in the Antigravity Workspace 
 
 ### Reyes Contractor Group Dashboard
 
-- **Path**: `D:\Antigravity Workspace\reyes-construccion-dashboard`
+- **Path**: `C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\reyes-construccion-dashboard`
 - **Tech**: React + Vite + TypeScript
 - **Port (Dev)**: 5175
 - **Netlify Site ID**: `23b9a779-8a7d-41a1-a334-8d6800ddf49d`
@@ -30,7 +30,7 @@ This document provides an overview of all projects in the Antigravity Workspace 
 
 ### NLT-PR Dashboard  
 
-- **Path**: `D:\Antigravity Workspace\nlts-dashboard`
+- **Path**: `C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\nlts-dashboard`
 - **Tech**: React + Vite + TypeScript
 - **Port (Dev)**: Default (5173)
 - **Netlify Site ID**: `2af0eead-b243-4730-b1ce-a4f42948b7e6`
@@ -41,7 +41,7 @@ This document provides an overview of all projects in the Antigravity Workspace 
 
 ### InsightPR Dashboard
 
-- **Path**: `D:\Antigravity Workspace\insightpr-dashboard`
+- **Path**: `C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\insightpr-dashboard`
 - **Tech**: React + Vite + TypeScript
 - **Port (Dev)**: 5174
 - **Netlify Site ID**: `31415027-79b1-4ed7-b6f1-29d96df9de6a`
@@ -51,7 +51,7 @@ This document provides an overview of all projects in the Antigravity Workspace 
 
 ### Innovation Solutions LLC
 
-- **Path**: `D:\Antigravity Workspace\InnovationSolutionsLLC`
+- **Path**: `C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\InnovationSolutionsLLC`
 - **Tech**: React + Vite + TypeScript
 - **Port (Dev)**: 5176
 - **Netlify Site ID**: `05ab368a-ab18-4b19-9555-cbac3eadfa43`
@@ -61,7 +61,7 @@ This document provides an overview of all projects in the Antigravity Workspace 
 
 ### CPA Ricardo Aguirre Website
 
-- **Path**: `D:\Antigravity Workspace\CpaRicardoAguirreWebSite`
+- **Path**: `C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\CpaRicardoAguirreWebSite`
 - **Tech**: React + Vite
 - **Netlify Site ID**: `5df5cfa9-c1c2-4133-9842-0a4a22cdd595`
 - **Netlify URL**: <https://cparicardoaguirre.org>
@@ -133,28 +133,28 @@ This document provides an overview of all projects in the Antigravity Workspace 
 
 ```bash
 # Reyes Dashboard (port 5175)
-cd D:\Antigravity Workspace\reyes-construccion-dashboard && npm run dev
+cd C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\reyes-construccion-dashboard && npm run dev
 
 # NLT Dashboard (port 5173)
-cd D:\Antigravity Workspace\nlts-dashboard && npm run dev
+cd C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\nlts-dashboard && npm run dev
 
 # InsightPR (port 5174)
-cd D:\Antigravity Workspace\insightpr-dashboard && npm run dev -- --port 5174
+cd C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\insightpr-dashboard && npm run dev -- --port 5174
 
 # Innovation Solutions (port 5176)
-cd D:\Antigravity Workspace\InnovationSolutionsLLC && npm run dev -- --port 5176
+cd C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\InnovationSolutionsLLC && npm run dev -- --port 5176
 ```
 
 ### Quick Deploy Commands
 
 ```bash
 # Deploy Reyes Dashboard
-cd D:\Antigravity Workspace\reyes-construccion-dashboard
+cd C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\reyes-construccion-dashboard
 npm run build && git add -A && git commit -m "Update" && git push
 # Then use: /full-deploy
 
 # Sync Financial Data
-cd D:\Antigravity Workspace\reyes-construccion-dashboard
+cd C:\Users\cpari\.gemini\antigravity\Aguirre_Workspace\reyes-construccion-dashboard
 python scripts/extract_ratios_from_sheet.py
 ```
 
